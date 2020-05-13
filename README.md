@@ -24,6 +24,16 @@ Redux Ducks Interface
 - [Where do I put my business logic in a React-Redux application?](https://medium.com/@jeffbski/where-do-i-put-my-business-logic-in-a-react-redux-application-9253ef91ce1)
 - [Idiomatic Redux: Thoughts on Thunks, Sagas, Abstraction, and Reusability](https://blog.isquaredsoftware.com/2017/01/idiomatic-redux-thoughts-on-thunks-sagas-abstraction-and-reusability/)
 - [Redux Ecosystem Links - A categorized list of Redux-related addons, libraries, and utilities](https://github.com/markerikson/redux-ecosystem-links)
+- [Redux Middleware Lifecycle - Impure and asynchronous; but still redux](https://hackernoon.com/redux-middleware-lifecycle-7d8defa4db7e)
+
+## Packages
+
+- [redux-dynamic-middlewares - Allow add or remove redux middlewares dynamically](https://github.com/pofigizm/redux-dynamic-middlewares)
+- [redux-dynamic-modules - Modularize Redux by dynamically loading reducers and middlewares.](https://github.com/microsoft/redux-dynamic-modules)
+
+## Resources
+
+- [Redux Ecosystem Links - A categorized list of addon libraries for Redux, as well as other libraries that are closely related](https://github.com/markerikson/redux-ecosystem-links)
 
 ## History
 
