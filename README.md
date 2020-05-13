@@ -33,6 +33,12 @@ Redux Ducks Interface
 
 Thanks [@gobwas](https://github.com/gobwas) for letting me use this great NPM module name `ducks` for my project, Appreciate it!
 
+## Thanks
+
+This project is inspired by:
+
+- [Redux Dynamic Modules - a library that aims to make Redux Reducers and middleware easy to modular-ize and add/remove dynamically.](https://github.com/microsoft/redux-dynamic-modules)
+
 ## Author
 
 [Huan LI](https://github.com/huan) ([李卓桓](http://linkedin.com/in/zixia)) zixia@zixia.net
