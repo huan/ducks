@@ -29,6 +29,7 @@ Redux Ducks Interface
 - [Idiomatic Redux: Thoughts on Thunks, Sagas, Abstraction, and Reusability](https://blog.isquaredsoftware.com/2017/01/idiomatic-redux-thoughts-on-thunks-sagas-abstraction-and-reusability/)
 - [Redux Middleware Lifecycle - Impure and asynchronous; but still redux](https://hackernoon.com/redux-middleware-lifecycle-7d8defa4db7e)
 - [Understanding Redux Middleware](https://medium.com/@meagle/understanding-87566abcfb7a)
+- [You Aren’t Using Redux Middleware Enough](https://medium.com/@jacobp100/you-arent-using-redux-middleware-enough-94ffe991e6)
 
 ## Packages
 
