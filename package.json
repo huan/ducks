@@ -2,12 +2,14 @@
   "name": "ducks",
   "version": "0.2.0",
   "description": "Redux Ducks Interface Enforcement by TypeScript",
-  "main": "index.js",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo test"
+    "test": "echo test",
+    "lint:es": "eslint --ignore-pattern tests/fixtures/ '{bin,examples,scripts,src,tests}/**/*.ts'"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,26 @@
   "bugs": {
     "url": "https://github.com/huan/ducks/issues"
   },
-  "homepage": "https://github.com/huan/ducks#readme"
+  "homepage": "https://github.com/huan/ducks#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@chatie/eslint-config": "^0.8.1",
+    "@chatie/git-scripts": "^0.6.1",
+    "@chatie/semver": "^0.4.7",
+    "@chatie/tsconfig": "^0.10.1",
+    "pkg-jq": "^0.2.4",
+    "redux": "^4.0.5",
+    "tstest": "^0.4.10"
+  },
+  "peerDependencies": {
+    "redux": "^4.0.5"
+  },
+  "git": {
+    "scripts": {
+      "pre-push": "npx git-scripts-pre-push"
+    }
+  },
+  "publishConfig": {
+    "tag": "next"
+  }
 }
