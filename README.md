@@ -4,7 +4,7 @@ A Redux Reducer Bundles Manager for managing the modules that follows the Ducks 
 
 ![Ducks](docs/images/ducks.png)
 
-> Image source: [PNG BARN](https://www.pngbarn.com/png-image-biwfd)
+> Source: [Alamy](https://www.alamy.com/cute-duck-and-little-ducks-over-white-background-colorful-design-vector-illustration-image185379753.html)
 
 ## Features
 
@@ -134,10 +134,13 @@ The `ducks.getStore()` will do exact the same as the above `createStore()` codes
 redux-middleware-lifecycle-7d8defa4db7e)
 - [reSolve - A Redux-Inspired Backend](https://medium.com/resolvejs/resolve-redux-backend-ebcfc79bbbea)
 
-## Libraries
+## Relate Libraries
 
 - [redux-dynamic-middlewares - Allow add or remove redux middlewares dynamically](https://github.com/pofigizm/redux-dynamic-middlewares)
 - [redux-dynamic-modules - Modularize Redux by dynamically loading reducers and middlewares.](https://github.com/microsoft/redux-dynamic-modules)
+- [Dynamically inject reducers in your react reduc app. HMR and SSR compatible.](https://github.com/GuillaumeCisco/redux-reducers-injector)
+- [Helper for loading sagas asynchronously using redux](https://github.com/GuillaumeCisco/redux-sagas-injector)
+- [💉 inject reducer and saga anywhere in the application.](https://github.com/marcelmokos/redux-inject-reducer-and-saga)
 
 ## Resources
 
@@ -176,7 +179,7 @@ Thanks [@gobwas](https://github.com/gobwas) for letting me use this great NPM mo
 
 ## Author
 
-[Huan LI](https://github.com/huan) ([李卓桓](http://linkedin.com/in/zixia)) zixia@zixia.net
+[Huan LI](https://github.com/huan) ([李卓桓](http://linkedin.com/in/zixia)) Microsoft Regional Director \<zixia@zixia.net\>
 
 [![Profile of Huan LI (李卓桓) on StackOverflow](https://stackexchange.com/users/flair/265499.png)](https://stackexchange.com/users/265499)
 
