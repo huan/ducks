@@ -1,6 +1,10 @@
+import { DuckAPI } from './duck-api'
+
 class Duck {
 
-  constructor () {
+  constructor (
+    public api: DuckAPI,
+  ) {
 
   }
 

@@ -1,21 +1,23 @@
+import { combineReducers } from 'redux'
+
 import { DuckAPI } from '../../src/'
 
 import * as actions     from './actions'
 import * as operations  from './operations'
+import * as reducers    from './reducers'
 import * as selectors   from './selectors'
 import * as types       from './types'
+import * as middlewares from './middlewares'
 
-import reducer from './reducer'
+const reducer = combineReducers(reducers)
 
-const middleware = () => {}
-
-export <DuckAPI>{
+const duckAPI: DuckAPI = {
   actions,
   default: reducer,
-  middleware,
+  middlewares,
   operations,
   selectors,
   types,
 }
 
-export default reducer
+export = duckAPI

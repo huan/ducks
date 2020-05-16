@@ -1,6 +1,7 @@
 import {
   ActionCreatorsMapObject,
   Reducer,
+  Middleware,
 }                               from 'redux'
 
 interface TypesMapObject {
@@ -15,13 +16,16 @@ interface SelectorsMapObject {
   [selector: string]: (...args: any[]) => any,
 }
 
+interface MiddlewareMapObject {
+  [middleware: string]: Middleware,
+}
+
 export interface DuckAPI {
   actions     : ActionCreatorsMapObject,
+  middlewares : MiddlewareMapObject,
   operations  : OperationsMapObject,
   selectors   : SelectorsMapObject,
   types       : TypesMapObject,
-
-  middleware  : any,  // FIXME
 
   default    : Reducer,
 }

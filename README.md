@@ -6,8 +6,18 @@ A Redux Reducer Bundles Manager for managing the modules that follows the Ducks 
 
 > Source: [Alamy](https://www.alamy.com/cute-duck-and-little-ducks-over-white-background-colorful-design-vector-illustration-image185379753.html)
 
+Modular and Extensible Redux Reducer Bundles (ducks-modular-redux)
+
+ducks is an implementation of the Ducks proposal.
+
+ducks offers a method of handling redux module packaging.
+
 ## Features
 
+1. Encapsulation in Redux
+1. Plays nicely with Vanilla Redux
+1. Perfrect TypeScript Typing Support powered by [typesafe-actions]().
+1. Modulization Friendly
 1. Provide TypeScript Interface for Ducks Modular Proposal
 1. ActionBinding & SelectorBinding for making non-store & non-mount-point usage with convenience
     1. namespaces auto-management
@@ -22,6 +32,8 @@ A Redux Reducer Bundles Manager for managing the modules that follows the Ducks 
 ## Princples
 
 1. [Ducks: Redux Reducer Bundles - A proposal for bundling reducers, action types and actions when using Redux](https://github.com/erikras/ducks-modular-redux)
+1. [Building on the duck legacy - An attempt to extend the original proposal for redux modular architecture](https://github.com/alexnm/re-ducks)
+    - [Scaling Your Redux App with Ducks - Alex Moldovan - Medium Better Programming](https://medium.com/better-programming/scaling-your-redux-app-with-ducks-6115955638be#.4ppptx7oq)
 1. [Ducks++: Redux Reducer Bundles](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22)
 
 ## Usage
@@ -107,6 +119,36 @@ const store = ducks.getStore()
 
 The `ducks.getStore()` will do exact the same as the above `createStore()` codes.
 
+## Ducks Directory
+
+a duck:
+
+MUST export default a function called reducer()
+MUST export its action creators as functions
+MUST have action types in the form npm-module-or-app/reducer/ACTION_TYPE
+MAY export its action types as UPPER_SNAKE_CASE, if an external reducer needs to listen for them, or if it is a published reusable library
+
+Here's how a duck folder would look like:
+
+```sh
+duck/
+├── actions.js
+├── index.js
+├── operations.js
+├── reducers.js
+├── selectors.js
+├── tests.js
+├── types.js
+├── utils.js
+```
+
+A duck folder:
+
+MUST contain the entire logic for handling only ONE concept in your app, ex: product, cart, session, etc.
+MUST have an index.js file that exports according to the original duck rules.
+MUST keep code with similar purpose in the same file, ex: reducers, selectors, actions, etc.
+MUST contain the tests related to the duck.
+
 ## Developing Tools
 
 - [Typesafe utilities designed to reduce types verbosity and complexity in Redux Architecture](https://github.com/piotrwitek/typesafe-actions)
@@ -136,11 +178,22 @@ redux-middleware-lifecycle-7d8defa4db7e)
 
 ## Relate Libraries
 
+- [redux-operations - Solves challenging redux problems in a clean, understandable, debuggable fasion](https://github.com/mattkrick/redux-operations)
 - [redux-dynamic-middlewares - Allow add or remove redux middlewares dynamically](https://github.com/pofigizm/redux-dynamic-middlewares)
 - [redux-dynamic-modules - Modularize Redux by dynamically loading reducers and middlewares.](https://github.com/microsoft/redux-dynamic-modules)
 - [Dynamically inject reducers in your react reduc app. HMR and SSR compatible.](https://github.com/GuillaumeCisco/redux-reducers-injector)
 - [Helper for loading sagas asynchronously using redux](https://github.com/GuillaumeCisco/redux-sagas-injector)
 - [💉 inject reducer and saga anywhere in the application.](https://github.com/marcelmokos/redux-inject-reducer-and-saga)
+- [Paradux - a Redux reducer wrapper that adds a little bit of fun uncertainty](https://github.com/asteridux/paradux)
+- [Allows dynamically injecting reducers into a redux store at runtime](https://github.com/randallknutson/redux-injector)
+- [redux-optimistic-ui - a reducer enhancer to enable type-agnostic optimistic updates](https://github.com/mattkrick/redux-optimistic-ui)
+- [Reduce Reducers - Reduce multiple reducers into a single reducer from left to right](https://github.com/redux-utilities/reduce-reducers)
+- [Utilities that embrace best practices while working with redux in a universal application.](https://github.com/ImmoweltGroup/redux-lumbergh)
+- [createReduxDuckling() to spawn Redux Ducks as unique child instances called Ducklings.](https://github.com/sammysaglam/redux-ducklings)
+- [Modular and Extensible Redux Reducer Bundles (ducks-modular-redux)](https://github.com/investtools/extensible-duck)
+- [Composable ducklings](https://github.com/pghalliday/redux-duckling)
+- [Factory for simple creation and use of redux ducks.](https://github.com/espen42/duckfactory)
+- [tiny-duck - Composable redux reducers](https://github.com/LockedOn/tiny-duck)
 
 ## Resources
 
@@ -148,17 +201,30 @@ redux-middleware-lifecycle-7d8defa4db7e)
 
 ## Concepts
 
+Redux Ducks API compares with CQRS, Event Sourcing, and DDD:
+
+| Ducks       | CQRS    | Event Sourcing | DDD  |
+| :---        | :---    | :---           | :--- |
+| actions     | --- 
+| - creator   | Command |
+| - payload   | Event   | Event          |      |
+| selectors   | Query   |
+| operations  | Command + Event |
+| middlewares | Aggregate? | Saga ? |
+| types       | ??
+| reducers    | Aggregate??
+
 > [reSolve](https://reimagined.github.io/resolve/docs/introduction)
 
-### Domain Driven Design
+### DDD (Domain Driven Design)
 
 Domain aggregate is a business model unit. Business logic is mostly in command handlers for the aggregate.
 
-### Event Sourcing
+### ES (Event Sourcing()
 
 Don't store system state, store events that brought system to this state.
 
-### CQRS
+### CQRS (Command Query Responsibility Segregation)
 
 System is divided in two "sides":
 

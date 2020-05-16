@@ -7,7 +7,7 @@ const initialState = {
 /**
  * Reducers to calculate Aggregate state:
  */
-const reducers = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
   if (action.type === types.TAP) {
     return ({
       ...state,
@@ -16,4 +16,6 @@ const reducers = (state = initialState, action) => {
   }
 }
 
-export default reducers
+export {
+  reducer,
+}
