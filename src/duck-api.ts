@@ -22,7 +22,7 @@ interface MiddlewareMapObject {
 
 export interface DuckAPI {
   actions     : ActionCreatorsMapObject,
-  middlewares : MiddlewareMapObject,
+  middlewares : MiddlewareMapObject,  // TODO: support Dependency for redux-observable, etc
   operations  : OperationsMapObject,
   selectors   : SelectorsMapObject,
   types       : TypesMapObject,

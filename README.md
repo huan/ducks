@@ -4,7 +4,7 @@ A Redux Reducer Bundles Manager for managing the modules that follows the Ducks 
 
 ![Ducks](docs/images/ducks.png)
 
-> Source: [Alamy](https://www.alamy.com/cute-duck-and-little-ducks-over-white-background-colorful-design-vector-illustration-image185379753.html)
+> Image Credit: [Alamy](https://www.alamy.com/cute-duck-and-little-ducks-over-white-background-colorful-design-vector-illustration-image185379753.html)
 
 Modular and Extensible Redux Reducer Bundles (ducks-modular-redux)
 
