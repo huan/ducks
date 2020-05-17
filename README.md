@@ -10,6 +10,7 @@ Redux Ducks Interface
 
 1. [Ducks: Redux Reducer Bundles - A proposal for bundling reducers, action types and actions when using Redux](https://github.com/erikras/ducks-modular-redux)
 1. [Ducks++: Redux Reducer Bundles](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22)
+1. [Building on the duck legacy - An attempt to extend the original proposal for redux modular architecture](https://github.com/alexnm/re-ducks)
 
 ## Developing Tools
 
@@ -24,6 +25,10 @@ Redux Ducks Interface
 - [Where do I put my business logic in a React-Redux application?](https://medium.com/@jeffbski/where-do-i-put-my-business-logic-in-a-react-redux-application-9253ef91ce1)
 - [Idiomatic Redux: Thoughts on Thunks, Sagas, Abstraction, and Reusability](https://blog.isquaredsoftware.com/2017/01/idiomatic-redux-thoughts-on-thunks-sagas-abstraction-and-reusability/)
 - [Redux Ecosystem Links - A categorized list of Redux-related addons, libraries, and utilities](https://github.com/markerikson/redux-ecosystem-links)
+
+### Middlewares
+
+- [ducksMiddleware - Extract all available middleware from a ducks object and creates a middleware with all available middleware.](https://github.com/drpicox/ducks-middleware)
 
 ## History
 
