@@ -16,7 +16,7 @@ ducks offers a method of handling redux module packaging.
 
 1. Encapsulation in Redux
 1. Plays nicely with Vanilla Redux
-1. Perfrect TypeScript Typing Support powered by [typesafe-actions]().
+1. Perfrect TypeScript(v3.7) Typing Support powered by [typesafe-actions](https://github.com/piotrwitek/typesafe-actions).
 1. Modulization Friendly
 1. Provide TypeScript Interface for Ducks Modular Proposal
 1. ActionBinding & SelectorBinding for making non-store & non-mount-point usage with convenience
@@ -178,6 +178,11 @@ MUST contain the tests related to the duck.
 redux-middleware-lifecycle-7d8defa4db7e)
 - [reSolve - A Redux-Inspired Backend](https://medium.com/resolvejs/resolve-redux-backend-ebcfc79bbbea)
 
+### Sagas
+
+- [This collection of common Redux-saga patterns will make your life easier.](https://medium.com/free-code-camp/redux-saga-common-patterns-48437892e11c)
+- [Lost with Redux and sagas? Implement them yourself!](https://blog.castiel.me/posts/2019-08-03-lost-redux-saga-reimplement-them/)
+
 ## Relate Libraries
 
 - [redux-operations - Solves challenging redux problems in a clean, understandable, debuggable fasion](https://github.com/mattkrick/redux-operations)
@@ -207,7 +212,7 @@ Redux Ducks API compares with CQRS, Event Sourcing, and DDD:
 
 | Ducks       | CQRS    | Event Sourcing | DDD  |
 | :---        | :---    | :---           | :--- |
-| actions     | --- 
+| actions     | Domain Aggregates with Command handlers
 | - creator   | Command |
 | - payload   | Event   | Event          |      |
 | selectors   | Query   |

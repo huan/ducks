@@ -6,8 +6,8 @@
  *
  *  Define your Read Models and projection functions / query resolvers
  */
-const counter = state => () => state.counter
+const getCounter = (state: any) => () => state.counter
 
 export {
-  counter,
+  getCounter,
 }

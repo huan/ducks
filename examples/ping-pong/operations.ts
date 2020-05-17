@@ -2,8 +2,8 @@ import { Store } from 'redux'
 
 import * as actions from './actions'
 
-const tap   = ({ dispatch }: Store) => () => dispatch(actions.tap())
+const ping = ({ dispatch }: Store) => () => dispatch(actions.ping())
 
 export {
-  tap,
+  ping,
 }
