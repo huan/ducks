@@ -15,9 +15,9 @@ import reduceReducers from 'reduce-reducers'
 import { EpicMiddleware } from 'redux-observable'
 import { SagaMiddleware } from 'redux-saga'
 
-import { Duck } from './duck'
+import { Duck } from '../duck/'
 
-import { composeDucks } from './compose-ducks'
+import { combineDucks } from './combine-ducks'
 
 interface DucksOptions {
   ducksNamespace: boolean,
@@ -42,7 +42,7 @@ class Ducks {
 
   public options: DucksOptions
 
-  public duckList: Duck[]
+  public duckDict: DucksMapObject
 
   get reducer (storeReducer: Reducer): Reducer {
     if (this.options.ducksNamespace) {
@@ -60,7 +60,7 @@ class Ducks {
       ...options,
     }
 
-    this.duckList = []
+    this.duckDict = {}
   }
 
   getDucksReducer <D extends DucksMapObject>(ducks: D) {
@@ -79,12 +79,13 @@ class Ducks {
     return combineReducers(duckReducers)
   }
 
-  apply <Ext = {}, StateExt = {}> (
-    ...duckList: Duck[]
+  apply <D extends DucksMapObject, Ext = {}, StateExt = {}> (
+    ducks: D,
   ): StoreEnhancer<Ext, StateExt> {
-    if (duckList.length) {
-      this.duckList = duckList
-    }
+    this.duckDict = ducks
+
+    const ducksReducer = combineDucks(ducks)
+
     return (createStore: StoreCreator) => <S, A extends AnyAction>(
       reducer: Reducer<S, A>,
       ...args: any[]

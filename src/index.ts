@@ -6,4 +6,4 @@ export {
   DuckAPI,
   validateDuckAPI,
 }                     from './duck/'
-export { Ducks } from './ducks'
+export { Ducks } from './ducks/'
