@@ -29,8 +29,8 @@ const epicMiddleware = createEpicMiddleware()
 const sagaMiddleware = createSagaMiddleware()
 
 const counterDuck = new Duck(counterDuckAPI)
-const dingDongDuck = new Duck(dingDongDuckAPI, 'you_can_override_the_mount_point')
-const pingPongDuck = new Duck(pingPongDuckAPI)  // if the api lack of the `namespace` and not specified at here, then it will use a random generated a string
+const dingDongDuck = new Duck(dingDongDuckAPI)
+const pingPongDuck = new Duck(pingPongDuckAPI)
 
 const ducks = new Ducks({
   epicMiddleware,
@@ -54,18 +54,19 @@ const store = createStore(
   ),
 )
 
-counterDuck.selectors.getCounter()
+store.subscribe(console.info)
 
 // Before:
 // counterDuck.selectors.getCounter(store)()
 // counterDuck.operations.tap(store)()
 
 // After:
-counter.selectors.getConter()
-counter.operations.tap()
+counterDuck.selectors.getCounter()
+counterDuck.operations.tap()
+counterDuck.selectors.getMeaningOfLife(3)
 
 export {
-  counter as counterDuck,
+  counterDuck,
+  dingDongDuck,
+  pingPongDuck,
 }
-
-store.subscribe(console.info)

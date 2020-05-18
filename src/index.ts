@@ -5,4 +5,4 @@ export { reduceReducers }
 export { Duck } from './duck'
 export { Ducks } from './ducks'
 export { DuckAPI } from './duck-api'
-export { validateDuckApi } from './validate-duck-api'
+export { validateDuckAPI } from './validate-duck-api'

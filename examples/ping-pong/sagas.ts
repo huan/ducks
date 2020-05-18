@@ -1,19 +1,17 @@
 import {
   takeEvery,
-  put,
-}               from 'redux-saga/effects'
+}             from 'redux-saga/effects'
 
-import * as actions from './actions'
 import * as types   from './types'
 
-function * emitDong () {
-  put(actions.pong())
-}
+import {
+  emitPong,
+}             from './sagas-helpers'
 
-function * watchPingSaga () {
-  yield takeEvery(types.PING, emitDong)
+function * pingSaga () {
+  yield takeEvery(types.PING, emitPong)
 }
 
 export {
-  watchPingSaga,
+  pingSaga,
 }

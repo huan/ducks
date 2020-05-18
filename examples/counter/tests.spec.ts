@@ -1,7 +1,35 @@
+#!/usr/bin/env node -r ts-node/register
+import { test } from 'tstest'
+
 import {
-  validateDuckApi,
+  createStore,
+}                         from 'redux'
+
+import {
+  validateDuckAPI,
 }                     from '../../src'
 
 import * as api from '.'
 
-validateDuckApi(api)
+validateDuckAPI(api)
+
+test('counter', async t => {
+  const store = createStore(api.default)
+
+  let n = api.selectors.getCounter(store.getState())()
+  t.equal(n, 0, 'should be 0 after init')
+
+  store.dispatch(api.actions.tap())
+
+  n = api.selectors.getCounter(store.getState())()
+  t.equal(n, 1, 'should be 1 after tap')
+})
+
+test('operations', async t => {
+  const store = createStore(api.default)
+
+  api.operations.tap(store)()
+
+  const n = api.selectors.getCounter(store.getState())()
+  t.equal(n, 1, 'should be 1 after operations.tap(store)()')
+})

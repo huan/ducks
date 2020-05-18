@@ -6,8 +6,10 @@
  *
  *  Define your Read Models and projection functions / query resolvers
  */
-const getCounter = (state: { counter: number }) => () => state.counter
+const getCounter       = (state: { total: number }) => () => state.total
+const getMeaningOfLife = (_state: any) => (_: any) => 42
 
 export {
   getCounter,
+  getMeaningOfLife,
 }
