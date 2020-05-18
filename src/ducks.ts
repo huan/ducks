@@ -1,25 +1,41 @@
 import {
   StoreEnhancer,
-  StoreEnhancerStoreCreator,
+  // StoreEnhancerStoreCreator,
   Reducer,
-  PreloadedState,
-  Action,
+  // PreloadedState,
+  // Action,
+  combineReducers,
   AnyAction,
-  Store,
+  // Store,
   StoreCreator,
 }                               from 'redux'
+
+import reduceReducers from 'reduce-reducers'
 
 import { EpicMiddleware } from 'redux-observable'
 import { SagaMiddleware } from 'redux-saga'
 
 import { Duck } from './duck'
 
+import { composeDucks } from './compose-ducks'
+
 interface DucksOptions {
-  // state.ducks.* or state.* ?
   ducksNamespace: boolean,
 
   epicMiddleware?: EpicMiddleware<AnyAction>,
   sagaMiddleware?: SagaMiddleware,
+}
+
+export interface DucksMapObject {
+  [namespace: string]: Duck,
+}
+
+type DuckReducerMapObject <D extends DucksMapObject> = {
+  [key in keyof D]: D[key]['reducer']
+}
+
+const DEFAULT_DUCKS_OPTIONS: DucksOptions = {
+  ducksNamespace: true,
 }
 
 class Ducks {
@@ -28,57 +44,55 @@ class Ducks {
 
   public duckList: Duck[]
 
+  get reducer (storeReducer: Reducer): Reducer {
+    if (this.options.ducksNamespace) {
+      const nsReducer = combineReducers({
+        'ducks':
+      })
+      return reduceReducers()
+    }
+    return
+  }
+
   constructor (options?: Partial<DucksOptions>) {
     this.options = {
-      ducksNamespace: true,
+      ...DEFAULT_DUCKS_OPTIONS,
       ...options,
     }
 
     this.duckList = []
   }
 
-  apply <Ext = {}, StateExt = {}> (
-    ...duckList: Duck[],
-  ): StoreEnhancer<Ext, StateExt> {
+  getDucksReducer <D extends DucksMapObject>(ducks: D) {
+    let duckReducers: DuckReducerMapObject<any> = {}
 
+    Object.keys(ducks).forEach(namespace => {
+      /**
+       * Inferred function names
+       *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
+       */
+      duckReducers = {
+        ...duckReducers,
+        [namespace]: ducks[namespace].reducer,
+      }
+    })
+    return combineReducers(duckReducers)
+  }
+
+  apply <Ext = {}, StateExt = {}> (
+    ...duckList: Duck[]
+  ): StoreEnhancer<Ext, StateExt> {
+    if (duckList.length) {
+      this.duckList = duckList
+    }
     return (createStore: StoreCreator) => <S, A extends AnyAction>(
       reducer: Reducer<S, A>,
       ...args: any[]
     ) => {
       const store = createStore(reducer, ...args)
-      let dispatch: Dispatch = () => {
-        throw new Error(
-          'Dispatching while constructing your middleware is not allowed. ' +
-            'Other middleware would not be applied to this dispatch.'
-        )
-      }
-
-      const middlewareAPI: MiddlewareAPI = {
-        getState: store.getState,
-        dispatch: (action, ...args) => dispatch(action, ...args)
-      }
-      const chain = middlewares.map(middleware => middleware(middlewareAPI))
-      dispatch = compose<typeof dispatch>(...chain)(store.dispatch)
-
-      return {
-        ...store,
-        dispatch
-      }
+      return store
     }
-
-
-  //   const enhancerStoreCreator: StoreEnhancerStoreCreator<Ext, StateExt> = <S = any, A extends Action = AnyAction>(
-  //     reducer: Reducer<S, A>,
-  //     preloadedState?: PreloadedState<S>,
-  //   ) => {
-  //     void reducer
-  //     void preloadedState
-  //     const a: Store<S & StateExt, A> & Ext = {} as any
-  //     return a
-  //   }
-
-  //   return enhancerStoreCreator
-  // }
+  }
 
 }
 
