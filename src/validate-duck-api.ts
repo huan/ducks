@@ -22,6 +22,12 @@ function validateDuckApi (api: DuckAPI) {
 
   // assert.ok(api.middlewares, 'should has middlewares')
 
+  /**
+   * Ducks Pruposal Extension
+   */
+  assert.ok(api.namespace, 'should has namespace')
+  assert.strictEqual(typeof api.namespace, 'string', 'namespace should have string type')
+
   console.info('validated: OK')
 }
 

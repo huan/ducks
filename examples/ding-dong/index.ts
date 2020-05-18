@@ -12,9 +12,12 @@ const reducer = reduceReducers(
   Object.values(reducers),
 )
 
+const namespace = 'ding-dong'
+
 export {
   actions,
   epics,
+  namespace,
   operations,
   selectors,
   types,
