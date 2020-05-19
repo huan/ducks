@@ -35,7 +35,6 @@ ducks offers a method of handling redux module packaging.
 1. [Building on the duck legacy - An attempt to extend the original proposal for redux modular architecture](https://github.com/alexnm/re-ducks)
     - [Scaling Your Redux App with Ducks - Alex Moldovan - Medium Better Programming](https://medium.com/better-programming/scaling-your-redux-app-with-ducks-6115955638be#.4ppptx7oq)
 1. [Ducks++: Redux Reducer Bundles](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22)
-1. [Building on the duck legacy - An attempt to extend the original proposal for redux modular architecture](https://github.com/alexnm/re-ducks)
 
 ## Extensions
 
@@ -162,6 +161,7 @@ MUST contain the tests related to the duck.
 ## Developing Tools
 
 - [Typesafe utilities designed to reduce types verbosity and complexity in Redux Architecture](https://github.com/piotrwitek/typesafe-actions)
+- [Conditional Type Checks](https://github.com/dsherret/conditional-type-checks)
 
 ## Links
 
@@ -195,7 +195,6 @@ redux-middleware-lifecycle-7d8defa4db7e)
 ## Relate Libraries
 
 - [redux-operations - Solves challenging redux problems in a clean, understandable, debuggable fasion](https://github.com/mattkrick/redux-operations)
-- [redux-dynamic-middlewares - Allow add or remove redux middlewares dynamically](https://github.com/pofigizm/redux-dynamic-middlewares)
 - [redux-dynamic-modules - Modularize Redux by dynamically loading reducers and middlewares.](https://github.com/microsoft/redux-dynamic-modules)
 - [Dynamically inject reducers in your react reduc app. HMR and SSR compatible.](https://github.com/GuillaumeCisco/redux-reducers-injector)
 - [Helper for loading sagas asynchronously using redux](https://github.com/GuillaumeCisco/redux-sagas-injector)
@@ -210,6 +209,11 @@ redux-middleware-lifecycle-7d8defa4db7e)
 - [Composable ducklings](https://github.com/pghalliday/redux-duckling)
 - [Factory for simple creation and use of redux ducks.](https://github.com/espen42/duckfactory)
 - [tiny-duck - Composable redux reducers](https://github.com/LockedOn/tiny-duck)
+- [reduxModuleCreator - RMC is a tool for creating not coupled, reusable and testable modules based on Redux.](https://github.com/mtnt/reduxModuleCreator)
+
+## Related Projects
+
+- [redux-dynamic-middlewares - Allow add or remove redux middlewares dynamically](https://github.com/pofigizm/redux-dynamic-middlewares)
 
 ## Resources
 
@@ -246,10 +250,6 @@ System is divided in two "sides":
 
 - Write Side accepts commands and generate events that stored in the Event Store.
 - Read Side applies events to Read Models, and process queries.
-
-## Related Projects
-
-- [reduxModuleCreator - RMC is a tool for creating not coupled, reusable and testable modules based on Redux.](https://github.com/mtnt/reduxModuleCreator)
 
 ## History
 

@@ -9,15 +9,12 @@ import * as types       from './types'
 import * as reducers    from './reducers'
 
 const reducer = reduceReducers(
-  Object.values(reducers),
+  ...Object.values(reducers),
 )
-
-const namespace = 'ding-dong'
 
 export {
   actions,
   epics,
-  namespace,
   operations,
   selectors,
   types,

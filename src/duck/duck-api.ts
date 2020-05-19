@@ -1,7 +1,8 @@
 import {
   ActionCreatorsMapObject,
   Reducer,
-  Store,
+  Dispatch,
+  Middleware,
 }                               from 'redux'
 
 import { Epic } from 'redux-observable'
@@ -11,12 +12,16 @@ export interface TypesMapObject {
   [type: string]: string,
 }
 
-export interface OperationsMapObject <S=Store>{
-  [operation: string]: (store: S) => (...args: any[]) => any,
+export interface OperationsMapObject {
+  [operation: string]: (dispatch: Dispatch) => (...args: any[]) => any,
 }
 
-export interface SelectorsMapObject<S extends Object = any> {
-  [selector: string]: (state: S) => (...args: any[]) => any,
+export interface SelectorsMapObject {
+  [selector: string]: (state: any) => (...args: any[]) => any,
+}
+
+export interface MiddlewaresMapObject {
+  [middleware: string]: Middleware,
 }
 
 export interface EpicsMapObject {
@@ -54,12 +59,11 @@ export interface DuckAPI {
    *
    */
   // Middlewares
+  middlewares?: MiddlewaresMapObject,
+
+  // Middleware entries
   epics? : EpicsMapObject,
   sagas? : SagasMapObject,
-
-  // The namespace is the mount point of the state
-  namespace?: string,
-
 }
 
 /**

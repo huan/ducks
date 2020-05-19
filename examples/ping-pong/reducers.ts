@@ -2,7 +2,11 @@ import { AnyAction } from 'redux'
 
 import * as types from './types'
 
-const reducer = (state: any, action: AnyAction) => {
+const initialState = {
+  pong: 0,
+}
+
+const reducer = (state = initialState, action: AnyAction) => {
   if (action.type === types.PONG) {
     return ({
       ...state,

@@ -6,11 +6,8 @@ import * as sagas       from './sagas'
 
 import reducer from './reducers'
 
-const namespace = 'ping-pong'
-
 export {
   actions,
-  namespace,
   operations,
   sagas,
   selectors,

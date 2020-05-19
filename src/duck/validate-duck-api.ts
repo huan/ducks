@@ -31,6 +31,13 @@ function validateDuckAPI <T extends DuckAPI> (api: T) {
   validateReducer(api.default)
   validateSelectors(api.selectors)
   validateTypes(api.types)
+
+  /**
+   * Middlewares
+   */
+  validateMiddlewares(api.middlewares)
+  validateEpics(api.epics)
+  validateSagas(api.sagas)
 }
 
 /**
@@ -52,19 +59,43 @@ function validateActions <T extends MapObject> (actions: T) {
 function validateOperations <T extends MapObject> (operations: T) {
   assert.ok(operations, 'should exported operations')
   Object.keys(operations).forEach(validateString)
-  Object.values(operations).forEach(validateOperationParameterType)
+  Object.values(operations).forEach(validateOperationType)
 }
 
 function validateSelectors <T extends MapObject> (selectors: T) {
   assert.ok(selectors, 'should exported selectors')
   Object.keys(selectors).forEach(validateString)
-  Object.values(selectors).forEach(validateSelectorParameterType)
+  Object.values(selectors).forEach(validateSelectorType)
 }
 
 function validateTypes <T extends MapObject> (types: T) {
   assert.ok(types, 'should exported types')
   Object.keys(types).forEach(validateString)
   Object.values(types).forEach(validateString)
+}
+
+function validateMiddlewares <T extends MapObject> (middlewares?: T) {
+  if (!middlewares) {
+    return
+  }
+  Object.keys(middlewares).forEach(validateString)
+  Object.values(middlewares).forEach(validateMiddlewareType)
+}
+function validateSagas <T extends MapObject> (sagas?: T) {
+  if (!sagas) {
+    return
+  }
+  Object.keys(sagas).forEach(validateString)
+  Object.values(sagas).forEach(validateSagaType)
+}
+
+function validateEpics <T extends MapObject> (epics?: T) {
+  if (!epics) {
+    return
+  }
+  Object.keys(epics).forEach(validateString)
+  Object.values(epics).forEach(validateEpicType)
+
 }
 
 /**
@@ -80,12 +111,28 @@ function validateActionType (actionCreator: ActionCreator<AnyAction>) {
   assert.strictEqual(typeof actionCreator, 'function', 'actionCreator should be a function')
 }
 
-function validateSelectorParameterType (selector: (...args: any[]) => any) {
+function validateSelectorType (selector: (...args: any[]) => any) {
   assert.strictEqual(typeof selector, 'function', 'selector should be a function')
 }
 
-function validateOperationParameterType (operation: (...args: any[]) => any) {
+function validateOperationType (operation: (...args: any[]) => any) {
   assert.strictEqual(typeof operation, 'function', 'operation should be a function')
+}
+
+function validateMiddlewareType (middleware: (...args: any[]) => any) {
+  assert.strictEqual(typeof middleware, 'function', 'middleware should be a function')
+  assert.strictEqual(middleware.length, 1, 'middleware should has 1 arguments')
+  assert.match(middleware.name, /Middleware$/, 'middleware should be named as xxxMiddleware (ends with `Middleware`)')
+}
+
+function validateSagaType (saga: (...args: any[]) => any) {
+  assert.strictEqual(typeof saga, 'function', 'saga should be a function')
+  assert.match(saga.name, /Saga$/, 'saga should be named as xxxSaga (ends with `Saga`)')
+}
+
+function validateEpicType (epic: (...args: any[]) => any) {
+  assert.strictEqual(typeof epic, 'function', 'epic should be a function')
+  assert.match(epic.name, /Epic$/, 'epic should be named as xxxEpic (ends with `Epic`)')
 }
 
 export {

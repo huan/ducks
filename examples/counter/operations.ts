@@ -1,8 +1,8 @@
-import { Store } from 'redux'
+import { Dispatch } from 'redux'
 
 import * as actions from './actions'
 
-const tap = ({ dispatch }: Store) => () => dispatch(actions.tap())
+const tap = (dispatch: Dispatch) => () => dispatch(actions.tap())
 
 export {
   tap,

@@ -1,4 +1,10 @@
-import { Store } from 'redux'
+import {
+  Store,
+}                         from 'redux'
+
+import {
+  TMP_STORE,
+}                 from '../config'
 
 import {
   DuckAPI,
@@ -19,23 +25,20 @@ type DuckSelectors <S extends SelectorsMapObject> = {
   [key in keyof S]: ReturnType<S[key]>
 }
 
-const THROW_STORE = {
-  dispatch: () => { throw new Error('not initialized...') },
-  getState: () => { throw new Error('not initialized...') },
-} as any as Store
+const UNKNOWN_NAMESPACE = ''
 
 class Duck <API extends DuckAPI = DuckAPI> {
 
-  store     : Store
-  namespace : API['namespace']
+  protected store     : Store
+  namespace : string
 
   get reducer (): API['default']    { return this.api.default }
 
   get actions () : API['actions']   { return this.api.actions }
   get types ()   : API['types']     { return this.api.types }
 
-  get epics () : API['epics'] { return this.api.epics }
-  get sagas () : API['sagas'] { return this.api.sagas }
+  // get epics () : API['epics'] { return this.api.epics }
+  // get sagas () : API['sagas'] { return this.api.sagas }
 
   get operations () {
     return this.duckOperations
@@ -56,27 +59,9 @@ class Duck <API extends DuckAPI = DuckAPI> {
 
   constructor (
     public api: API,
-    namespace?: string,
   ) {
-    this.store = THROW_STORE
-
-    /**
-     * The namespace is the mount point of the state.
-     *
-     * It will be decided by following the below steps:
-     *  1. Override by constructor: namespace in constructor arguments
-     *  2. The default: namespace in api.namespace
-     *  3. Given one: a random string will be used.
-     */
-    if (namespace) {
-      this.namespace = namespace
-    } else if (api.namespace) {
-      this.namespace = api.namespace
-    } else {
-      // a random string sill be used for the namespace (mount ponit)
-      this.namespace = Math.random().toString(36).substr(2)
-    }
-
+    this.store     = TMP_STORE
+    this.namespace = UNKNOWN_NAMESPACE
     /**
      * We provide a convenience way to call `selectors` and `operations`
      *  by encapsulating the `store` and `state`(includes the `namespace`)
@@ -89,13 +74,20 @@ class Duck <API extends DuckAPI = DuckAPI> {
   }
 
   public setStore (store: Store): void {
-    if (this.store !== THROW_STORE) {
+    if (this.store !== TMP_STORE) {
       throw new Error('A store can only be initialized once for one Duck.')
     }
     this.store = store
   }
 
-  private ducksifyOperations (
+  public setNamespace (namespace: string): void {
+    if (this.namespace !== UNKNOWN_NAMESPACE) {
+      throw new Error('A namespace can only be initialized once for one Duck.')
+    }
+    this.namespace = namespace
+  }
+
+  protected ducksifyOperations (
     operations: API['operations'],
   ): DuckOperations<API['operations']> {
     let duckOperations: DuckOperations<any> = {}
@@ -110,7 +102,7 @@ class Duck <API extends DuckAPI = DuckAPI> {
         ...duckOperations,
         [operation]: function (...args: any[]) {
           return operations[operation](
-            that.store
+            that.store.dispatch
           )(...args)
         },
       }
@@ -118,7 +110,7 @@ class Duck <API extends DuckAPI = DuckAPI> {
     return duckOperations
   }
 
-  private ducksifySelectors (
+  protected ducksifySelectors (
     selectors: API['selectors'],
   ): DuckOperations<API['selectors']> {
     let duckOperations: DuckOperations<any> = {}

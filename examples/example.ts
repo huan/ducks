@@ -28,13 +28,20 @@ import * as pingPongDuckAPI from './ping-pong'  // Redux Saga
 const epicMiddleware = createEpicMiddleware()
 const sagaMiddleware = createSagaMiddleware()
 
-const counter = new Duck(counterDuckAPI)
+const counter  = new Duck(counterDuckAPI)
 const dingDong = new Duck(dingDongDuckAPI)
 const pingPong = new Duck(pingPongDuckAPI)
 
 const ducks = new Ducks({
-  epicMiddleware,
-  sagaMiddleware,
+  ducks: {
+    counter,
+    dingDong,
+    pingPong,
+  },
+  middlewares: {
+    epicMiddleware,
+    sagaMiddleware,
+  },
 })
 
 const initialState = {}
@@ -42,11 +49,7 @@ const store = createStore(
   state => state,
   initialState,
   compose(
-    ducks.apply({
-      counter,
-      dingDong,
-      pingPong,
-    }),
+    ducks.enhancer(),
     applyMiddleware(
       epicMiddleware,
       sagaMiddleware,
@@ -61,12 +64,12 @@ store.subscribe(console.info)
 // counterDuck.operations.tap(store)()
 
 // After:
-counterDuck.selectors.getCounter()
-counterDuck.operations.tap()
-counterDuck.selectors.getMeaningOfLife(3)
+counter.selectors.getCounter()
+counter.operations.tap()
+counter.selectors.getMeaningOfLife(3)
 
 export {
-  counterDuck,
-  dingDongDuck,
-  pingPongDuck,
+  counter,
+  dingDong,
+  pingPong,
 }

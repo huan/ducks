@@ -28,7 +28,7 @@ test('counter', async t => {
 test('operations', async t => {
   const store = createStore(api.default)
 
-  api.operations.tap(store)()
+  api.operations.tap(store.dispatch)()
 
   const n = api.selectors.getCounter(store.getState())()
   t.equal(n, 1, 'should be 1 after operations.tap(store)()')

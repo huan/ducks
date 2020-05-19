@@ -8,6 +8,10 @@ import {
   AnyAction,
   // Store,
   StoreCreator,
+  compose,
+  Middleware,
+  Store,
+  applyMiddleware,
 }                               from 'redux'
 
 import reduceReducers from 'reduce-reducers'
@@ -15,84 +19,84 @@ import reduceReducers from 'reduce-reducers'
 import { EpicMiddleware } from 'redux-observable'
 import { SagaMiddleware } from 'redux-saga'
 
+import { TMP_STORE } from '../config'
 import { Duck } from '../duck/'
 
 import { combineDucks } from './combine-ducks'
 
-interface DucksOptions {
+interface DucksOptions <T extends DucksMapObject> {
+  ducks: T,
+  middlewares: {
+    epicMiddleware?: EpicMiddleware<AnyAction>,
+    sagaMiddleware?: SagaMiddleware,
+  },
   ducksNamespace: boolean,
-
-  epicMiddleware?: EpicMiddleware<AnyAction>,
-  sagaMiddleware?: SagaMiddleware,
 }
 
 export interface DucksMapObject {
   [namespace: string]: Duck,
 }
 
-type DuckReducerMapObject <D extends DucksMapObject> = {
-  [key in keyof D]: D[key]['reducer']
-}
-
-const DEFAULT_DUCKS_OPTIONS: DucksOptions = {
+const DEFAULT_DUCKS_OPTIONS: DucksOptions <any> = {
+  ducks: {},
   ducksNamespace: true,
+  middlewares: {},
 }
 
-class Ducks {
+interface DucksInterface {
+  createStore: StoreCreator,
+}
 
-  public options: DucksOptions
+class Ducks <T extends DucksMapObject> implements DucksInterface {
 
-  public duckDict: DucksMapObject
+  store: Store
 
-  get reducer (storeReducer: Reducer): Reducer {
-    if (this.options.ducksNamespace) {
-      const nsReducer = combineReducers({
-        'ducks':
-      })
-      return reduceReducers()
-    }
-    return
+  protected readonly options: DucksOptions<T>
+
+  get reducer () { return combineDucks(this.options.ducks) }
+
+  get middlewares (): Middleware[] {
+    const m = Object.values(this.options.ducks)
+      .map(duck => duck.api.middlewares)
+      .filter(Boolean)
+      .map(middlewares => Object.values(middlewares!))
+      .flat()
+    return m
   }
 
-  constructor (options?: Partial<DucksOptions>) {
+  constructor (options?: Partial<DucksOptions<T>>) {
     this.options = {
       ...DEFAULT_DUCKS_OPTIONS,
       ...options,
     }
-
-    this.duckDict = {}
+    this.store = TMP_STORE
   }
 
-  getDucksReducer <D extends DucksMapObject>(ducks: D) {
-    let duckReducers: DuckReducerMapObject<any> = {}
+  enhancer <D extends DucksMapObject, Ext = {}, StateExt = {}> (): StoreEnhancer<Ext, StateExt> {
 
-    Object.keys(ducks).forEach(namespace => {
+    const ducksReducer = this.reducer
+
+    const enhancer = (store: Store) => {
+      this.store = store
+
       /**
-       * Inferred function names
-       *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
+       * Initialize ducks
        */
-      duckReducers = {
-        ...duckReducers,
-        [namespace]: ducks[namespace].reducer,
-      }
-    })
-    return combineReducers(duckReducers)
+      Object.keys(this.options.ducks).forEach(namespace => {
+        this.options.ducks[namespace].setStore(store)
+        this.options.ducks[namespace].setNamespace(namespace)
+      })
+
+      return (next: any) => (action: any) => compose(
+        applyMiddleware(...this.middlewares)
+      )(next)(action)
+    }
+
+    return enhancer as any
   }
 
-  apply <D extends DucksMapObject, Ext = {}, StateExt = {}> (
-    ducks: D,
-  ): StoreEnhancer<Ext, StateExt> {
-    this.duckDict = ducks
-
-    const ducksReducer = combineDucks(ducks)
-
-    return (createStore: StoreCreator) => <S, A extends AnyAction>(
-      reducer: Reducer<S, A>,
-      ...args: any[]
-    ) => {
-      const store = createStore(reducer, ...args)
-      return store
-    }
+  createStore () {
+    return {}
   }
 
 }

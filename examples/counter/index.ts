@@ -5,11 +5,8 @@ import * as types       from './types'
 
 import reducer from './reducers'
 
-const namespace = 'counter'
-
 export {
   actions,
-  namespace,
   operations,
   selectors,
   types,

@@ -1,8 +1,8 @@
-import { Store } from 'redux'
+import { Dispatch } from 'redux'
 
 import * as actions from './actions'
 
-const ding = ({ dispatch }: Store) => () => dispatch(actions.ding())
+const ding = (dispatch: Dispatch) => () => dispatch(actions.ding())
 
 export {
   ding,
