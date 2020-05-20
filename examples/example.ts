@@ -17,15 +17,6 @@
  *
  */
 
-/**
- * TODO:
- *  1. bind state mount point
- *    1. bind state to selectors
- *    1. bind store to perations
- *  1. implement enhancer for ducks for
- *    1. adding the reducer
- *    1. run the sagas/epics
- */
 import {
   applyMiddleware,
   compose,
@@ -35,12 +26,15 @@ import {
 import { createEpicMiddleware } from 'redux-observable'
 import createSagaMiddleware     from 'redux-saga'
 
+import assert from 'assert'
+
 import {
   Duck,
   Ducks,
 }             from '../src'
 
-import * as counterDuckAPI  from './counter'    // Vanilla Duck
+import * as counterDuckAPI  from './counter'    // Vanilla Duck: +1
+import * as switcherDuckAPI from './switcher'   // Vanilla Duck: ON/OFF
 import * as dingDongDuckAPI from './ding-dong'  // Redux Observable
 import * as pingPongDuckAPI from './ping-pong'  // Redux Saga
 
@@ -50,12 +44,24 @@ const sagaMiddleware = createSagaMiddleware()
 const counter  = new Duck(counterDuckAPI)
 const dingDong = new Duck(dingDongDuckAPI)
 const pingPong = new Duck(pingPongDuckAPI)
+const switcher = new Duck(switcherDuckAPI)
+
+/**
+ * TODO:
+ *  1. bind state mount point
+ *    1. bind state to selectors
+ *    1. bind store to perations
+ *  1. implement enhancer for ducks for
+ *    1. adding the reducer
+ *    1. run the sagas/epics
+ */
 
 const ducks = new Ducks({
   ducks: {
     counter,
     dingDong,
     pingPong,
+    switcher,
   },
   middlewares: {
     epicMiddleware,
@@ -84,11 +90,36 @@ store.subscribe(() => console.info(store.getState()))
 
 // console.info('state', store.getState())
 
-// After:
-console.info(counter.selectors.getCounter())
-console.info(counter.operations.tap())
-console.info(counter.selectors.getCounter())
-console.info(counter.selectors.getMeaningOfLife(3))
+/**
+ * Vanilla: Counter
+ */
+assert.strictEqual(counter.selectors.getCounter(), 0)
+counter.operations.tap()
+assert.strictEqual(counter.selectors.getCounter(), 1)
+assert.strictEqual(counter.selectors.getMeaningOfLife(3), 42)
+
+/**
+ * Vanilla: Switchers
+ */
+assert.strictEqual(switcher.selectors.getStatus(), false)
+switcher.operations.toggle()
+assert.strictEqual(switcher.selectors.getStatus(), true)
+switcher.operations.toggle()
+assert.strictEqual(switcher.selectors.getStatus(), false)
+
+/**
+ * Epic Middleware: DingDong
+ */
+assert.strictEqual(dingDong.selectors.getDong(), 0)
+dingDong.operations.ding()
+assert.strictEqual(dingDong.selectors.getDong(), 1)
+
+/**
+ * Saga Middleware: PingPong
+ */
+assert.strictEqual(pingPong.selectors.getPong(), 0)
+pingPong.operations.ping()
+assert.strictEqual(pingPong.selectors.getPong(), 1)
 
 export {
   counter,

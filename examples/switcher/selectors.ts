@@ -16,8 +16,8 @@
  *   limitations under the License.
  *
  */
-const getState = (state: { state: boolean }) => () => state.state
+const getStatus = (state: { status: boolean }) => () => state.status
 
 export {
-  getState,
+  getStatus,
 }
