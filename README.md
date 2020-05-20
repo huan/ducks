@@ -45,6 +45,10 @@ ducks offers a method of handling redux module packaging.
 1. sagas...
 1. epics...
 
+## Requirements
+
+1. Node.js v12+
+
 ## Usage
 
 ### 1 Create a Modular Ducks (Redux Reducer Bundle)

@@ -57,16 +57,19 @@ const store = createStore(
   ),
 )
 
-store.subscribe(console.info)
+store.subscribe(() => console.info(store.getState()))
 
 // Before:
 // counterDuck.selectors.getCounter(store)()
 // counterDuck.operations.tap(store)()
 
+// console.info('state', store.getState())
+
 // After:
-counter.selectors.getCounter()
-counter.operations.tap()
-counter.selectors.getMeaningOfLife(3)
+console.info(counter.selectors.getCounter())
+console.info(counter.operations.tap())
+console.info(counter.selectors.getCounter())
+console.info(counter.selectors.getMeaningOfLife(3))
 
 export {
   counter,

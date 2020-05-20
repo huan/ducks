@@ -1,4 +1,4 @@
-const getPong = (state: any) => () => state.pong
+const getPong = (state: { pong: number }) => () => state.pong
 
 export {
   getPong,

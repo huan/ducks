@@ -1,4 +1,7 @@
 export {
+  VERSION,
+}               from './config'
+export {
   Duck,
   DuckAPI,
   validateDuckAPI,

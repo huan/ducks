@@ -4,7 +4,7 @@ import {
 
 import {
   TMP_STORE,
-}                 from '../config'
+}                   from '../config'
 
 import {
   DuckAPI,
@@ -25,12 +25,10 @@ type DuckSelectors <S extends SelectorsMapObject> = {
   [key in keyof S]: ReturnType<S[key]>
 }
 
-const UNKNOWN_NAMESPACE = ''
-
 class Duck <API extends DuckAPI = DuckAPI> {
 
   protected store     : Store
-  namespace : string
+  namespaces : string[]
 
   get reducer (): API['default']    { return this.api.default }
 
@@ -52,16 +50,32 @@ class Duck <API extends DuckAPI = DuckAPI> {
   protected duckOperations : DuckOperations<API['operations']>
 
   protected get state () : ReturnType<API['default']> {
+
     // console.info('[duck] state:', this.store.getState())
-    // console.info('[duck] state[namespace]:', this.store.getState()[this.namespace])
-    return this.store.getState()[this.namespace]
+    // console.info('[duck] namespaces:', this.namespaces)
+    // console.info('[duck] state[namespaces[0]]:', this.store.getState()[this.namespaces[0]])
+    // console.info('[duck] state[namespaces[1]]:', this.store.getState()[this.namespaces[1]])
+
+    const duckStateReducer = (duckState: any, namespace: string, idx: number) => {
+      if (namespace in duckState) {
+        return duckState[namespace]
+      }
+      throw new Error('duckStateReducer() can not get state from namespace: ' + this.namespaces[idx] + ' with index: ' + idx)
+    }
+
+    const duckState = this.namespaces.reduce(
+      duckStateReducer,
+      this.store.getState(),
+    )
+    return duckState
   }
 
   constructor (
     public api: API,
   ) {
     this.store     = TMP_STORE
-    this.namespace = UNKNOWN_NAMESPACE
+    this.namespaces = []
+
     /**
      * We provide a convenience way to call `selectors` and `operations`
      *  by encapsulating the `store` and `state`(includes the `namespace`)
@@ -80,11 +94,11 @@ class Duck <API extends DuckAPI = DuckAPI> {
     this.store = store
   }
 
-  public setNamespace (namespace: string): void {
-    if (this.namespace !== UNKNOWN_NAMESPACE) {
-      throw new Error('A namespace can only be initialized once for one Duck.')
+  public setNamespaces (...namespaces: string[]): void {
+    if (this.namespaces.length > 0) {
+      throw new Error('Namespaces can only be initialized once for one Duck.')
     }
-    this.namespace = namespace
+    this.namespaces = namespaces
   }
 
   protected ducksifyOperations (

@@ -5,7 +5,8 @@ import {
   compose,
   Middleware,
   Store,
-  Dispatch,
+  applyMiddleware,
+  Reducer,
 }                               from 'redux'
 
 import { EpicMiddleware, Epic } from 'redux-observable'
@@ -13,8 +14,13 @@ import { SagaMiddleware, Saga } from 'redux-saga'
 
 import reduceReducers from 'reduce-reducers'
 
-import { TMP_STORE } from '../config'
-import { Duck } from '../duck/'
+import {
+  DUCKS_NAMESPACE,
+  TMP_STORE,
+  VERSION,
+}                      from '../config'
+
+import { Duck }         from '../duck/'
 
 import { combineDucks } from './combine-ducks'
 
@@ -37,6 +43,8 @@ const DEFAULT_DUCKS_OPTIONS: DucksOptions <any> = {
 
 class Ducks <T extends DucksMapObject> {
 
+  static VERSION = VERSION
+
   store: Store
 
   protected readonly options: DucksOptions<T>
@@ -45,7 +53,7 @@ class Ducks <T extends DucksMapObject> {
     const ducksReducer = combineDucks(this.options.ducks)
 
     return combineReducers({
-      ducks: ducksReducer,
+      [DUCKS_NAMESPACE]: ducksReducer,
     })
 
   }
@@ -59,7 +67,9 @@ class Ducks <T extends DucksMapObject> {
     return middlewareList
   }
 
-  constructor (options: Partial<DucksOptions<T>>) {
+  constructor (
+    options: Partial<DucksOptions<T>>,
+  ) {
     if (!options.ducks || Object.keys(options.ducks).length <= 0) {
       throw new Error('You need to provide some ducks for building a Ducks')
     }
@@ -69,27 +79,26 @@ class Ducks <T extends DucksMapObject> {
       ...options,
     }
     this.store = TMP_STORE
+  }
 
+  enhancer (): StoreEnhancer {
+    return compose(
+      applyMiddleware(...this.middlewares),
+      this.storeEnhancer(),
+    )
   }
 
   /**
-   * export type StoreEnhancer<Ext = {}, StateExt = {}> = (
-   *   next: StoreEnhancerStoreCreator
-   * ) => StoreEnhancerStoreCreator<Ext, StateExt>
-   * export type StoreEnhancerStoreCreator<Ext = {}, StateExt = {}> = <
-   *   S = any,
-   *   A extends Action = AnyAction
-   * >(
-   *   reducer: Reducer<S, A>,
-   *   preloadedState?: PreloadedState<S>
-   * ) => Store<S & StateExt, A> & Ext
+   * 1. Add Ducks Reducers to Store
+   * 2. Bind Store to Ducks
    */
-  enhancer (): StoreEnhancer {
-    const ducksEnhancer: StoreEnhancer = next => (reducer, preloadedState) => {
-
-      /**
-       * Reducers
-       */
+  protected storeEnhancer () {
+    const enhancer: StoreEnhancer<
+      {},
+      ReturnType<
+        Ducks<T>['reducer']
+      >
+    > = next => (reducer: Reducer<any, any>, preloadedState: any) => {
 
       // Huan(202005) FIXME: use generic template to replace any
       let mixedReducer = reduceReducers(
@@ -98,39 +107,17 @@ class Ducks <T extends DucksMapObject> {
         this.reducer as any,
       )
 
-      let store = next(
+      // FIXME: any
+      let store = next<any, any>(
         mixedReducer,
         preloadedState,
       )
 
-      /**
-       * Middlewares
-       */
-      const middlewareEnhancer = (_store: Store) => {
-        return (next: Dispatch) => (action: AnyAction) => {
-          return compose<any>(...this.middlewares)(next)(action)
-        }
-      }
-
-      store = {
-        ...store,
-        dispatch: middlewareEnhancer(store)(store.dispatch),
-      }
-
-      /**
-       * Ducks
-       */
       this.initializeDucks(store)
 
       return store
-
     }
-
-    /**
-     * Enhancer
-     */
-    return ducksEnhancer
-
+    return enhancer
   }
 
   configureStore () {
@@ -158,7 +145,7 @@ class Ducks <T extends DucksMapObject> {
      *  We are using `require` at here because we will only load `redux-observable` module when we need it
      *
      */
-    const combineEpics = require('redux-observable')
+    const combineEpics = require('redux-observable').combineEpics
 
     return combineEpics(...epics) as Epic
   }
@@ -201,8 +188,10 @@ class Ducks <T extends DucksMapObject> {
      * Configure Duck
      */
     Object.keys(this.options.ducks).forEach(namespace => {
+      // console.info('initializeDucks() namespace', namespace)
+      // console.info('initializeDucks() state', this.store.getState())
       this.options.ducks[namespace].setStore(this.store)
-      this.options.ducks[namespace].setNamespace(namespace)
+      this.options.ducks[namespace].setNamespaces(DUCKS_NAMESPACE, namespace)
     })
 
     /**
