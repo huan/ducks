@@ -14,8 +14,6 @@ import {
   applyMiddleware,
 }                               from 'redux'
 
-import reduceReducers from 'reduce-reducers'
-
 import { EpicMiddleware } from 'redux-observable'
 import { SagaMiddleware } from 'redux-saga'
 
@@ -56,12 +54,12 @@ class Ducks <T extends DucksMapObject> implements DucksInterface {
   get reducer () { return combineDucks(this.options.ducks) }
 
   get middlewares (): Middleware[] {
-    const m = Object.values(this.options.ducks)
+    const middlewareList = Object.values(this.options.ducks)
       .map(duck => duck.api.middlewares)
       .filter(Boolean)
       .map(middlewares => Object.values(middlewares!))
       .flat()
-    return m
+    return middlewareList
   }
 
   constructor (options?: Partial<DucksOptions<T>>) {

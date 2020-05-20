@@ -6,9 +6,6 @@ const initialState = {
   total: 0,
 }
 
-/**
- * Reducers to calculate Aggregate state:
- */
 const reducer = (state = initialState, action: Action) => {
   if (action.type === types.TAP) {
     return ({

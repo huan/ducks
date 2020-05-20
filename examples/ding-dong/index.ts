@@ -1,4 +1,4 @@
-import { reduceReducers } from '../../src/'
+import { reduceReducersFromMapObject } from '../../src/'
 
 import * as actions     from './actions'
 import * as epics       from './epics'
@@ -8,9 +8,7 @@ import * as types       from './types'
 
 import * as reducers    from './reducers'
 
-const reducer = reduceReducers(
-  ...Object.values(reducers),
-)
+const reducer = reduceReducersFromMapObject(reducers)
 
 export {
   actions,

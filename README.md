@@ -128,6 +128,13 @@ const store = ducks.getStore()
 
 The `ducks.getStore()` will do exact the same as the above `createStore()` codes.
 
+## References
+
+### `reduceReducersFromMapObject`
+
+> We planed to directly use [reduce-reducers](https://github.com/redux-utilities/reduce-reducers) before, however it does not support types well.
+> The `ReturnType` of it can not reflect the data type of the reducer returned state.
+
 ## Ducks Directory
 
 a duck:
@@ -232,7 +239,7 @@ Redux Ducks API compares with CQRS, Event Sourcing, and DDD:
 | operations  | Command + Event |
 | middlewares | Aggregate? | Saga ? |
 | types       | ??
-| reducers    | Aggregate??
+| reducers    | Reducers to calculate Aggregate state
 
 > [reSolve](https://reimagined.github.io/resolve/docs/introduction)
 

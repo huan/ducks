@@ -6,9 +6,6 @@ const initialState = {
   dong: 0,
 }
 
-/**
- * Reducers to calculate Aggregate state:
- */
 const reducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case types.DONG:

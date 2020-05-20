@@ -6,25 +6,25 @@ import { Duck } from '../duck/'
 
 import { combineDucks } from './combine-ducks'
 
-// import * as counterDuckAPI  from '../../examples/counter/'
+import * as counterDuckAPI  from '../../examples/counter/'
 import * as dingdongDuckAPI from '../../examples/ding-dong/'
-// import * as pingpongDuckAPI from '../../examples/ping-pong/'
+import * as pingpongDuckAPI from '../../examples/ping-pong/'
 
 test('combineDucks()', async t => {
-  // const counter  = new Duck(counterDuckAPI)
+  const counter  = new Duck(counterDuckAPI)
   const dingdong = new Duck(dingdongDuckAPI)
-  // const pingpong = new Duck(pingpongDuckAPI)
+  const pingpong = new Duck(pingpongDuckAPI)
 
-  const tt = dingdong.api.default
-  const ttt = dingdong.reducer
+  // const tt = dingdong.api.default
+  // const ttt = dingdong.reducer
 
-//   const tt: Reducer<{
-//     dong: number;
-// }>
+  // const tt: Reducer<{
+  //   dong: number;
+  // }>
   const reducer = combineDucks({
+    counter,
     dingdong,
-    // pingpong,
-    // counter,
+    pingpong,
   })
 
   t.ok(reducer, 'ft')
