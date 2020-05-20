@@ -12,7 +12,11 @@ import * as counterDuckAPI from '../../examples/counter/'
 
 import { Duck } from './duck'
 
-test('setStore()', async (t) => {
+test('VERSION', async t => {
+  t.ok(Duck.VERSION, 'has VERSION')
+})
+
+test('setStore()', async t => {
   const duck = new Duck(counterDuckAPI)
 
   const store = createMockStore()()
@@ -21,8 +25,6 @@ test('setStore()', async (t) => {
 
   duck.setStore(store)
   t.doesNotThrow(() => duck.selectors.getMeaningOfLife(42), 'should not throw after setStore()')
-
-  t.strictEqual(duck.store, store, 'should set to store')
 })
 
 test("ducksify functions' names", async t => {
@@ -47,12 +49,16 @@ test("ducksify functions' names", async t => {
 test('ducksified selectors & operations', async t => {
   const duck = new Duck(counterDuckAPI)
 
+  const NAMESPACE = 'duck'
+
   const reducer = combineReducers({
-    [duck.namespace]: duck.reducer,
+    [NAMESPACE]: duck.reducer,
   })
   const store = createStore(reducer)
 
   duck.setStore(store)
+  duck.setNamespaces(NAMESPACE)
+
   // store.subscribe(() => {
   //   console.info('store.subscribe() store.getState()', store.getState())
   // })

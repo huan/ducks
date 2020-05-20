@@ -4,6 +4,7 @@ import {
 
 import {
   TMP_STORE,
+  VERSION,
 }                   from '../config'
 
 import {
@@ -27,8 +28,10 @@ type DuckSelectors <S extends SelectorsMapObject> = {
 
 class Duck <API extends DuckAPI = DuckAPI> {
 
-  protected store     : Store
-  namespaces : string[]
+  static VERSION = VERSION
+
+  protected store: Store
+  namespaces: string[]
 
   get reducer (): API['default']    { return this.api.default }
 

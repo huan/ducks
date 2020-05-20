@@ -47,7 +47,10 @@ function validateDuckAPI <T extends DuckAPI> (api: T) {
  */
 function validateReducer <T extends Reducer> (reducer: T) {
   assert.strictEqual(typeof reducer, 'function', 'default export should be function')
-  assert.strictEqual(reducer.length, 2, 'reducer should has two arguments')
+
+  // const func = (a = 42, b) => a + b
+  // func.length === 0
+  // assert.strictEqual(reducer.length, 2, 'reducer should has two arguments. reducer name: ' + reducer.name + ' arguments length: ' + reducer.length + ' reducer function: ' + reducer.toString())
 }
 
 function validateActions <T extends MapObject> (actions: T) {

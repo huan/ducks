@@ -5,6 +5,7 @@ import test  from 'tstest'
 import {
   createStore,
   compose,
+  applyMiddleware,
 }                   from 'redux'
 
 import { createEpicMiddleware } from 'redux-observable'
@@ -52,21 +53,20 @@ test('reducer()', async t => {
     ),
   )
 
-  store.subscribe(() => console.info(store.getState()))
+  void store
+  // store.subscribe(() => console.info(store.getState()))
 
   t.equal(counterDuck.selectors.getCounter(), 0, 'should get counter 0 after initialization')
   counterDuck.operations.tap()
   t.equal(counterDuck.selectors.getCounter(), 1, 'should get counter 1 after tap')
 })
 
-test('middleware(): missing in options', async t => {
-  const counterDuck = new Duck(counterDuckAPI)
+test('constructor() missing option.middleware', async t => {
   const dingdongDuck = new Duck(dingdongDuckAPI)
   const pingpongDuck = new Duck(pingpongDuckAPI)
 
   const ducks = new Ducks({
     ducks: {
-      counter : counterDuck,
       dong    : dingdongDuck,
       pong    : pingpongDuck,
     },
@@ -83,8 +83,7 @@ test('middleware(): missing in options', async t => {
   )
 })
 
-test('middleware() initialization with enhancer in createStore()', async t => {
-  const counterDuck = new Duck(counterDuckAPI)
+test('constructor() with option.middleware', async t => {
   const dingdongDuck = new Duck(dingdongDuckAPI)
   const pingpongDuck = new Duck(pingpongDuckAPI)
 
@@ -93,7 +92,6 @@ test('middleware() initialization with enhancer in createStore()', async t => {
 
   const ducks = new Ducks({
     ducks: {
-      counter : counterDuck,
       dong    : dingdongDuck,
       pong    : pingpongDuck,
     },
@@ -108,14 +106,17 @@ test('middleware() initialization with enhancer in createStore()', async t => {
       state => state,
       compose(
         ducks.enhancer(),
+        applyMiddleware(
+          epicMiddleware,
+          sagaMiddleware,
+        ),
       ),
     ),
     'should not throw when satisfied the middleware in Ducks constructor options',
   )
 })
 
-test.skip('middleware() initialization with enhancer in createStore()', async t => {
-  const counterDuck = new Duck(counterDuckAPI)
+test('Epics & Sagas middlewares', async t => {
   const dingdongDuck = new Duck(dingdongDuckAPI)
   const pingpongDuck = new Duck(pingpongDuckAPI)
 
@@ -124,7 +125,6 @@ test.skip('middleware() initialization with enhancer in createStore()', async t 
 
   const ducks = new Ducks({
     ducks: {
-      counter : counterDuck,
       dong    : dingdongDuck,
       pong    : pingpongDuck,
     },
@@ -138,12 +138,21 @@ test.skip('middleware() initialization with enhancer in createStore()', async t 
     state => state,
     compose(
       ducks.enhancer(),
+      applyMiddleware(
+        epicMiddleware,
+        sagaMiddleware,
+      ),
     ),
   )
 
-  store.subscribe(console.info)
+  void store
 
-  t.equal(counterDuck.selectors.getCounter(), 0, 'should get counter 0 after initialization')
-  t.equal(pingpongDuck.selectors.getPong(), 0, 'should get pong 0 after initialization')
-  t.equal(dingdongDuck.selectors.getDong(), 0, 'should get pong 0 after initialization')
+  t.equal(pingpongDuck.selectors.getPong(), 0, 'should get pong 0 on initialization')
+  t.equal(dingdongDuck.selectors.getDong(), 0, 'should get dong 0 on initialization')
+
+  pingpongDuck.operations.ping()
+  dingdongDuck.operations.ding()
+
+  t.equal(pingpongDuck.selectors.getPong(), 1, 'should get pong 1 after operations.ping()')
+  t.equal(dingdongDuck.selectors.getDong(), 1, 'should get dong 1 after operations.ding()')
 })

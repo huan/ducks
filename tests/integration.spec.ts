@@ -9,6 +9,5 @@ import {
 }                               from '../src/'
 
 test('integration testing', async (t) => {
-  const ducks = new Ducks()
-  t.ok(ducks, 'to be writen')
+  t.ok(Ducks.VERSION, 'to be writen')
 })

@@ -83,8 +83,8 @@ class Ducks <T extends DucksMapObject> {
 
   enhancer (): StoreEnhancer {
     return compose(
-      applyMiddleware(...this.middlewares),
       this.storeEnhancer(),
+      applyMiddleware(...this.middlewares),
     )
   }
 
@@ -203,7 +203,7 @@ class Ducks <T extends DucksMapObject> {
       if (!epicMiddleware) {
         throw new Error('epicMiddleware is required, but it has not been passed in the ducks.')
       }
-      setImmediate(() => epicMiddleware.run(rootEpic))
+      epicMiddleware.run(rootEpic)
     }
 
     /**
