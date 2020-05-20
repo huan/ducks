@@ -1,6 +1,5 @@
 import {
   StoreEnhancer,
-  combineReducers,
   AnyAction,
   compose,
   Middleware,
@@ -11,8 +10,6 @@ import {
 
 import { EpicMiddleware, Epic } from 'redux-observable'
 import { SagaMiddleware, Saga } from 'redux-saga'
-
-import reduceReducers from 'reduce-reducers'
 
 import {
   DUCKS_NAMESPACE,
@@ -50,12 +47,7 @@ class Ducks <T extends DucksMapObject> {
   protected readonly options: DucksOptions<T>
 
   get reducer () {
-    const ducksReducer = combineDucks(this.options.ducks)
-
-    return combineReducers({
-      [DUCKS_NAMESPACE]: ducksReducer,
-    })
-
+    return combineDucks(this.options.ducks)
   }
 
   get middlewares (): Middleware[] {
@@ -100,16 +92,21 @@ class Ducks <T extends DucksMapObject> {
       >
     > = next => (reducer: Reducer<any, any>, preloadedState: any) => {
 
-      // Huan(202005) FIXME: use generic template to replace any
-      let mixedReducer = reduceReducers(
-        preloadedState as any || null,
-        reducer as any,
-        this.reducer as any,
-      )
+      const ducksReducer = {
+        ...reducer,
+        [DUCKS_NAMESPACE]: this.reducer,
+      }
+
+      // // Huan(202005) FIXME: use generic template to replace any
+      // let mixedReducer = reduceReducers(
+      //   preloadedState as any || null,
+      //   reducer as any,
+      //   this.reducer as any,
+      // )
 
       // FIXME: any
       let store = next<any, any>(
-        mixedReducer,
+        ducksReducer as any,
         preloadedState,
       )
 

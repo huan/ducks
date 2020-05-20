@@ -6,6 +6,7 @@ import {
   createStore,
   compose,
   applyMiddleware,
+  combineReducers,
 }                   from 'redux'
 
 import { createEpicMiddleware } from 'redux-observable'
@@ -13,9 +14,11 @@ import createSagaMiddleware     from 'redux-saga'
 
 import { Ducks } from './ducks'
 
-import * as counterDuckAPI from '../../examples/counter/'
+import * as counterDuckAPI  from '../../examples/counter/'
 import * as dingdongDuckAPI from '../../examples/ding-dong/'
 import * as pingpongDuckAPI from '../../examples/ping-pong/'
+import * as switchDuckAPI   from '../../examples/switch/'
+
 import { Duck } from '../duck/duck'
 
 test('construction()', async t => {
@@ -155,4 +158,35 @@ test('Epics & Sagas middlewares', async t => {
 
   t.equal(pingpongDuck.selectors.getPong(), 1, 'should get pong 1 after operations.ping()')
   t.equal(dingdongDuck.selectors.getDong(), 1, 'should get dong 1 after operations.ding()')
+})
+
+test('Ducks with other reducers work together', async t => {
+  const counterDuck = new Duck(counterDuckAPI)
+
+  const ducks = new Ducks({
+    ducks: {
+      counter : counterDuck,
+    },
+  })
+
+  const store = createStore(
+    combineReducers({
+      switch: switchDuckAPI.default,
+    }),
+    compose(
+      ducks.enhancer(),
+    ),
+  )
+
+  void store
+  store.subscribe(() => console.info(store.getState()))
+
+  t.equal(counterDuck.selectors.getCounter(), 0, 'should get counter 0 on initialization')
+  t.equal(store.getState().switch.status, false, 'should get false from switch status on initialization')
+
+  counterDuck.operations.tap()
+  t.equal(counterDuck.selectors.getCounter(), 1, 'should get counter 1 after tap')
+
+  store.dispatch(switchDuckAPI.actions.toggle())
+  t.equal(store.getState().switch.status, true, 'should get true from switch status after dispatch actions.toggle()')
 })

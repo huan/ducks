@@ -134,6 +134,12 @@ The `ducks.getStore()` will do exact the same as the above `createStore()` codes
 
 ## References
 
+in `compose()`, `ducks.enhancer()` must be put before `applyMiddleware`
+
+```ts
+  ducks.enhancer(),
+  applyMiddleware(
+```
 ### `reduceReducersFromMapObject`
 
 > We planed to directly use [reduce-reducers](https://github.com/redux-utilities/reduce-reducers) before, however it does not support types well.
