@@ -203,7 +203,7 @@ class Ducks <T extends DucksMapObject> {
       if (!epicMiddleware) {
         throw new Error('epicMiddleware is required, but it has not been passed in the ducks.')
       }
-      epicMiddleware.run(rootEpic)
+      setImmediate(() => epicMiddleware.run(rootEpic))
     }
 
     /**
