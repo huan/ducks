@@ -140,11 +140,35 @@ in `compose()`, `ducks.enhancer()` must be put before `applyMiddleware`
   ducks.enhancer(),
   applyMiddleware(
 ```
+
 ### `reduceReducersFromMapObject`
+
 
 > We planed to directly use [reduce-reducers](https://github.com/redux-utilities/reduce-reducers) before, however it does not support types well.
 > The `ReturnType` of it can not reflect the data type of the reducer returned state.
 
+Inspired from <https://github.com/redux-utilities/reduce-reducers/>
+
+Knowned Issues: <https://stackoverflow.com/a/44371190/1123955>
+
+```ts
+const addAndMult = reduceReducers(reducerAdd, reducerMult) 
+
+const initial = addAndMult(undefined)
+/*
+ * {
+ *   sum: 0,
+ *   totalOperations: 0
+ * }
+ *
+ * First, reducerAdd is called, which gives us initial state { sum: 0 }
+ * Second, reducerMult is called, which doesn't have payload, so it
+ * just returns state unchanged.
+ * That's why there isn't any `product` prop.
+ */
+```
+
+1. If we ha
 ## Ducks Directory
 
 a duck:

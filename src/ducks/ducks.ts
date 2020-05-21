@@ -114,7 +114,7 @@ class Ducks <T extends DucksMapObject> {
       let newReducer = insertReducers(
         reducer,
         {
-          [DUCKS_NAMESPACE]: this.reducer,
+          [DUCKS_NAMESPACE]: this.reducer as any,
         },
       )
 

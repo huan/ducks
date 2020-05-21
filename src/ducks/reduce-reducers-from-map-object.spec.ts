@@ -31,10 +31,19 @@ test('reduceReducersFromMapObject()', async t => {
     switcher : switcherDuckAPI.default,
   })
 
-  let state = reducer({} as any, { type: 'INIT' })
+  let state = reducer(undefined as any, { type: 'INIT' })
 
   t.equal(counterDuckAPI.selectors.getCounter(state)(), 0, 'should get 0 on init')
-  t.equal(switcherDuckAPI.selectors.getStatus(state)(), false, 'should get false on init')
+
+  /**
+   * https://stackoverflow.com/a/44371190/1123955
+   *
+   * First, reducerAdd is called, which gives us initial state { sum: 0 }
+   * Second, reducerMult is called, which doesn't have payload, so it
+   * just returns state unchanged.
+   * That's why there isn't any `product` prop.
+   */
+  t.equal(switcherDuckAPI.selectors.getStatus(state)(), undefined, 'should get ~~false~~ UNDEFINED on init')
 
   state = reducer(state, counterDuckAPI.actions.tap())
   state = reducer(state, switcherDuckAPI.actions.toggle())
