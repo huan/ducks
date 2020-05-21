@@ -21,8 +21,7 @@ cd $TMPDIR
 npm init -y
 npm install *-*.*.*.tgz \
   @chatie/tsconfig \
-  brolog \
-  "wechaty-puppet@$NPM_TAG" \
+  redux \
 
 ./node_modules/.bin/tsc \
   --esModuleInterop \
