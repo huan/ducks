@@ -40,19 +40,16 @@ import * as switcherDuckAPI from '../../examples/switcher/'
 import { Duck } from '../duck/duck'
 
 test('construction()', async t => {
-  t.throws(() => new Ducks({}), 'should not happy without options.ducks')
-  t.throws(() => new Ducks({ ducks: {} }), 'should not happy without options.ducks entry')
+  t.throws(() => new Ducks({}), 'should not happy with empyt duckery')
 
   const counterDuck = new Duck(counterDuckAPI)
   const dingdongDuck = new Duck(dingdongDuckAPI)
   const pingpongDuck = new Duck(pingpongDuckAPI)
 
   t.doesNotThrow(() => new Ducks({
-    ducks: {
-      counter : counterDuck,
-      dong    : dingdongDuck,
-      pong    : pingpongDuck,
-    },
+    counter : counterDuck,
+    dong    : dingdongDuck,
+    pong    : pingpongDuck,
   }), 'should be able to construct with ducks')
 })
 
@@ -60,9 +57,7 @@ test('reducer()', async t => {
   const counterDuck = new Duck(counterDuckAPI)
 
   const ducks = new Ducks({
-    ducks: {
-      counter : counterDuck,
-    },
+    counter : counterDuck,
   })
 
   const initialState = {}
@@ -82,28 +77,6 @@ test('reducer()', async t => {
   t.equal(counterDuck.selectors.getCounter(), 1, 'should get counter 1 after tap')
 })
 
-test('constructor() missing option.middleware', async t => {
-  const dingdongDuck = new Duck(dingdongDuckAPI)
-  const pingpongDuck = new Duck(pingpongDuckAPI)
-
-  const ducks = new Ducks({
-    ducks: {
-      dong    : dingdongDuck,
-      pong    : pingpongDuck,
-    },
-  })
-
-  t.throws(
-    () => createStore(
-      state => state,
-      compose(
-        ducks.enhancer(),
-      ),
-    ),
-    'should throw when missing required middlewares in Ducks constructor options',
-  )
-})
-
 test('constructor() with option.middleware', async t => {
   const dingdongDuck = new Duck(dingdongDuckAPI)
   const pingpongDuck = new Duck(pingpongDuckAPI)
@@ -112,14 +85,8 @@ test('constructor() with option.middleware', async t => {
   const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({
-    ducks: {
-      dong    : dingdongDuck,
-      pong    : pingpongDuck,
-    },
-    middlewares: {
-      epicMiddleware,
-      sagaMiddleware,
-    },
+    dong    : dingdongDuck,
+    pong    : pingpongDuck,
   })
 
   t.doesNotThrow(
@@ -145,14 +112,8 @@ test('Epics & Sagas middlewares', async t => {
   const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({
-    ducks: {
-      dong    : dingdongDuck,
-      pong    : pingpongDuck,
-    },
-    middlewares: {
-      epicMiddleware,
-      sagaMiddleware,
-    },
+    dong    : dingdongDuck,
+    pong    : pingpongDuck,
   })
 
   const store = createStore(
@@ -182,9 +143,7 @@ test('Ducks with other reducers work together', async t => {
   const counterDuck = new Duck(counterDuckAPI)
 
   const ducks = new Ducks({
-    ducks: {
-      counter : counterDuck,
-    },
+    counter : counterDuck,
   })
 
   const store = createStore(

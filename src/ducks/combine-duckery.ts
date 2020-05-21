@@ -23,7 +23,7 @@ import {
   ActionFromReducersMapObject,
 }                                 from 'redux'
 
-import { Duck } from '../duck/'
+import { Duck } from '../duck'
 
 export interface DucksMapObject {
   [namespace: string]: Duck,
@@ -37,7 +37,7 @@ export type DuckReducersMapObject <D extends DucksMapObject> = {
 //   [key in keyof D]: ActionFromReducersMapObject<D[key]['actions']>
 // }
 
-function combineDucks <D extends DucksMapObject> (
+function combineDuckery <D extends DucksMapObject> (
   ducks: D
 ): Reducer <
   StateFromReducersMapObject<DuckReducersMapObject<D>>,
@@ -56,5 +56,5 @@ function combineDucks <D extends DucksMapObject> (
 }
 
 export {
-  combineDucks,
+  combineDuckery,
 }

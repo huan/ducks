@@ -37,24 +37,11 @@ import {
 
 import { Duck }         from '../duck/'
 
-import { combineDucks }     from './combine-ducks'
-import { insertReducers }   from './insert-reducers'
-
-interface DucksOptions <T extends DucksMapObject> {
-  ducks: T,
-  // middlewares: {
-  //   epicMiddleware?: EpicMiddleware<AnyAction>,
-  //   sagaMiddleware?: SagaMiddleware,
-  // },
-}
+import { combineDuckery } from './combine-ducks'
+import { insertReducers } from './insert-reducers'
 
 export interface DucksMapObject {
   [namespace: string]: Duck,
-}
-
-const DEFAULT_DUCKS_OPTIONS: DucksOptions <any> = {
-  ducks: {},
-  // middlewares: {},
 }
 
 class Ducks <T extends DucksMapObject> {
@@ -68,14 +55,12 @@ class Ducks <T extends DucksMapObject> {
     sagaMiddleware?: SagaMiddleware,
   }
 
-  protected readonly options: DucksOptions<T>
-
   get reducer () {
-    return combineDucks(this.options.ducks)
+    return combineDuckery(this.duckery)
   }
 
   get middlewares (): Middleware[] {
-    const middlewareList = Object.values(this.options.ducks)
+    const middlewareList = Object.values(this.duckery)
       .map(duck => duck.api.middlewares)
       .filter(Boolean)
       .map(middlewares => Object.values(middlewares!))
@@ -85,15 +70,10 @@ class Ducks <T extends DucksMapObject> {
   }
 
   constructor (
-    options: Partial<DucksOptions<T>>,
+    protected readonly duckery: T,
   ) {
-    if (!options.ducks || Object.keys(options.ducks).length <= 0) {
-      throw new Error('You need to provide some ducks for building a Ducks')
-    }
-
-    this.options = {
-      ...DEFAULT_DUCKS_OPTIONS,
-      ...options,
+    if (Object.keys(duckery).length <= 0) {
+      throw new Error('You need to provide some ducks for the duckery')
     }
     this.store = TMP_STORE
 
@@ -160,7 +140,7 @@ class Ducks <T extends DucksMapObject> {
    * Initialize ducks
    */
   protected getRootEpic (): undefined | Epic {
-    const epics = Object.values(this.options.ducks)
+    const epics = Object.values(this.duckery)
       .map(duck => duck.api.epics)
       .filter(Boolean)
       .map(epics => Object.values(epics!))
@@ -182,7 +162,7 @@ class Ducks <T extends DucksMapObject> {
   }
 
   protected getRootSaga (): undefined | Saga {
-    const sagas = Object.values(this.options.ducks)
+    const sagas = Object.values(this.duckery)
       .map(duck => duck.api.sagas)
       .filter(Boolean)
       .map(sagas => Object.values(sagas!))
@@ -218,11 +198,11 @@ class Ducks <T extends DucksMapObject> {
     /**
      * Configure Duck
      */
-    Object.keys(this.options.ducks).forEach(namespace => {
+    Object.keys(this.duckery).forEach(namespace => {
       // console.info('initializeDucks() namespace', namespace)
       // console.info('initializeDucks() state', this.store.getState())
-      this.options.ducks[namespace].setStore(this.store)
-      this.options.ducks[namespace].setNamespaces(DUCKS_NAMESPACE, namespace)
+      this.duckery[namespace].setStore(this.store)
+      this.duckery[namespace].setNamespaces(DUCKS_NAMESPACE, namespace)
     })
 
     /**

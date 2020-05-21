@@ -20,18 +20,18 @@
  */
 import test  from 'tstest'
 
-import { Duck } from '../duck/'
+import { Duck } from '../duck'
 
-import { combineDucks } from './combine-ducks'
+import { combineDuckery } from './combine-duckery'
 
-import * as counterDuckAPI  from '../../examples/counter/'
-import * as switcherDuckAPI from '../../examples/switcher/'
+import * as counterDuckAPI  from '../../examples/counter'
+import * as switcherDuckAPI from '../../examples/switcher'
 
-test('combineDucks()', async t => {
+test('combineDuckery()', async t => {
   const counter  = new Duck(counterDuckAPI)
   const switcher = new Duck(switcherDuckAPI)
 
-  const reducer = combineDucks({
+  const reducer = combineDuckery({
     counter,
     switcher,
   })
