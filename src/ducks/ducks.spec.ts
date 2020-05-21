@@ -35,7 +35,7 @@ import { Ducks } from './ducks'
 import * as counterDuckAPI  from '../../examples/counter/'
 import * as dingdongDuckAPI from '../../examples/ding-dong/'
 import * as pingpongDuckAPI from '../../examples/ping-pong/'
-import * as switchDuckAPI   from '../../examples/switch/'
+import * as switcherDuckAPI from '../../examples/switcher/'
 
 import { Duck } from '../duck/duck'
 
@@ -189,7 +189,7 @@ test('Ducks with other reducers work together', async t => {
 
   const store = createStore(
     combineReducers({
-      switch: switchDuckAPI.default,
+      switch: switcherDuckAPI.default,
     }),
     compose(
       ducks.enhancer(),
@@ -205,6 +205,6 @@ test('Ducks with other reducers work together', async t => {
   counterDuck.operations.tap()
   t.equal(counterDuck.selectors.getCounter(), 1, 'should get counter 1 after tap')
 
-  store.dispatch(switchDuckAPI.actions.toggle())
+  store.dispatch(switcherDuckAPI.actions.toggle())
   t.equal(store.getState().switch.status, true, 'should get true from switch status after dispatch actions.toggle()')
 })

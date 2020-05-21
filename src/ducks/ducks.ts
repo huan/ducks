@@ -37,7 +37,8 @@ import {
 
 import { Duck }         from '../duck/'
 
-import { combineDucks } from './combine-ducks'
+import { combineDucks }     from './combine-ducks'
+import { insertReducers }   from './insert-reducers'
 
 interface DucksOptions <T extends DucksMapObject> {
   ducks: T,
@@ -110,21 +111,16 @@ class Ducks <T extends DucksMapObject> {
       >
     > = next => (reducer: Reducer<any, any>, preloadedState: any) => {
 
-      const ducksReducer = {
-        ...reducer,
-        [DUCKS_NAMESPACE]: this.reducer,
-      }
-
-      // // Huan(202005) FIXME: use generic template to replace any
-      // let mixedReducer = reduceReducers(
-      //   preloadedState as any || null,
-      //   reducer as any,
-      //   this.reducer as any,
-      // )
+      let newReducer = insertReducers(
+        reducer,
+        {
+          [DUCKS_NAMESPACE]: this.reducer,
+        },
+      )
 
       // FIXME: any
       let store = next<any, any>(
-        ducksReducer as any,
+        newReducer,
         preloadedState,
       )
 

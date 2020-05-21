@@ -20,30 +20,42 @@
  */
 import test  from 'tstest'
 
-import { Duck } from '../duck/'
-
-import { combineDucks } from './combine-ducks'
-
 import * as counterDuckAPI  from '../../examples/counter/'
 import * as switcherDuckAPI from '../../examples/switcher/'
+
+import { Duck } from '../duck/'
+
+import { combineDucks }   from './combine-ducks'
+import { insertReducers } from './insert-reducers'
 
 test('combineDucks()', async t => {
   const counter  = new Duck(counterDuckAPI)
   const switcher = new Duck(switcherDuckAPI)
 
-  const reducer = combineDucks({
+  const originalReducer = combineDucks({
     counter,
-    switcher,
   })
 
-  let state = reducer({} as any, { type: 'INIT' })
+  const insertReducer = {
+    switcher: switcher.api.default,
+  }
 
-  t.equal(counterDuckAPI.selectors.getCounter(state.counter)(), 0, 'should get 0 on init')
-  t.equal(switcherDuckAPI.selectors.getStatus(state.switcher)(), false, 'should get false on init')
+  const newReducer = insertReducers(
+    originalReducer,
+    insertReducer,
+  )
 
-  state = reducer(state, counter.actions.tap())
-  state = reducer(state, switcher.actions.toggle())
+  const state0 = newReducer(undefined, { type: 'INIT' })
 
-  t.equal(counterDuckAPI.selectors.getCounter(state.counter)(), 1, 'should get 1 after tap()')
-  t.equal(switcherDuckAPI.selectors.getStatus(state.switcher)(), true, 'should get true after toggle()')
+  t.equal(state0.counter.total, 0, 'should get state.count.total = 0 on initialization')
+  t.equal(state0.switcher.status, false, 'should get state.switcher.status = false on initialization')
+
+  const state1 = newReducer(state0, counter.actions.tap())
+  t.notEqual(state1, state0, 'should not mutate the state 0')
+
+  const state2 = newReducer(state1, switcher.actions.toggle())
+  t.notEqual(state2, state1, 'should not mutate the state 1')
+
+  t.equal(state2.counter.total, 1, 'should get state.count.total = 1 after tap()')
+  t.equal(state2.switcher.status, true, 'should get state.switcher.status = true after toggle()')
 })

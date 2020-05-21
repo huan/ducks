@@ -34,9 +34,9 @@ import {
 }             from '../src'
 
 import * as counterDuckAPI  from './counter'    // Vanilla Duck: +1
+import * as dingDongDuckAPI from './ding-dong'  // Observable Middleware
+import * as pingPongDuckAPI from './ping-pong'  // Saga Middleware
 import * as switcherDuckAPI from './switcher'   // Vanilla Duck: ON/OFF
-import * as dingDongDuckAPI from './ding-dong'  // Redux Observable
-import * as pingPongDuckAPI from './ping-pong'  // Redux Saga
 
 const epicMiddleware = createEpicMiddleware()
 const sagaMiddleware = createSagaMiddleware()
@@ -71,7 +71,7 @@ const ducks = new Ducks({
 
 const initialState = {}
 const store = createStore(
-  state => state,
+  ducks.reducer,
   initialState,
   compose(
     ducks.enhancer(),

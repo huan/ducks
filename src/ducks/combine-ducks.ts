@@ -18,7 +18,10 @@
  */
 import {
   combineReducers,
-}                     from 'redux'
+  Reducer,
+  StateFromReducersMapObject,
+  ActionFromReducersMapObject,
+}                                 from 'redux'
 
 import { Duck } from '../duck/'
 
@@ -26,14 +29,21 @@ export interface DucksMapObject {
   [namespace: string]: Duck,
 }
 
-type DuckReducerMapObject <D extends DucksMapObject> = {
+export type DuckReducersMapObject <D extends DucksMapObject> = {
   [key in keyof D]: D[key]['reducer']
 }
 
+// export type DuckActionsMapObject <D extends DucksMapObject> = {
+//   [key in keyof D]: ActionFromReducersMapObject<D[key]['actions']>
+// }
+
 function combineDucks <D extends DucksMapObject> (
   ducks: D
-) {
-  let duckReducers: DuckReducerMapObject<D> = {} as any
+): Reducer <
+  StateFromReducersMapObject<DuckReducersMapObject<D>>,
+  ActionFromReducersMapObject<DuckReducersMapObject<D>>
+> {
+  let duckReducers: DuckReducersMapObject<D> = {} as any
 
   Object.keys(ducks).forEach(namespace => {
     duckReducers = {
