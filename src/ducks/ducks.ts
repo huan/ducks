@@ -37,7 +37,7 @@ import {
 
 import { Duck }         from '../duck/'
 
-import { combineDuckery } from './combine-ducks'
+import { combineDuckery } from './combine-duckery'
 import { insertReducers } from './insert-reducers'
 
 export interface DucksMapObject {

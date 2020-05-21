@@ -18,13 +18,8 @@
  */
 
 import {
-  applyMiddleware,
-  compose,
   createStore,
 }                       from 'redux'
-
-import { createEpicMiddleware } from 'redux-observable'
-import createSagaMiddleware     from 'redux-saga'
 
 import assert from 'assert'
 
@@ -37,9 +32,6 @@ import * as counterDuckAPI  from './counter'    // Vanilla Duck: +1
 import * as dingDongDuckAPI from './ding-dong'  // Observable Middleware
 import * as pingPongDuckAPI from './ping-pong'  // Saga Middleware
 import * as switcherDuckAPI from './switcher'   // Vanilla Duck: ON/OFF
-
-const epicMiddleware = createEpicMiddleware()
-const sagaMiddleware = createSagaMiddleware()
 
 const counter  = new Duck(counterDuckAPI)
 const dingDong = new Duck(dingDongDuckAPI)
@@ -57,16 +49,10 @@ const switcher = new Duck(switcherDuckAPI)
  */
 
 const ducks = new Ducks({
-  ducks: {
-    counter,
-    dingDong,
-    pingPong,
-    switcher,
-  },
-  // middlewares: {
-  //   epicMiddleware,
-  //   sagaMiddleware,
-  // },
+  counter,
+  dingDong,
+  pingPong,
+  switcher,
 })
 
 const initialState = undefined
@@ -75,13 +61,7 @@ const store = createStore(
   // ducks.reducer,
   state => state,
   initialState,
-  compose(
-    ducks.enhancer(),
-    applyMiddleware(
-      epicMiddleware,
-      sagaMiddleware,
-    ),
-  ),
+  ducks.enhancer(),
 )
 
 // store.subscribe(() => console.info(store.getState()))
