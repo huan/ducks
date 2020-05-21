@@ -1,6 +1,6 @@
 # ducks
 
-[![NPM Version](https://img.shields.io/npm/v/ducks?color=yellow)](https://www.npmjs.com/package/ducks)
+[![NPM Version](https://img.shields.io/npm/v/ducks?color=orange)](https://www.npmjs.com/package/ducks)
 [![NPM](https://github.com/huan/ducks/workflows/NPM/badge.svg)](https://github.com/huan/ducks/actions?query=workflow%3ANPM)
 
 🦆🦆🦆 Ducks is A Redux Modular Proposal Implementation for Easily Managing and Using Your Ducks Reducer Bundle Packages.
@@ -9,8 +9,8 @@
 
 > Image Credit: [Alamy](https://www.alamy.com/cute-duck-and-little-ducks-over-white-background-colorful-design-vector-illustration-image185379753.html)
 
-[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
-[![Re-Ducks Extended](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
+[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-orange)](https://github.com/erikras/ducks-modular-redux)
+[![Re-Ducks Extended](https://img.shields.io/badge/Redux-Re--Ducks-yellow)](https://github.com/alexnm/re-ducks)
 
 Ducks offers a method of handling redux module packaging, installing, and running with your Redux store, with middware support. The goal of Ducks is to help you organizing your code for the long term.
 
@@ -35,7 +35,7 @@ I'm building my redux ducks module for Wechaty Redux project and ...
 
 ## The Ducks Modular Proposal
 
-[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
+[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-orange)](https://github.com/erikras/ducks-modular-redux)
 
 The specification has rules that a module...
 
@@ -48,7 +48,7 @@ Here's the full version of Ducks proposal: [Redux Reducer Bundles, A proposal fo
 
 ## The Re-Ducks Extionsion: Duck Folders
 
-[![Re-Ducks Extension](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
+[![Re-Ducks Extension](https://img.shields.io/badge/Redux-Re--Ducks-yellow)](https://github.com/alexnm/re-ducks)
 
 `Re-Ducks` is an extension to the original proposal for the ducks redux modular architecture.
 
