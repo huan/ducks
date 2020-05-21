@@ -36,6 +36,13 @@ type FlatStateFromReducersMapObject <T> =
     ]
   >
 
+/**
+ * Huan(202005): this function is very puzzle.
+ *
+ * @deprecated: we should keep the core ducks logic simple.
+ *  this logic will be left to the end user to deal with,
+ *  instead of providing a library helper function.
+ */
 function reduceReducersFromMapObject <T extends ReducersMapObject> (
   reducers: T,
 ): Reducer<

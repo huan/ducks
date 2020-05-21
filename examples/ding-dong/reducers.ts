@@ -16,7 +16,7 @@
  *   limitations under the License.
  *
  */
-import { Action } from 'redux'
+import { Action, combineReducers } from 'redux'
 
 import * as types from './types'
 
@@ -36,6 +36,6 @@ const reducer = (state = initialState, action: Action) => {
   }
 }
 
-export {
+export default combineReducers({
   reducer,
-}
+})

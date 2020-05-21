@@ -16,7 +16,9 @@
  *   limitations under the License.
  *
  */
-const getDong = (state: { dong: number }) => () => state.dong
+import reducer from './reducers'
+
+const getDong = (state: ReturnType<typeof reducer>) => () => state.reducer.dong
 
 export {
   getDong,

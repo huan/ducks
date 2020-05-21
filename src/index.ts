@@ -18,13 +18,10 @@
  */
 export {
   VERSION,
-}               from './config'
+}                    from './config'
 export {
   Duck,
   DuckAPI,
   validateDuckAPI,
-}                                 from './duck/'
-export {
-  Ducks,
-  reduceReducersFromMapObject,
-}                                 from './ducks/'
+}                    from './duck/'
+export { Ducks }      from './ducks/'

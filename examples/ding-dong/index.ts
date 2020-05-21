@@ -16,17 +16,13 @@
  *   limitations under the License.
  *
  */
-import { reduceReducersFromMapObject } from '../../src/'
-
 import * as actions     from './actions'
 import * as epics       from './epics'
 import * as operations  from './operations'
 import * as selectors   from './selectors'
 import * as types       from './types'
 
-import * as reducers    from './reducers'
-
-const reducer = reduceReducersFromMapObject(reducers)
+import reducer from './reducers'
 
 export {
   actions,
