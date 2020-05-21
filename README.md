@@ -27,8 +27,7 @@ Ducks offers a method of handling redux module packaging, installing, and runnin
 ### Todo-list
 
 - [ ] Ducks middleware support
-- [ ] Provides a Ducks Management interface for:
-  - [ ] adding/deleting a duck module
+- [ ] Provides a Ducks Management interface for adding/deleting a duck module
 
 ## Motivation
 
@@ -47,7 +46,7 @@ The specification has rules that a module...
 
 Here's the full version of Ducks proposal: [Redux Reducer Bundles, A proposal for bundling reducers, action types and actions when using Redux, Erik Rasmussen, 2015](https://github.com/erikras/ducks-modular-redux)
 
-## Re-Ducks
+## The Re-Ducks Extionsion: Duck Folders
 
 [![Re-Ducks Extension](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
 
@@ -103,7 +102,7 @@ Ducks++ is to define a string constant inside the duck to determine where the st
 
 ## Usage
 
-### 1 The Duck API
+### 1 Setup Ducks
 
 ```ts
 export const types      = { TAP: 'ducks/examples/counter/TAP' }
@@ -112,7 +111,7 @@ export const operations = { tap: dispatch => dispatch(actions.tap()) }
 export const selectors  = { getTotal: state => () => state.total }
 
 const initialState = { total: 0 }
-export default const reducer = (state = initialState, action) => {
+export default function reducer (state = initialState, action) {
   if (action.type === types.TAP) {
     return ({
       ...state,
@@ -122,7 +121,7 @@ export default const reducer = (state = initialState, action) => {
 }
 ```
 
-### 2 Load Duck API to Ducks
+### 2 Load Ducks
 
 ```ts
 import { Ducks, Duck }    from 'ducks'
@@ -132,7 +131,7 @@ const counter = new Duck(CounterDuckAPI)
 const ducks   = new Ducks({ counter })
 ```
 
-### 3 Create Redux Store with Ducks
+### 3 Create Store
 
 ```ts
 import { createStore } from 'redux'
@@ -155,7 +154,6 @@ npm start
 ```
 
 ## API References
-
 
 ### 3.1 Shortcut to Configure the Store
 
