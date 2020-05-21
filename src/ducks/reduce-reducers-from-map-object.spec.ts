@@ -20,8 +20,25 @@
  */
 import test  from 'tstest'
 
+import * as counterDuckAPI  from '../../examples/counter/'
+import * as switcherDuckAPI from '../../examples/switcher/'
+
 import { reduceReducersFromMapObject } from './reduce-reducers-from-map-object'
 
 test('reduceReducersFromMapObject()', async t => {
-  t.ok(reduceReducersFromMapObject, 'tbw')
+  const reducer = reduceReducersFromMapObject({
+    counter  : counterDuckAPI.default,
+    switcher : switcherDuckAPI.default,
+  })
+
+  let state = reducer({} as any, { type: 'INIT' })
+
+  t.equal(counterDuckAPI.selectors.getCounter(state)(), 0, 'should get 0 on init')
+  t.equal(switcherDuckAPI.selectors.getStatus(state)(), false, 'should get false on init')
+
+  state = reducer(state, counterDuckAPI.actions.tap())
+  state = reducer(state, switcherDuckAPI.actions.toggle())
+
+  t.equal(counterDuckAPI.selectors.getCounter(state)(), 1, 'should get 1 after tap()')
+  t.equal(switcherDuckAPI.selectors.getStatus(state)(), true, 'should get true after toggle()')
 })

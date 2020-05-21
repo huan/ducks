@@ -25,14 +25,21 @@ import {
 
 import reduceReducersFromArray from 'reduce-reducers'
 
-type LiftStateFromReducersMapObject <T> = StateFromReducersMapObject<T>[
-  keyof StateFromReducersMapObject<T>
-]
+// https://stackoverflow.com/a/50375286/1123955
+type UnionToIntersection<U> =
+  (U extends any ? (k: U)=>void : never) extends ((k: infer I)=>void) ? I : never
+
+type FlatStateFromReducersMapObject <T> =
+  UnionToIntersection<
+    StateFromReducersMapObject<T>[
+      keyof StateFromReducersMapObject<T>
+    ]
+  >
 
 function reduceReducersFromMapObject <T extends ReducersMapObject> (
   reducers: T,
 ): Reducer<
-  LiftStateFromReducersMapObject<T>,
+  FlatStateFromReducersMapObject<T>,
   ActionFromReducersMapObject<T>
 > {
   return reduceReducersFromArray(
