@@ -17,16 +17,14 @@
  *
  */
 
-import {
-  createStore,
-}                       from 'redux'
+import { createStore } from 'redux'
 
 import assert from 'assert'
 
 import {
   Duck,
   Ducks,
-}             from '../src'
+}         from '../src'
 
 import * as counterDuckAPI  from './counter'    // Vanilla Duck: +1
 import * as dingDongDuckAPI from './ding-dong'  // Observable Middleware
@@ -38,16 +36,6 @@ const dingDong = new Duck(dingDongDuckAPI)
 const pingPong = new Duck(pingPongDuckAPI)
 const switcher = new Duck(switcherDuckAPI)
 
-/**
- * TODO:
- *  1. bind state mount point
- *    1. bind state to selectors
- *    1. bind store to perations
- *  1. implement enhancer for ducks for
- *    1. adding the reducer
- *    1. run the sagas/epics
- */
-
 const ducks = new Ducks({
   counter,
   dingDong,
@@ -55,22 +43,12 @@ const ducks = new Ducks({
   switcher,
 })
 
-const initialState = undefined
-
 const store = createStore(
-  // ducks.reducer,
-  state => state,
-  initialState,
-  ducks.enhancer(),
+  state => state,     // Here's our normal Redux Reducer
+  ducks.enhancer(),   // We use Ducks by adding this enhancer to our store, and that's it!
 )
 
 // store.subscribe(() => console.info(store.getState()))
-
-// Before:
-// counterDuck.selectors.getCounter(store)()
-// counterDuck.operations.tap(store)()
-
-// console.info('state', store.getState())
 
 /**
  * Vanilla: Counter
@@ -105,6 +83,9 @@ assert.strictEqual(pingPong.selectors.getPong(), 1)
 
 console.info('store state:', store.getState())
 
+/**
+ * We can export the Ducks to provide a clean API!
+ */
 export {
   counter,
   dingDong,

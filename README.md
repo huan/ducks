@@ -1,126 +1,161 @@
 # ducks
 
-A Redux Reducer Bundles Manager for managing the modules that follows the Ducks Modular Proposal, by installing all ducks to the Redux with only one line of middleware.
+[![NPM Version](https://img.shields.io/npm/v/ducks?color=yellow)](https://www.npmjs.com/package/ducks)
+[![NPM](https://github.com/huan/ducks/workflows/NPM/badge.svg)](https://github.com/huan/ducks/actions?query=workflow%3ANPM)
 
-![Ducks](docs/images/ducks.png)
+🦆🦆🦆 Ducks is A Redux Modular Proposal Implementation for Easily Managing and Using Your Ducks Reducer Bundle Packages.
+
+![Ducks](https://huan.github.io/ducks/images/ducks.png)
 
 > Image Credit: [Alamy](https://www.alamy.com/cute-duck-and-little-ducks-over-white-background-colorful-design-vector-illustration-image185379753.html)
 
-Modular and Extensible Redux Reducer Bundles (ducks-modular-redux)
+[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
+[![Re-Ducks Extended](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
 
-ducks is an implementation of the Ducks proposal.
+Ducks offers a method of handling redux module packaging, installing, and running with your Redux store, with middware support. The goal of Ducks is to help you organizing your code for the long term.
 
-ducks offers a method of handling redux module packaging.
+> Java has jars and beans. Ruby has gems. I suggest we call these reducer bundles "ducks", as in the last syllable of "redux".  
+> &mdash; Erik Rasmussen, 2015 ([link](https://github.com/erikras/ducks-modular-redux#name))
 
 ## Features
 
-1. Encapsulation in Redux
-1. Plays nicely with Vanilla Redux
-1. Perfrect TypeScript(v3.7) Typing Support powered by [typesafe-actions](https://github.com/piotrwitek/typesafe-actions).
-1. Modulization Friendly
-1. Provide TypeScript Interface for Ducks Modular Proposal
-1. ActionBinding & SelectorBinding for making non-store & non-mount-point usage with convenience
-    1. namespaces auto-management
-1. Provide a Ducks Management interface for adding/deleting duck modules
-1. Easy to be integrated with naive Redux by adding only one middleware for all ducks.
-1. Support using any middleware inside a duck module
-1. Make Ducks Modular Proposal to be easy management
-1. Support both Frontend & Backend
+1. Implemented the specification from [Ducks Modular Proposal, Erik Rasmussen, 2015](https://github.com/erikras/ducks-modular-redux)
+1. Easy connecting ducks to store by adding one enhancer to redux. (that's all you need to do!)
+1. Fully typing with all APIs by TypeScript
+1. Binding `store` to `operators` and `selectors` by currying for maximum convenience.
+
+### Todo-list
+
+- [ ] Ducks middleware support
+- [ ] Provides a Ducks Management interface for:
+  - [ ] adding/deleting a duck module
 
 ## Motivation
 
-## Princples
+I'm building my redux ducks module for Wechaty Redux project and ...
 
-1. [Ducks: Redux Reducer Bundles - A proposal for bundling reducers, action types and actions when using Redux](https://github.com/erikras/ducks-modular-redux)
-1. [Building on the duck legacy - An attempt to extend the original proposal for redux modular architecture](https://github.com/alexnm/re-ducks)
-    - [Scaling Your Redux App with Ducks - Alex Moldovan - Medium Better Programming](https://medium.com/better-programming/scaling-your-redux-app-with-ducks-6115955638be#.4ppptx7oq)
-1. [Ducks++: Redux Reducer Bundles](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22)
+## The Ducks Modular Proposal
+
+[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
+
+The specification has rules that a module...
+
+1. MUST `export default` a function called `reducer()`
+1. MUST `export` its action creators as functions
+1. MUST have action types in the form `npm-module-or-app/reducer/ACTION_TYPE`
+1. MAY export its action types as `UPPER_SNAKE_CASE`, if an external reducer needs to listen for them, or if it is a published reusable library
+
+Here's the full version of Ducks proposal: [Redux Reducer Bundles, A proposal for bundling reducers, action types and actions when using Redux, Erik Rasmussen, 2015](https://github.com/erikras/ducks-modular-redux)
+
+## Re-Ducks
+
+[![Re-Ducks Extension](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
+
+`Re-Ducks` is an extension to the original proposal for the ducks redux modular architecture.
+
+By defining a ducks with duck folders instead of a duck file, it defines the **duck** folder would like:
+
+```sh
+duck/
+├── actions.js
+├── index.js
+├── operations.js
+├── reducers.js
+├── selectors.js
+├── tests.js
+├── types.js
+├── utils.js
+```
+
+> NOTE: Each concept from your app will have a similar folder.
+
+### General rules for a duck folder
+
+A duck folder:
+
+1. MUST contain the **entire logic** for handling **only ONE** concept in your app, ex: product, cart, session, etc.
+1. MUST have an `index.js` file that exports according to the original duck rules.
+1. MUST keep code with similar purpose in the same file, ex: reducers, selectors, actions, etc.
+1. MUST contain the **tests** related to the duck.
+
+Here's the full version of Re-ducks proposal: [Building on the duck legacy, An attempt to extend the original proposal for redux modular architecture, Alex Moldovan, 2016](https://github.com/alexnm/re-ducks) and [blog](https://medium.com/better-programming/scaling-your-redux-app-with-ducks-6115955638be#.4ppptx7oq)
 
 ## Extensions
 
-1. selectors...
-1. operators ...
+1. Perfrect TypeScript(v3.7) Typing Support powered by [typesafe-actions](https://github.com/piotrwitek/typesafe-actions).
+
+1. selectors...: Currying a State
+1. operators ...  Currying a Dispatch
 1. namespaces...
 
 1. sagas...
 1. epics...
 
+nesting ducks?
+
+Ducks++ is to define a string constant inside the duck to determine where the state is stored in the store; 
+[Ducks++: Redux Reducer Bundles, Djamel Hassaine, 2017](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22)
+
 ## Requirements
 
 1. Node.js v12+
+1. Browsers
 
 ## Usage
 
-### 1 Create a Modular Ducks (Redux Reducer Bundle)
+### 1 The Duck API
 
 ```ts
-export const types = {
-  TAP:    'ducks/examples/counter/TAP',
-  RESET:  'ducks/examples/counter/RESET',
-}
+export const types      = { TAP: 'ducks/examples/counter/TAP' }
+export const actions    = { tap: () => ({ type: TAP }) }
+export const operations = { tap: dispatch => dispatch(actions.tap()) }
+export const selectors  = { getTotal: state => () => state.total }
 
-export const actions = {
-  tap: () => ({ type: TAP }),
-  reset: () => ({ type: RESET })
-}
-
-/**
- * CQRS - Command Query Responsibility Segregation
- *  https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs
- *
- *  1. `operations` for Command
- *  2. `selectors` for Query
- */
-export const operations = {
-  reset: ({ dispatch }) => dispatch(actions.reset())
-}
-
-export const selectors = {
-  counter: state => () => state.counter,
-}
-
-export default const reducer = (state = {}, action) => {
+const initialState = { total: 0 }
+export default const reducer = (state = initialState, action) => {
   if (action.type === types.TAP) {
     return ({
       ...state,
-      counter: (state.counter || 0) + 1,
+      total: (state.total || 0) + 1,
     })
   }
 }
 ```
 
-### 2 Load Ducks
+### 2 Load Duck API to Ducks
 
 ```ts
-import { Ducks, Duck } from 'ducks'
+import { Ducks, Duck }    from 'ducks'
+import { CounterDuckAPI } from 'ducks/examples/counter/'
 
-import { CounterDuck }  from 'ducks/examples/counter/'
-
-const counterDuck = new Duck(CounterDuck)
-const finisDuck = new Duck(FinisDuck)
-
-const ducks = new Ducks({
-  ducks: [
-    counterDuck,
-    finisDuck,
-  ],
-})
+const counter = new Duck(CounterDuckAPI)
+const ducks   = new Ducks({ counter })
 ```
 
-### 3 Setup Redux with Ducks
+### 3 Create Redux Store with Ducks
 
 ```ts
-import { createStore, applyMiddleWare } from 'redux'
+import { createStore } from 'redux'
 
-const initialState = {}
 const store = createStore(
-  ducks.reducer,
-  initialState,
-  applyMiddleWare(ducks.middleware),
+  state => state,     // Your other reducers
+  ducks.enhancer(),   // Add ducks to your store (that's all you need to do!)
 )
 ```
 
 You are set!
+
+A full example that demostrate how to use Ducks can be found at [examples/quack.ts](examples/quack.ts), you can try it by running the following commands:
+
+```sh
+git clone git@github.com:huan/ducks.git
+cd ducks
+npm install
+npm start
+```
+
+## API References
+
 
 ### 3.1 Shortcut to Configure the Store
 
@@ -168,36 +203,7 @@ const initial = addAndMult(undefined)
  */
 ```
 
-1. If we ha
-## Ducks Directory
 
-a duck:
-
-MUST export default a function called reducer()
-MUST export its action creators as functions
-MUST have action types in the form npm-module-or-app/reducer/ACTION_TYPE
-MAY export its action types as UPPER_SNAKE_CASE, if an external reducer needs to listen for them, or if it is a published reusable library
-
-Here's how a duck folder would look like:
-
-```sh
-duck/
-├── actions.js
-├── index.js
-├── operations.js
-├── reducers.js
-├── selectors.js
-├── tests.js
-├── types.js
-├── utils.js
-```
-
-A duck folder:
-
-MUST contain the entire logic for handling only ONE concept in your app, ex: product, cart, session, etc.
-MUST have an index.js file that exports according to the original duck rules.
-MUST keep code with similar purpose in the same file, ex: reducers, selectors, actions, etc.
-MUST contain the tests related to the duck.
 
 ## Developing Tools
 
@@ -287,6 +293,15 @@ Don't store system state, store events that brought system to this state.
 
 ### CQRS (Command Query Responsibility Segregation)
 
+
+/**
+ * CQRS - Command Query Responsibility Segregation
+ *  https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs
+ *
+ *  1. `operations` for Command
+ *  2. `selectors` for Query
+ */
+
 System is divided in two "sides":
 
 - Write Side accepts commands and generate events that stored in the Event Store.
@@ -308,6 +323,6 @@ Thanks [@gobwas](https://github.com/gobwas) for letting me use this great NPM mo
 
 ## Copyright & License
 
-- Code & Docs © 2020-now Huan LI \<zixia@zixia.net\>
+- Code & Docs © 2020 Huan LI (李卓桓) \<zixia@zixia.net\>
 - Code released under the Apache-2.0 License
 - Docs released under Creative Commons
