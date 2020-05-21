@@ -18,7 +18,7 @@
  */
 import {
   StoreEnhancer,
-  AnyAction,
+  // AnyAction,
   compose,
   Middleware,
   Store,
@@ -26,8 +26,8 @@ import {
   Reducer,
 }                               from 'redux'
 
-import { EpicMiddleware, Epic } from 'redux-observable'
-import { SagaMiddleware, Saga } from 'redux-saga'
+import { Epic, EpicMiddleware } from 'redux-observable'
+import { Saga, SagaMiddleware } from 'redux-saga'
 
 import {
   DUCKS_NAMESPACE,
@@ -42,10 +42,10 @@ import { insertReducers }   from './insert-reducers'
 
 interface DucksOptions <T extends DucksMapObject> {
   ducks: T,
-  middlewares: {
-    epicMiddleware?: EpicMiddleware<AnyAction>,
-    sagaMiddleware?: SagaMiddleware,
-  },
+  // middlewares: {
+  //   epicMiddleware?: EpicMiddleware<AnyAction>,
+  //   sagaMiddleware?: SagaMiddleware,
+  // },
 }
 
 export interface DucksMapObject {
@@ -54,7 +54,7 @@ export interface DucksMapObject {
 
 const DEFAULT_DUCKS_OPTIONS: DucksOptions <any> = {
   ducks: {},
-  middlewares: {},
+  // middlewares: {},
 }
 
 class Ducks <T extends DucksMapObject> {
@@ -62,6 +62,11 @@ class Ducks <T extends DucksMapObject> {
   static VERSION = VERSION
 
   store: Store
+
+  protected asyncMiddlewares: {
+    epicMiddleware?: EpicMiddleware<any>,
+    sagaMiddleware?: SagaMiddleware,
+  }
 
   protected readonly options: DucksOptions<T>
 
@@ -75,6 +80,7 @@ class Ducks <T extends DucksMapObject> {
       .filter(Boolean)
       .map(middlewares => Object.values(middlewares!))
       .flat()
+
     return middlewareList
   }
 
@@ -90,12 +96,26 @@ class Ducks <T extends DucksMapObject> {
       ...options,
     }
     this.store = TMP_STORE
+
+    this.asyncMiddlewares = {}
   }
 
   enhancer (): StoreEnhancer {
+    if (!this.asyncMiddlewares.epicMiddleware && this.getRootEpic()) {
+      this.asyncMiddlewares.epicMiddleware = require('redux-observable').createEpicMiddleware()
+    }
+    if (!this.asyncMiddlewares.sagaMiddleware && this.getRootSaga()) {
+      this.asyncMiddlewares.sagaMiddleware = require('redux-saga').default() as SagaMiddleware
+    }
+
+    const asyncMiddlewares = Object.values(this.asyncMiddlewares).filter(Boolean) as Middleware[]
+
     return compose(
-      this.storeEnhancer(),
-      applyMiddleware(...this.middlewares),
+      this.storeEnhancer(), // Huan(202005): this should be put before applyMiddleware (to initiate asyncMiddlewares before storeEnhancer)
+      applyMiddleware(
+        ...asyncMiddlewares,
+        ...this.middlewares
+      ),
     )
   }
 
@@ -114,7 +134,7 @@ class Ducks <T extends DucksMapObject> {
       let newReducer = insertReducers(
         reducer,
         {
-          [DUCKS_NAMESPACE]: this.reducer as any,
+          [DUCKS_NAMESPACE]: this.reducer as any, // Huan(202005) FIXME: any ?
         },
       )
 
@@ -210,9 +230,9 @@ class Ducks <T extends DucksMapObject> {
      */
     const rootEpic = this.getRootEpic()
     if (rootEpic) {
-      const epicMiddleware = this.options.middlewares.epicMiddleware
+      let epicMiddleware = this.asyncMiddlewares.epicMiddleware
       if (!epicMiddleware) {
-        throw new Error('epicMiddleware is required, but it has not been passed in the ducks.')
+        throw new Error('epicMiddleware is required but not found in the this.asyncMiddlewares.')
       }
       epicMiddleware.run(rootEpic)
     }
@@ -222,13 +242,12 @@ class Ducks <T extends DucksMapObject> {
      */
     const rootSaga = this.getRootSaga()
     if (rootSaga) {
-      const sagaMiddleware = this.options.middlewares.sagaMiddleware
+      let sagaMiddleware = this.asyncMiddlewares.sagaMiddleware
       if (!sagaMiddleware) {
-        throw new Error('sagaMiddleware is required, but it has not been passed in the ducks.')
+        throw new Error('sagaMiddleware is required but not found in the this.asyncMiddlewares.')
       }
       sagaMiddleware.run(rootSaga)
     }
-
   }
 
 }

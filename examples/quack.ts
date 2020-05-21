@@ -63,15 +63,17 @@ const ducks = new Ducks({
     pingPong,
     switcher,
   },
-  middlewares: {
-    epicMiddleware,
-    sagaMiddleware,
-  },
+  // middlewares: {
+  //   epicMiddleware,
+  //   sagaMiddleware,
+  // },
 })
 
-const initialState = {}
+const initialState = undefined
+
 const store = createStore(
-  ducks.reducer,
+  // ducks.reducer,
+  state => state,
   initialState,
   compose(
     ducks.enhancer(),
@@ -82,7 +84,7 @@ const store = createStore(
   ),
 )
 
-store.subscribe(() => console.info(store.getState()))
+// store.subscribe(() => console.info(store.getState()))
 
 // Before:
 // counterDuck.selectors.getCounter(store)()
@@ -120,6 +122,8 @@ assert.strictEqual(dingDong.selectors.getDong(), 1)
 assert.strictEqual(pingPong.selectors.getPong(), 0)
 pingPong.operations.ping()
 assert.strictEqual(pingPong.selectors.getPong(), 1)
+
+console.info('store state:', store.getState())
 
 export {
   counter,
