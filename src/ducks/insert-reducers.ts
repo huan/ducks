@@ -31,13 +31,12 @@ function insertReducers <
   R extends Reducer,
   M extends ReducersMapObject,
 > (
-  reducer: R,
+  originReducer: R,
   insertReducers: M,
 ): Reducer<
   StateFromInsertReducers<R, M>,
   ActionFromInsertReducers<R, M>
 > {
-
   const insertReducer = combineReducers(insertReducers)
 
   const newReducer: Reducer<
@@ -45,23 +44,25 @@ function insertReducers <
     ActionFromInsertReducers<R, M>
   > = (state, action) => {
 
-    const currOriginalState = {} as any // ReturnType<typeof reducer>
-    const currInsertedState = {} as any // StateFromReducersMapObject<typeof insertReducers>
+    const prevOriginalState = {} as any // ReturnType<typeof reducer>
+    const prevInsertedState = {} as any // StateFromReducersMapObject<typeof insertReducers>
 
     if (state) {
       Object.keys(state).forEach(key => {
         if (key in insertReducers) {
-          currInsertedState[key] = state[key]
+          prevInsertedState[key] = state[key]
         } else {
-          currOriginalState[key] = state[key]
+          prevOriginalState[key] = state[key]
         }
       })
     }
 
-    const nextOriginalState = reducer(currOriginalState, action)
-    const nextInsertedState = insertReducer(currInsertedState, action)
+    const nextOriginalState = originReducer(prevOriginalState, action)
+    // console.info('nextOriginalState === prevOriginalState', nextOriginalState === prevOriginalState)
+    const nextInsertedState = insertReducer(prevInsertedState, action)
+    // console.info('nextInsertedState === prevInsertedState', nextInsertedState === prevInsertedState)
 
-    if (nextOriginalState === currInsertedState && nextInsertedState === currInsertedState) {
+    if (nextOriginalState === prevOriginalState && nextInsertedState === prevInsertedState) {
       return state
     }
 
@@ -72,7 +73,6 @@ function insertReducers <
   }
 
   return newReducer
-
 }
 
 export {

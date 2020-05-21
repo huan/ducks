@@ -58,4 +58,7 @@ test('combineDucks()', async t => {
 
   t.equal(state2.counter.total, 1, 'should get state.count.total = 1 after tap()')
   t.equal(state2.switcher.status, true, 'should get state.switcher.status = true after toggle()')
+
+  const state3 = newReducer(state2, { type: 'NOP' })
+  t.strictEqual(state3, state2, 'state should not change if reducer got unknown action type')
 })
