@@ -25,14 +25,14 @@ import * as switcherDuckAPI from '../../examples/switcher/'
 
 import { Duck } from '../duck/'
 
-import { combineDucks }   from './combine-ducks'
+import { combineDuckery }   from './combine-duckery'
 import { insertReducers } from './insert-reducers'
 
-test('combineDucks()', async t => {
+test('combineDuckery()', async t => {
   const counter  = new Duck(counterDuckAPI)
   const switcher = new Duck(switcherDuckAPI)
 
-  const originalReducer = combineDucks({
+  const originalReducer = combineDuckery({
     counter,
   })
 

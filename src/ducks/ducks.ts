@@ -18,7 +18,6 @@
  */
 import {
   StoreEnhancer,
-  // AnyAction,
   compose,
   Middleware,
   Store,
