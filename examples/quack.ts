@@ -43,11 +43,18 @@ const ducks = new Ducks({
   switcher,
 })
 
+/**
+ * Create the store. (You can use ducks.configureStore() for convenience)
+ */
 const store = createStore(
   state => state,     // Here's our normal Redux Reducer
   ducks.enhancer(),   // We use Ducks by adding this enhancer to our store, and that's it!
 )
 
+// Show the initial store state structure data
+console.info('# Initial Store State:', store.getState())
+
+// Show the initialized store state structure
 // store.subscribe(() => console.info(store.getState()))
 
 /**
@@ -64,8 +71,6 @@ assert.strictEqual(counter.selectors.getMeaningOfLife(3), 42)
 assert.strictEqual(switcher.selectors.getStatus(), false)
 switcher.operations.toggle()
 assert.strictEqual(switcher.selectors.getStatus(), true)
-switcher.operations.toggle()
-assert.strictEqual(switcher.selectors.getStatus(), false)
 
 /**
  * Epic Middleware: DingDong
@@ -81,7 +86,8 @@ assert.strictEqual(pingPong.selectors.getPong(), 0)
 pingPong.operations.ping()
 assert.strictEqual(pingPong.selectors.getPong(), 1)
 
-console.info('store state:', store.getState())
+// Show the new store state structure data
+console.info('# Final Store State:', store.getState())
 
 /**
  * We can export the Ducks to provide a clean API!
