@@ -156,7 +156,7 @@ test('Ducks with other reducers work together', async t => {
   )
 
   void store
-  store.subscribe(() => console.info(store.getState()))
+  // store.subscribe(() => console.info(store.getState()))
 
   t.equal(counterDuck.selectors.getCounter(), 0, 'should get counter 0 on initialization')
   t.equal(store.getState().switch.status, false, 'should get false from switch status on initialization')
@@ -166,4 +166,20 @@ test('Ducks with other reducers work together', async t => {
 
   store.dispatch(switcherDuckAPI.actions.toggle())
   t.equal(store.getState().switch.status, true, 'should get true from switch status after dispatch actions.toggle()')
+})
+
+test('configureStore()', async t => {
+  const counterDuck = new Duck(counterDuckAPI)
+
+  const ducks = new Ducks({
+    counter : counterDuck,
+  })
+
+  const store = ducks.configureStore()
+  void store
+  // store.subscribe(() => console.info(store.getState()))
+
+  t.equal(counterDuck.selectors.getCounter(), 0, 'should get counter 0 on initialization')
+  counterDuck.operations.tap()
+  t.equal(counterDuck.selectors.getCounter(), 1, 'should get counter 1 after tap')
 })

@@ -23,6 +23,7 @@ import {
   Store,
   applyMiddleware,
   Reducer,
+  createStore,
 }                               from 'redux'
 
 import { Epic, EpicMiddleware } from 'redux-observable'
@@ -130,9 +131,28 @@ class Ducks <T extends DucksMapObject> {
     return enhancer
   }
 
-  configureStore () {
-    // TODO: init store for convenience
-    return {}
+  /**
+   * A convenience way to initialize your store with Ducks with default settings.
+   *
+   * `ducks.configureStore()` only supports creating a store with Ducks.
+   *
+   * If you want to create a store that with other `reducer` and `enhances` (or `middlewares`),
+   * please use `createStore()` from `redux` module instead of this one.
+   *
+   * @param preloadedState
+   */
+  configureStore (
+    preloadedState?: {
+      [DUCKS_NAMESPACE]: ReturnType<Ducks<T>['reducer']>,
+    },
+  ) {
+    const nopReducer = (state: any) => state
+    const store = createStore(
+      nopReducer,
+      preloadedState,
+      this.enhancer(),
+    )
+    return store
   }
 
   /**
@@ -153,7 +173,6 @@ class Ducks <T extends DucksMapObject> {
      * Load Epics Combinator
      *
      *  We are using `require` at here because we will only load `redux-observable` module when we need it
-     *
      */
     const combineEpics = require('redux-observable').combineEpics
 
@@ -175,7 +194,6 @@ class Ducks <T extends DucksMapObject> {
      * Load Saga Effects
      *
      *  We are using `require` at here because we will only load `redux-saga` module when we need it
-     *
      */
     const effects = require('redux-saga/effects')
 
