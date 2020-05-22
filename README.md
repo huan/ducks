@@ -5,7 +5,7 @@
 
 🦆🦆🦆Ducks is a Reducer Bundle Manager that Implementing the Redux Ducks Modular Proposal with Great Convenience.
 
-![Ducks](https://huan.github.io/ducks/images/ducks.png)
+[![Ducks](https://huan.github.io/ducks/images/ducks.png)](https://github.com/huan/ducks)
 
 > Image Credit: [Alamy](https://www.alamy.com/cute-duck-and-little-ducks-over-white-background-colorful-design-vector-illustration-image185379753.html)
 
