@@ -168,7 +168,7 @@ test('Ducks with other reducers work together', async t => {
   t.equal(store.getState().switch.status, true, 'should get true from switch status after dispatch actions.toggle()')
 })
 
-test('configureStore()', async t => {
+test('configureStore() smoke testing', async t => {
   const counterDuck = new Duck(counterDuckAPI)
 
   const ducks = new Ducks({
@@ -182,4 +182,15 @@ test('configureStore()', async t => {
   t.equal(counterDuck.selectors.getCounter(), 0, 'should get counter 0 on initialization')
   counterDuck.operations.tap()
   t.equal(counterDuck.selectors.getCounter(), 1, 'should get counter 1 after tap')
+})
+
+test('configureStore() called twice', async t => {
+  const counterDuck = new Duck(counterDuckAPI)
+
+  const ducks = new Ducks({
+    counter : counterDuck,
+  })
+
+  t.doesNotThrow(() => ducks.configureStore(), 'should not throw for the first time')
+  t.throws(() => ducks.configureStore(), 'should throw for the second time')
 })

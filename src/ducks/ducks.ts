@@ -146,6 +146,10 @@ class Ducks <T extends DucksMapObject> {
       [DUCKS_NAMESPACE]: ReturnType<Ducks<T>['reducer']>,
     },
   ) {
+    if (this.store !== TMP_STORE) {
+      throw new Error('Ducks can be only configureStore() for once! If you need another store, you can create another Ducks to fullfil your needs.')
+    }
+
     const nopReducer = (state: any) => state
     const store = createStore(
       nopReducer,
