@@ -144,11 +144,71 @@ const store = createStore(
 
 You are set!
 
-A full example that demostrate how to use Ducks can be found at [examples/quack.ts](examples/quack.ts), you can try it by running the following commands:
+## Examples
+
+Let's quacks!
+
+The following is the full example which demostrate how to use Ducks.
+
+It shows that:
+
+1. Supports `redux-observable` and `redux-saga` out-of-the-box.
+1. Import duck modules with an easy and clean way.
+1. The best practice for writing a redux reducer bundle by following the ducks modular proposal.
+
+```ts
+import { createStore } from 'redux'
+import { Duck, Ducks } from 'ducks'
+
+import * as counterDuckAPI  from './counter'    // Vanilla Duck: +1
+import * as dingDongDuckAPI from './ding-dong'  // Observable Middleware
+import * as pingPongDuckAPI from './ping-pong'  // Saga Middleware
+
+const counter  = new Duck(counterDuckAPI)
+const dingDong = new Duck(dingDongDuckAPI)
+const pingPong = new Duck(pingPongDuckAPI)
+
+const ducks = new Ducks({
+  counter,
+  dingDong,
+  pingPong,
+})
+
+const store = createStore(
+  state => state,     // Here's our normal Redux Reducer
+  ducks.enhancer(),   // We use Ducks by adding this enhancer to our store, and that's it!
+)
+
+/**
+ * Vanilla: Counter
+ */
+assert.strictEqual(counter.selectors.getCounter(), 0)
+counter.operations.tap()
+assert.strictEqual(counter.selectors.getCounter(), 1)
+
+/**
+ * Epic Middleware: DingDong
+ */
+assert.strictEqual(dingDong.selectors.getDong(), 0)
+dingDong.operations.ding()
+assert.strictEqual(dingDong.selectors.getDong(), 1)
+
+/**
+ * Saga Middleware: PingPong
+ */
+assert.strictEqual(pingPong.selectors.getPong(), 0)
+pingPong.operations.ping()
+assert.strictEqual(pingPong.selectors.getPong(), 1)
+
+console.info('store state:', store.getState())
+```
+
+The above example code can be found at [examples/quack.ts](examples/quack.ts), you can try it by running the following commands:
 
 ```sh
 git clone git@github.com:huan/ducks.git
 cd ducks
+
 npm install
 npm start
 ```
