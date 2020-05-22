@@ -44,7 +44,10 @@ const ducks = new Ducks({
 })
 
 /**
- * Create the store. (You can use ducks.configureStore() for convenience)
+ * Create the store.
+ *
+ * You can use `ducks.configureStore()` to create the same store
+ * as the following code does, for your convenience.
  */
 const store = createStore(
   state => state,     // Here's our normal Redux Reducer

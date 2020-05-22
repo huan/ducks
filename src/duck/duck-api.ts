@@ -53,7 +53,7 @@ export interface SagasMapObject {
 export interface DuckAPI {
   /**
    *
-   * Ducks Propusal: https://github.com/erikras/ducks-modular-redux
+   * Ducks Proposal: https://github.com/erikras/ducks-modular-redux
    *  Ducks: Redux Reducer Bundles - A proposal for bundling reducers, action types and actions when using Redux
    *
    */
@@ -69,11 +69,11 @@ export interface DuckAPI {
   types       : TypesMapObject,
 
   // Domain Aggregates: reducer & middlewares
-  default    : Reducer,
+  default: Reducer,
 
   /**
    *
-   * Extension for the Ducks Propusal
+   * Ducksify Extension
    *
    */
   // Middlewares

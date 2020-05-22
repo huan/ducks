@@ -11,11 +11,20 @@
 
 [![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
 [![Re-Ducks Extended](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#ducksify-extension)
 
-Ducks offers a method of handling redux module packaging, installing, and running with your Redux store, with middware support. The goal of Ducks is to help you organizing your code for the long term.
+Ducks offers a method of handling redux module packaging, installing, and running with your Redux store, with middleware support.
 
 > Java has jars and beans. Ruby has gems. I suggest we call these reducer bundles "ducks", as in the last syllable of "redux".  
 > &mdash; Erik Rasmussen, 2015 ([link](https://github.com/erikras/ducks-modular-redux#name))
+
+## Goal
+
+The goal of Ducks is to:
+
+1. Organizing your code for the long term.
+1. Maximum your convenience when using Redux Ducks.
+1. Full TypeScript typing support.
 
 ## Features
 
@@ -24,7 +33,7 @@ Ducks offers a method of handling redux module packaging, installing, and runnin
 1. Fully typing with all APIs by TypeScript
 1. Binding `store` to `operators` and `selectors` by currying for maximum convenience.
 
-### Todo-list
+Todo-list:
 
 - [ ] Ducks middleware support
 - [ ] Provides a Ducks Management interface for adding/deleting a duck module
@@ -33,7 +42,15 @@ Ducks offers a method of handling redux module packaging, installing, and runnin
 
 I'm building my redux ducks module for Wechaty Redux project and ...
 
-## The Ducks Modular Proposal
+To be written.
+
+At last, I decide to write my own manager for ducks, which will implement the following two specifications, with my own Ducksify Extension:
+
+1. The Ducks Modular Proposal
+1. The Re-Ducks Extension: Duck Folders
+1. The Ducksify Extension: Currying { Dispatch, getState() } for `selectors` and `operators`
+
+### 1 The Ducks Modular Proposal
 
 [![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
 
@@ -46,7 +63,7 @@ The specification has rules that a module...
 
 Here's the full version of Ducks proposal: [Redux Reducer Bundles, A proposal for bundling reducers, action types and actions when using Redux, Erik Rasmussen, 2015](https://github.com/erikras/ducks-modular-redux)
 
-## The Re-Ducks Extionsion: Duck Folders
+### 2 The Re-Ducks Extension: Duck Folders
 
 [![Re-Ducks Extension](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
 
@@ -68,7 +85,7 @@ duck/
 
 > NOTE: Each concept from your app will have a similar folder.
 
-### General rules for a duck folder
+#### General rules for a duck folder
 
 A duck folder:
 
@@ -79,30 +96,46 @@ A duck folder:
 
 Here's the full version of Re-ducks proposal: [Building on the duck legacy, An attempt to extend the original proposal for redux modular architecture, Alex Moldovan, 2016](https://github.com/alexnm/re-ducks) and [blog](https://medium.com/better-programming/scaling-your-redux-app-with-ducks-6115955638be#.4ppptx7oq)
 
-## Extensions
+### 3 Ducksify Extension
 
-1. Perfrect TypeScript(v3.7) Typing Support powered by [typesafe-actions](https://github.com/piotrwitek/typesafe-actions).
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#ducksify-extension)
 
-1. selectors...: Currying a State
-1. operators ...  Currying a Dispatch
-1. namespaces...
+In order to build a better Ducks, [I](https://github.com/huan) defined the following rules and I call it **Ducksify**:
 
-1. sagas...
-1. epics...
+1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `selectors` with a `State` object
+1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `operations` with a `Dispatch` function
+1. MAY export its middlewares functions
+1. MAY export its saga functions
+1. MAY export its epic functions
+1. MAY use [typesafe-actions](https://github.com/piotrwitek/typesafe-actions) to creating reducers, actions, and middlewares.
 
-nesting ducks?
+If we has `sagas` or `epics`, the duck folder should be:
 
-Ducks++ is to define a string constant inside the duck to determine where the state is stored in the store; 
-[Ducks++: Redux Reducer Bundles, Djamel Hassaine, 2017](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22)
+```sh
+duck/
+├── epics.js
+├── sagas.js
+├── middlewares.js
+```
 
 ## Requirements
 
 1. Node.js v12+
 1. Browsers
 
+## Install
+
+Run
+
+```sh
+npm install ducks
+```
+
 ## Usage
 
 ### 1 Setup Ducks
+
+Ducks API module file: `counter.ts`:
 
 ```ts
 export const types      = { TAP: 'ducks/examples/counter/TAP' }
@@ -125,9 +158,9 @@ export default function reducer (state = initialState, action) {
 
 ```ts
 import { Ducks, Duck }    from 'ducks'
-import { CounterDuckAPI } from 'ducks/examples/counter/'
+import { counterDuckAPI } from './counter'
 
-const counter = new Duck(CounterDuckAPI)
+const counter = new Duck(counterDuckAPI)
 const ducks   = new Ducks({ counter })
 ```
 
@@ -142,19 +175,37 @@ const store = createStore(
 )
 ```
 
-You are set!
+You are all set!
 
-## Examples
+### 4 Redux Operating
 
-Let's quacks!
+```ts
+// Before: Vanilla Style
+store.dispatch(counterDuckAPI.actions.tap())
+console.info('getTotal:', counterDuckAPI.selectors.getTotal(store.getState().counter)))
+// Output: getTotal: 1
 
-The following is the full example which demostrate how to use Ducks.
+// After: Ducks Style
+counter.operations.tap()
+console.info('getTotal:', counter.selectors.getTotal()))
+// Output: getTotal: 2
+```
+
+The Ducks Style is doing exactly the same as the Vanilla Style. However, it turns out  the Ducks Style is more clear and easy to use.
+
+That's it!
+
+## Example
+
+Let's get to know more about Ducks by **quack**!
+
+The following is the full example which demonstrate how to use Ducks.
 
 It shows that:
 
-1. Supports `redux-observable` and `redux-saga` out-of-the-box.
-1. Import duck modules with an easy and clean way.
-1. The best practice for writing a redux reducer bundle by following the ducks modular proposal.
+1. How to import duck modules with easy and clean way.
+1. Ducks supports `redux-observable` and `redux-saga` out-of-the-box with zero setting.
+1. How to stick with the best practices to write a redux reducer bundle by following the ducks modular proposal.
 
 ```ts
 import { createStore } from 'redux'
@@ -215,92 +266,194 @@ npm start
 
 ## API References
 
-### 3.1 Shortcut to Configure the Store
+Ducks is very easy to use, because one of the goals of designing it is to maximum the convenience.
 
-If you only use Redux with Ducks, then you can use the shortcut from the Ducks to get the configured store:
+We use `Ducks` to manage all `Duck` who is constructed from the `DuckAPI` specified by [ducks modular proposal](https://github.com/erikras/ducks-modular-redux).
+
+For validating the `DuckAPI` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDuckAPI` that accepts a `DuckAPI` to make sure it's valid (or throws a Error if it's not valid).
+
+### 1 `DuckAPI`
+
+The `DuckAPI` is defined from the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), and it may extend from both [Re-Ducks](https://github.com/alexnm/re-ducks) and [Ducksify](https://github.com/huan/ducks#ducksify-extension).
 
 ```ts
-const store = ducks.getStore()
+export interface DuckAPI {
+  /**
+   * Ducks Modular Proposal (https://github.com/erikras/ducks-modular-redux)
+   */
+  default: Reducer,
+
+  actions    : ActionCreatorsMapObject,
+  operations : OperationsMapObject,
+  selectors  : SelectorsMapObject,
+  types      : TypesMapObject,
+
+  /**
+   * Ducksify Extension (https://github.com/huan/ducks#ducksify-extension)
+   */
+  middlewares?: MiddlewaresMapObject,
+  epics?: EpicsMapObject,
+  sagas?: SagasMapObject,
+}
 ```
 
-The `ducks.getStore()` will do exact the same as the above `createStore()` codes.
+### 2 `Duck`
 
-## References
-
-in `compose()`, `ducks.enhancer()` must be put before `applyMiddleware`
+The `Duck` class is in charge of convert the `DuckAPI` to an instance of `Duck` for the future usage.
 
 ```ts
+import * as counterDuckAPI from './counter'
+const counterDuck = new Duck(counterDuckAPI)
+```
+
+For example, when we start using `Duck` instead of the `DuckAPI`, we will get the following differences:
+
+For `selectors`:
+
+```diff
+- counterDuckAPI.selectors.getTotal(store.getState().counter)()
++ counterDuck.selectors.getTotal()
+```
+
+For `operations`:
+
+```diff
+- counterDuckAPI.operations.tap(store.dispatch)()
++ counterDuck.operations.tap()
+```
+
+As you see, the above differences showed that the `Duck` will give you great convenience by currying the `Store` inside itself.
+
+> NOTE: A `Duck` can only be used after it has been managed by the `Ducks` (Learn more from the `Ducks` API reference)
+
+### 3 `Ducks`
+
+The `Ducks` class is in charge of managing the `Duck`s and connecting them to the Redux Store by providing a `enhancer()` to Redux `createStore()`.
+
+```ts
+import { Ducks } from 'ducks'
+import * as counterDuckAPI from './counter'
+
+const counter = new Duck(counterDuckAPI)
+const ducks = new Ducks({
+  counter,
+})
+
+const store = createStore(
+  state => state,
   ducks.enhancer(),
-  applyMiddleware(
+)
+
+// For convenience, we can use the `configureStore()` from the `Ducks`:
+// const store = ducks.configureStore()
+
+// Duck will be ready to use after the store has been created.
 ```
 
-### `reduceReducersFromMapObject`
+There is one important thing that we need to figure out is that when we are passing the `DuckMapObject` to initialize the `Ducks` (`{ counter }` in the code above), the key name of this duck will become the mount point for its state.
 
+Choose your key name wisely because it will inflect the state structure and typing for your store.
 
-> We planed to directly use [reduce-reducers](https://github.com/redux-utilities/reduce-reducers) before, however it does not support types well.
-> The `ReturnType` of it can not reflect the data type of the reducer returned state.
+> There's project named [Ducks++: Redux Reducer Bundles, Djamel Hassaine, 2017]((https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22)) to solve the mount point (namespace) problem, however, we are just use the keys in the `DucksObject` to archive the goal.
 
-Inspired from <https://github.com/redux-utilities/reduce-reducers/>
+#### 3.1 `enhancer()`
 
-Knowned Issues: <https://stackoverflow.com/a/44371190/1123955>
+Returns a `StoreEnhancer` for the Redux store creator, which is the most important and the only one who are in charge to initialize everything for the Ducks.
 
 ```ts
-const addAndMult = reduceReducers(reducerAdd, reducerMult) 
-
-const initial = addAndMult(undefined)
-/*
- * {
- *   sum: 0,
- *   totalOperations: 0
- * }
- *
- * First, reducerAdd is called, which gives us initial state { sum: 0 }
- * Second, reducerMult is called, which doesn't have payload, so it
- * just returns state unchanged.
- * That's why there isn't any `product` prop.
- */
+const store = createStore(
+  state => state,
+  ducks.enhancer(),
+)
 ```
 
+If you have other enhancers need to be used with the Ducks, for example, the `applyMiddleware()` enhancer from the Redux, you can use `compose()` from Redux to archive that:
 
+```ts
+import { applyMiddleware, compose, createStore } from 'redux'
+import { Ducks } from 'ducks'
+// ...
+const store = createStore(
+  state => state,
+  compose(
+    ducks.enhancer(),
+    applyMiddleware(
+      // ...
+    ),
+  )
+)
+```
 
-## Developing Tools
+> NOTE: our `enhancer()` should be put to the most left in the `compose()` argument list, because it would be better to make it to be the latest one to be called.
 
+#### 3.2 `configureStore()`
+
+If you only use Redux with Ducks, then you can use `configureStore()` shortcut from the Ducks to get the configured store.
+
+```ts
+const store = ducks.configureStore(preloadedStates)
+```
+
+The above code will be equals to the following naive Redux `createStore()` codes because the `configureStore()` is just a shortcut for convenience.
+
+```ts
+// This is exactly what `ducks.configureStore()` does:
+const store = createStore(
+  state => state,
+  preloadedStates,
+  ducks.enhancer(),
+)
+```
+
+### 4 `validateDuckAPI()`
+
+To make sure your Ducks API is following the specification of the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), we provide a validating function to check it.
+
+```ts
+import { validateDuckAPI } from 'ducks'
+import * as counterDuckAPI from './counter'
+
+validateDuckAPI(counterDuckAPI) // will throw if the counterDuckAPI is invalid.
+```
+
+## Resources
+
+- [Redux - Store enhancer](https://redux.js.org/glossary#store-enhancer)
 - [Typesafe utilities designed to reduce types verbosity and complexity in Redux Architecture](https://github.com/piotrwitek/typesafe-actions)
 - [Conditional Type Checks](https://github.com/dsherret/conditional-type-checks)
+- [Redux Ecosystem Links - A categorized list of addon libraries for Redux, as well as other libraries that are closely related](https://github.com/markerikson/redux-ecosystem-links)
 
-## Links
+### Modular
 
 - [Why I Chose to Modularize the Ducks in My React App // Lauren Lee // CascadiaJS 2018](https://www.youtube.com/watch?v=jr7D4VAzNig&t=960s)
 - [Redux: Another implementation for Selector Pattern](https://stackoverflow.com/q/53265572/1123955)
 - [Scaling your Redux App with ducks](https://www.freecodecamp.org/news/scaling-your-redux-app-with-ducks-6115955638be/)
 - [Where do I put my business logic in a React-Redux application?](https://medium.com/@jeffbski/where-do-i-put-my-business-logic-in-a-react-redux-application-9253ef91ce1)
 - [Redux Ecosystem Links - A categorized list of Redux-related addons, libraries, and utilities](https://github.com/markerikson/redux-ecosystem-links)
+- [Modular Reducers and Selectors](https://randycoulman.com/blog/2016/09/27/modular-reducers-and-selectors/)
 
-## Middlewares
+### Middlewares
 
 - [ducksMiddleware - Extract all available middleware from a ducks object and creates a middleware with all available middleware.](https://github.com/drpicox/ducks-middleware)
 - [Exploring Redux middleware - Nine simple stand-alone experiments to understand Redux Middlewares](https://blog.krawaller.se/posts/exploring-redux-middleware/)
-- [Redux Middleware Lifecycle - Impure and asynchronous; but still redux](https://hackernoon.com/
+- [Redux Middleware LifeCycle - Impure and asynchronous; but still redux](https://hackernoon.com/)
 - [Understanding Redux Middleware](https://medium.com/@meagle/understanding-87566abcfb7a)
 - [You Aren’t Using Redux Middleware Enough](https://medium.com/@jacobp100/you-arent-using-redux-middleware-enough-94ffe991e6)
-- [redux-dynamic-middlewares - Allow add or remove redux middlewares dynamically](https://github.com/pofigizm/redux-dynamic-middlewares)
-
-## Articles
-
-- [Modular Reducers and Selectors](https://randycoulman.com/blog/2016/09/27/modular-reducers-and-selectors/)
 - [Idiomatic Redux: Thoughts on Thunks, Sagas, Abstraction, and Reusability](https://blog.isquaredsoftware.com/2017/01/idiomatic-redux-thoughts-on-thunks-sagas-abstraction-and-reusability/)
-redux-middleware-lifecycle-7d8defa4db7e)
-- [reSolve - A Redux-Inspired Backend](https://medium.com/resolvejs/resolve-redux-backend-ebcfc79bbbea)
-
-### Sagas
-
 - [This collection of common Redux-saga patterns will make your life easier.](https://medium.com/free-code-camp/redux-saga-common-patterns-48437892e11c)
 - [Lost with Redux and sagas? Implement them yourself!](https://blog.castiel.me/posts/2019-08-03-lost-redux-saga-reimplement-them/)
 
-## Relate Libraries
+### Relate Libraries
+
+1. Microsoft Redux Dynamic Modules: Modularize Redux by dynamically loading reducers and middlewares.
+    - [microsoft/redux-dynamic-modules](https://github.com/microsoft/redux-dynamic-modules) is a library that aims to make Redux Reducers and middleware easy to modular-ize and add/remove dynamically.
+1. [ioof-holdings/redux-dynostore - These libraries provide tools for building dynamic Redux stores.](https://github.com/ioof-holdings/redux-dynostore)
+1. [reSolve - A Redux-Inspired Backend](https://medium.com/resolvejs/resolve-redux-backend-ebcfc79bbbea)
+1. [redux-dynamic-middlewares - Allow add or remove redux middlewares dynamically](https://github.com/pofigizm/redux-dynamic-middlewares)
+
+### Other Links
 
 - [redux-operations - Solves challenging redux problems in a clean, understandable, debuggable fasion](https://github.com/mattkrick/redux-operations)
-- [redux-dynamic-modules - Modularize Redux by dynamically loading reducers and middlewares.](https://github.com/microsoft/redux-dynamic-modules)
 - [Dynamically inject reducers in your react reduc app. HMR and SSR compatible.](https://github.com/GuillaumeCisco/redux-reducers-injector)
 - [Helper for loading sagas asynchronously using redux](https://github.com/GuillaumeCisco/redux-sagas-injector)
 - [💉 inject reducer and saga anywhere in the application.](https://github.com/marcelmokos/redux-inject-reducer-and-saga)
@@ -316,15 +469,7 @@ redux-middleware-lifecycle-7d8defa4db7e)
 - [tiny-duck - Composable redux reducers](https://github.com/LockedOn/tiny-duck)
 - [reduxModuleCreator - RMC is a tool for creating not coupled, reusable and testable modules based on Redux.](https://github.com/mtnt/reduxModuleCreator)
 
-## Related Projects
-
-- [redux-dynamic-middlewares - Allow add or remove redux middlewares dynamically](https://github.com/pofigizm/redux-dynamic-middlewares)
-
-## Resources
-
-- [Redux Ecosystem Links - A categorized list of addon libraries for Redux, as well as other libraries that are closely related](https://github.com/markerikson/redux-ecosystem-links)
-
-## Concepts
+## Future Thoughts
 
 Redux Ducks API compares with CQRS, Event Sourcing, and DDD:
 
@@ -339,31 +484,22 @@ Redux Ducks API compares with CQRS, Event Sourcing, and DDD:
 | types       | ??
 | reducers    | Reducers to calculate Aggregate state
 
-> [reSolve](https://reimagined.github.io/resolve/docs/introduction)
+> [reSolve](https://reimagined.github.io/resolve/docs/introduction) is a Node.js library for Redux & CQRS
 
-### DDD (Domain Driven Design)
+### Domain Driven Design (DDD)
 
 Domain aggregate is a business model unit. Business logic is mostly in command handlers for the aggregate.
 
-### ES (Event Sourcing()
+### Event Sourcing (ES)
 
 Don't store system state, store events that brought system to this state.
 
-### CQRS (Command Query Responsibility Segregation)
+### Command Query Responsibility Segregation (CQRS)
 
+[CQRS](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs) system is divided in two "sides":
 
-/**
- * CQRS - Command Query Responsibility Segregation
- *  https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs
- *
- *  1. `operations` for Command
- *  2. `selectors` for Query
- */
-
-System is divided in two "sides":
-
-- Write Side accepts commands and generate events that stored in the Event Store.
-- Read Side applies events to Read Models, and process queries.
+1. Write Side accepts commands and generate events that stored in the Event Store.
+1. Read Side applies events to Read Models, and process queries.
 
 ## History
 

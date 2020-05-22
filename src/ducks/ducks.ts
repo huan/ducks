@@ -55,11 +55,11 @@ class Ducks <T extends DucksMapObject> {
     sagaMiddleware?: SagaMiddleware,
   }
 
-  get reducer () {
+  protected get reducer () {
     return combineDuckery(this.duckery)
   }
 
-  get middlewares (): Middleware[] {
+  protected get middlewares (): Middleware[] {
     const middlewareList = Object.values(this.duckery)
       .map(duck => duck.api.middlewares)
       .filter(Boolean)
