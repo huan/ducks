@@ -31,7 +31,7 @@ The goal of Ducks is to:
 1. Implemented the specification from [Ducks Modular Proposal, Erik Rasmussen, 2015](https://github.com/erikras/ducks-modular-redux)
 1. Easy connecting ducks to store by adding one enhancer to redux. (that's all you need to do!)
 1. Fully typing with all APIs by TypeScript
-1. Binding `store` to `operators` and `selectors` by currying for maximum convenience.
+1. Currying `operators` and `selectors` by binding the `Store` to them for maximum convenience.
 
 Todo-list:
 
@@ -48,7 +48,7 @@ At last, I decide to write my own manager for ducks, which will implement the fo
 
 1. The Ducks Modular Proposal
 1. The Re-Ducks Extension: Duck Folders
-1. The Ducksify Extension: Currying for `selectors` and `operators`
+1. The Ducksify Extension: Currying `selectors` and `operators`
 
 ### 1 The Ducks Modular Proposal
 
@@ -198,7 +198,7 @@ console.info('getTotal:', counter.selectors.getTotal()))
 // Output: getTotal: 2
 ```
 
-It turns out that the Ducks Style is more clear and easy to use by currying the store to its first argument.
+It turns out that the Ducks Style is more clear and easy to use by currying them with the store as their first argument.
 
 That's it!
 
