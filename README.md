@@ -11,7 +11,7 @@
 
 [![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
 [![Re-Ducks Extended](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
-[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#ducksify-extension)
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension)
 
 Ducks offers a method of handling redux module packaging, installing, and running with your Redux store, with middleware support.
 
@@ -36,7 +36,7 @@ The goal of Ducks is to:
 Todo-list:
 
 - [ ] Ducks middleware support
-- [ ] Provides a Ducks Management interface for adding/deleting a duck module
+- [ ] Provides a Ducks Management interface for adding/deleting a duck module dynamically
 
 ## Motivation
 
@@ -48,13 +48,13 @@ At last, I decide to write my own manager for ducks, which will implement the fo
 
 1. The Ducks Modular Proposal
 1. The Re-Ducks Extension: Duck Folders
-1. The Ducksify Extension: Currying { Dispatch, getState() } for `selectors` and `operators`
+1. The Ducksify Extension: Currying for `selectors` and `operators`
 
 ### 1 The Ducks Modular Proposal
 
 [![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
 
-The specification has rules that a module...
+The specification has rules that a module:
 
 1. MUST `export default` a function called `reducer()`
 1. MUST `export` its action creators as functions
@@ -96,17 +96,17 @@ A duck folder:
 
 Here's the full version of Re-ducks proposal: [Building on the duck legacy, An attempt to extend the original proposal for redux modular architecture, Alex Moldovan, 2016](https://github.com/alexnm/re-ducks) and [blog](https://medium.com/better-programming/scaling-your-redux-app-with-ducks-6115955638be#.4ppptx7oq)
 
-### 3 Ducksify Extension
+### 3 Ducksify Extension: Currying
 
-[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#ducksify-extension)
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension)
 
 In order to build a better Ducks, [I](https://github.com/huan) defined the following rules and I call it **Ducksify**:
 
 1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `selectors` with a `State` object
 1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `operations` with a `Dispatch` function
-1. MAY export its middlewares functions
-1. MAY export its saga functions
-1. MAY export its epic functions
+1. MAY export its middlewares functions called `*Middleware()`
+1. MAY export its saga functions called `*Saga()`
+1. MAY export its epic functions called `*Epic()`
 1. MAY use [typesafe-actions](https://github.com/piotrwitek/typesafe-actions) to creating reducers, actions, and middlewares.
 
 If we has `sagas` or `epics`, the duck folder should be:
@@ -135,7 +135,7 @@ npm install ducks
 
 ### 1 Setup Ducks
 
-Ducks API module file: `counter.ts`:
+Create the Ducks API module file: `counter.ts`:
 
 ```ts
 export const types      = { TAP: 'ducks/examples/counter/TAP' }
@@ -151,14 +151,15 @@ export default function reducer (state = initialState, action) {
       total: (state.total || 0) + 1,
     })
   }
+  return state
 }
 ```
 
 ### 2 Load Ducks
 
 ```ts
-import { Ducks, Duck }    from 'ducks'
-import { counterDuckAPI } from './counter'
+import { Ducks, Duck }     from 'ducks'
+import * as counterDuckAPI from './counter'
 
 const counter = new Duck(counterDuckAPI)
 const ducks   = new Ducks({ counter })
@@ -177,25 +178,31 @@ const store = createStore(
 
 You are all set!
 
-### 4 Redux Operating
+### 4 Use Ducks
+
+The Vanilla Style and Ducks Style is doing exactly the same thing.
+
+#### The Vanilla Style
 
 ```ts
-// Before: Vanilla Style
 store.dispatch(counterDuckAPI.actions.tap())
 console.info('getTotal:', counterDuckAPI.selectors.getTotal(store.getState().counter)))
 // Output: getTotal: 1
+```
 
-// After: Ducks Style
+#### The Ducks Style
+
+```ts
 counter.operations.tap()
 console.info('getTotal:', counter.selectors.getTotal()))
 // Output: getTotal: 2
 ```
 
-The Ducks Style is doing exactly the same as the Vanilla Style. However, it turns out  the Ducks Style is more clear and easy to use.
+It turns out that the Ducks Style is more clear and easy to use by currying the store to its first argument.
 
 That's it!
 
-## Example
+## Examples
 
 Let's get to know more about Ducks by **quack**!
 
@@ -204,7 +211,7 @@ The following is the full example which demonstrate how to use Ducks.
 It shows that:
 
 1. How to import duck modules with easy and clean way.
-1. Ducks supports `redux-observable` and `redux-saga` out-of-the-box with zero setting.
+1. Ducks supports `redux-observable` and `redux-saga` out-of-the-box with zero configuration.
 1. How to stick with the best practices to write a redux reducer bundle by following the ducks modular proposal.
 
 ```ts
@@ -270,7 +277,7 @@ Ducks is very easy to use, because one of the goals of designing it is to maximu
 
 We use `Ducks` to manage all `Duck` who is constructed from the `DuckAPI` specified by [ducks modular proposal](https://github.com/erikras/ducks-modular-redux).
 
-For validating the `DuckAPI` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDuckAPI` that accepts a `DuckAPI` to make sure it's valid (or throws a Error if it's not valid).
+For validating the `DuckAPI` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDuckAPI` that accepts a `DuckAPI` to make sure it's valid (it will throws an Error when it's invalid).
 
 ### 1 `DuckAPI`
 
@@ -352,13 +359,13 @@ const store = createStore(
 
 There is one important thing that we need to figure out is that when we are passing the `DuckMapObject` to initialize the `Ducks` (`{ counter }` in the code above), the key name of this duck will become the mount point for its state.
 
-Choose your key name wisely because it will inflect the state structure and typing for your store.
+Choose your key name wisely because it will inflect the state structure and the typing for your store.
 
-> There's project named [Ducks++: Redux Reducer Bundles, Djamel Hassaine, 2017]((https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22)) to solve the mount point (namespace) problem, however, we are just use the keys in the `DucksObject` to archive the goal.
+> There's project named [Ducks++: Redux Reducer Bundles, Djamel Hassaine, 2017](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22) to solve the mount point (namespace) problem, however, we are just use the keys in the `DucksObject` to archive the same goal.
 
 #### 3.1 `enhancer()`
 
-Returns a `StoreEnhancer` for the Redux store creator, which is the most important and the only one who are in charge to initialize everything for the Ducks.
+Returns a `StoreEnhancer` for using with the Redux store creator, which is the most important and the only one who are in charge of initializing everything for the Ducks.
 
 ```ts
 const store = createStore(
@@ -384,17 +391,17 @@ const store = createStore(
 )
 ```
 
-> NOTE: our `enhancer()` should be put to the most left in the `compose()` argument list, because it would be better to make it to be the latest one to be called.
+> NOTE: our `enhancer()` should be put to the most left in the `compose()` argument list, because it would be better to make it to be the most outside one to be called.
 
 #### 3.2 `configureStore()`
 
-If you only use Redux with Ducks, then you can use `configureStore()` shortcut from the Ducks to get the configured store.
+If you only use Redux with Ducks without any other reducers, then you can use `configureStore()` shortcut from the Ducks to get the configured store.
 
 ```ts
 const store = ducks.configureStore(preloadedStates)
 ```
 
-The above code will be equals to the following naive Redux `createStore()` codes because the `configureStore()` is just a shortcut for convenience.
+The above code will be equals to the following naive Redux `createStore()` codes because the `configureStore()` is just a shortcut of that for our convenience.
 
 ```ts
 // This is exactly what `ducks.configureStore()` does:
