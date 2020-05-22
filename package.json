@@ -1,7 +1,7 @@
 {
   "name": "ducks",
   "version": "0.2.2",
-  "description": "Redux Ducks Interface Enforcement by TypeScript",
+  "description": "🦆🦆🦆 Ducks is a Reducer Bundle Manager that Implementing the Redux Ducks Modular Proposal with Great Convenience.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "directories": {
