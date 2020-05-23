@@ -49,7 +49,7 @@ export interface OperationsMapObject {
 }
 
 export interface SelectorsMapObject {
-  [selector: string]: (state: any) => (...args: any[]) => any,
+  [selector: string]: (state: {}) => (...args: any[]) => any,
 }
 
 export interface MiddlewaresMapObject {
