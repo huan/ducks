@@ -48,8 +48,8 @@ export interface OperationsMapObject {
   [operation: string]: (dispatch: Dispatch) => (...args: any[]) => any,
 }
 
-export interface SelectorsMapObject {
-  [selector: string]: (state: {}) => (...args: any[]) => any,
+export interface SelectorsMapObject <T extends {} = any> {
+  [selector: string]: (state: T) => (...args: any[]) => any,
 }
 
 export interface MiddlewaresMapObject {
