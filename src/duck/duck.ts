@@ -39,10 +39,12 @@ import {
 type DuckOperations <O extends OperationsMapObject> = {
   [key in keyof O]: ReturnType<O[key]>
 }
+type DucksifyOperations <D extends DuckAPI> = DuckOperations <D extends { operations: any } ? D['operations'] : {}>
 
 type DuckSelectors <S extends SelectorsMapObject> = {
   [key in keyof S]: ReturnType<S[key]>
 }
+type DucksifySelectors <D extends DuckAPI> = DuckSelectors <D extends { selectors: any } ? D['selectors'] : {}>
 
 class Duck <API extends DuckAPI = DuckAPI> {
 
@@ -67,8 +69,8 @@ class Duck <API extends DuckAPI = DuckAPI> {
     return this.duckSelectors
   }
 
-  protected duckSelectors  : DuckSelectors<API['selectors']>
-  protected duckOperations : DuckOperations<API['operations']>
+  protected duckSelectors  : DucksifySelectors<API>
+  protected duckOperations : DucksifyOperations<API>
 
   protected get state () : ReturnType<API['default']> {
 
@@ -104,8 +106,8 @@ class Duck <API extends DuckAPI = DuckAPI> {
      *
      * Huan(202005): I'd like to call this: ducksify
      */
-    this.duckOperations = this.ducksifyOperations(this.api.operations)
-    this.duckSelectors  = this.ducksifySelectors(this.api.selectors)
+    this.duckOperations = this.ducksifyOperations(this.api)
+    this.duckSelectors  = this.ducksifySelectors(this.api)
   }
 
   public setStore (store: Store): void {
@@ -123,9 +125,14 @@ class Duck <API extends DuckAPI = DuckAPI> {
   }
 
   protected ducksifyOperations (
-    operations: API['operations'],
-  ): DuckOperations<API['operations']> {
+    api: API,
+  ): DucksifyOperations<API> {
     let duckOperations: DuckOperations<any> = {}
+
+    const operations = api.operations
+    if (!operations) {
+      return duckOperations
+    }
 
     const that = this
     Object.keys(operations).forEach(operation => {
@@ -146,9 +153,14 @@ class Duck <API extends DuckAPI = DuckAPI> {
   }
 
   protected ducksifySelectors (
-    selectors: API['selectors'],
-  ): DuckOperations<API['selectors']> {
-    let duckOperations: DuckOperations<any> = {}
+    api: API,
+  ): DucksifySelectors<API> {
+    let duckSelectors: DuckSelectors<any> = {}
+    const selectors = api.selectors
+
+    if (!selectors) {
+      return duckSelectors
+    }
 
     const that = this
     Object.keys(selectors).forEach(selector => {
@@ -156,8 +168,8 @@ class Duck <API extends DuckAPI = DuckAPI> {
        * Inferred function names
        *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
        */
-      duckOperations = {
-        ...duckOperations,
+      duckSelectors = {
+        ...duckSelectors,
         [selector]: function (...args: any[]) {
           return selectors[selector](
             that.state,
@@ -165,7 +177,7 @@ class Duck <API extends DuckAPI = DuckAPI> {
         },
       }
     })
-    return duckOperations
+    return duckSelectors
   }
 
 }

@@ -77,19 +77,28 @@ function validateActions <T extends MapObject> (actions: T) {
   Object.values(actions).forEach(validateActionType)
 }
 
-function validateOperations <T extends MapObject> (operations: T) {
+function validateOperations <T extends MapObject> (operations?: T) {
+  if (!operations) {
+    return
+  }
   assert.ok(operations, 'should exported operations')
   Object.keys(operations).forEach(validateString)
   Object.values(operations).forEach(validateOperationType)
 }
 
-function validateSelectors <T extends MapObject> (selectors: T) {
+function validateSelectors <T extends MapObject> (selectors?: T) {
+  if (!selectors) {
+    return
+  }
   assert.ok(selectors, 'should exported selectors')
   Object.keys(selectors).forEach(validateString)
   Object.values(selectors).forEach(validateSelectorType)
 }
 
-function validateTypes <T extends MapObject> (types: T) {
+function validateTypes <T extends MapObject> (types?: T) {
+  if (!types) {
+    return
+  }
   assert.ok(types, 'should exported types')
   Object.keys(types).forEach(validateString)
   Object.values(types).forEach(validateString)

@@ -76,11 +76,11 @@ export interface DuckAPI {
   actions: AsyncActionCreatorsMapObject,
 
   // CQRS - `operations` for Command
-  operations  : OperationsMapObject,
+  operations?: OperationsMapObject,
   // CQRS - `selectors` for Query
-  selectors   : SelectorsMapObject,
+  selectors?: SelectorsMapObject,
 
-  types       : TypesMapObject,
+  types?: TypesMapObject,
 
   // Domain Aggregates: reducer & middlewares
   default: Reducer,
