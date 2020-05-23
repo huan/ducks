@@ -16,6 +16,10 @@
  *   limitations under the License.
  *
  */
-export { Duck }             from './duck'
-export { API }              from './api'
-export { validateDuckAPI }  from './validate-duck-api'
+import { Reducer } from 'redux'
+
+const nopReducer: Reducer<{}, any> = state => state || {}
+
+export {
+  nopReducer,
+}

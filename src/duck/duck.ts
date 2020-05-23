@@ -26,10 +26,10 @@ import {
 }                   from '../config'
 
 import {
-  DuckAPI,
+  API,
   OperationsMapObject,
   SelectorsMapObject,
-}                         from './duck-api'
+}                         from './api'
 
 /**
  * Map types from a Map Object
@@ -39,14 +39,14 @@ import {
 type DuckOperations <O extends OperationsMapObject> = {
   [key in keyof O]: ReturnType<O[key]>
 }
-type DucksifyOperations <D extends DuckAPI> = DuckOperations <D extends { operations: any } ? D['operations'] : {}>
+type DucksifyOperations <D extends API> = DuckOperations <D extends { operations: any } ? D['operations'] : {}>
 
 type DuckSelectors <S extends SelectorsMapObject> = {
   [key in keyof S]: ReturnType<S[key]>
 }
-type DucksifySelectors <D extends DuckAPI> = DuckSelectors <D extends { selectors: any } ? D['selectors'] : {}>
+type DucksifySelectors <D extends API> = DuckSelectors <D extends { selectors: any } ? D['selectors'] : {}>
 
-class Duck <API extends DuckAPI = DuckAPI> {
+class Duck {
 
   static VERSION = VERSION
 

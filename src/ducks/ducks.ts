@@ -39,6 +39,7 @@ import { Duck }         from '../duck/'
 
 import { combineDuckery } from './combine-duckery'
 import { insertReducers } from './insert-reducers'
+import { nopReducer }     from './nop-reducer'
 
 export interface DucksMapObject {
   [namespace: string]: Duck,
@@ -150,7 +151,6 @@ class Ducks <T extends DucksMapObject> {
       throw new Error('Ducks can be only configureStore() for once! If you need another store, you can create another Ducks to fullfil your needs.')
     }
 
-    const nopReducer = (state: any) => state
     const store = createStore(
       nopReducer,
       preloadedState,

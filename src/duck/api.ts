@@ -64,7 +64,13 @@ export interface SagasMapObject {
   [saga: string]: Saga,
 }
 
-export interface DuckAPI {
+/**
+ *
+ * API for Ducks Modular Proposal
+ *  (a.k.a. Redux Reducer Bundles)
+ *
+ */
+export interface API {
   /**
    *
    * Ducks Proposal: https://github.com/erikras/ducks-modular-redux

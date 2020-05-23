@@ -24,7 +24,7 @@ import {
   Reducer,
 }                 from 'redux'
 
-import { DuckAPI } from './duck-api'
+import { API } from './api'
 
 export interface MapObject {
   [key: string]: any,
@@ -43,7 +43,7 @@ export interface MapObject {
  *  3. Conditional Type Checks - https://github.com/dsherret/conditional-type-checks
  */
 
-function validateDuckAPI <T extends DuckAPI> (api: T) {
+function validateDuckAPI <T extends API> (api: T) {
   validateActions(api.actions)
   validateOperations(api.operations)
   validateReducer(api.default)

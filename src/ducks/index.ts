@@ -16,7 +16,8 @@
  *   limitations under the License.
  *
  */
-export { Ducks } from './ducks'
+export { Ducks }      from './ducks'
+export { nopReducer } from './nop-reducer'
 
 // Huan(202005) @deprecated: we should keep core ducks code simple.
 // export { reduceReducersFromMapObject } from './reduce-reducers-from-map-object'

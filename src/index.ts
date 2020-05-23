@@ -21,7 +21,10 @@ export {
 }                    from './config'
 export {
   Duck,
-  DuckAPI,
+  API,
   validateDuckAPI,
 }                    from './duck/'
-export { Ducks }      from './ducks/'
+export {
+  Ducks,
+  nopReducer,
+}                    from './ducks/'
