@@ -3,7 +3,7 @@
 [![NPM Version](https://img.shields.io/npm/v/ducks?color=yellow)](https://www.npmjs.com/package/ducks)
 [![NPM](https://github.com/huan/ducks/workflows/NPM/badge.svg)](https://github.com/huan/ducks/actions?query=workflow%3ANPM)
 
-🦆🦆🦆Ducks is a Reducer Bundle Manager that Implementing the Redux Ducks Modular Proposal with Great Convenience.
+🦆🦆🦆Ducks is a Reducer Bundles Manager that Implementing the Redux Ducks Modular Proposal with Great Convenience.
 
 [![Ducks](https://huan.github.io/ducks/images/ducks.png)](https://github.com/huan/ducks)
 
