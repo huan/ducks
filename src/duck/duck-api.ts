@@ -17,7 +17,7 @@
  *
  */
 import {
-  ActionCreatorsMapObject,
+  ActionCreator,
   Reducer,
   Dispatch,
   Middleware,
@@ -25,6 +25,20 @@ import {
 
 import { Epic } from 'redux-observable'
 import { Saga } from 'redux-saga'
+
+/**
+ * Huan(202005): typesafe style Async Action Creator
+ */
+export interface AsyncActionCreator<A> {
+  request: (...args: any[]) => A,
+  success: (...args: any[]) => A,
+  failure: (...args: any[]) => A,
+  cancel?: (...args: any[]) => A,
+}
+
+export interface AsyncActionCreatorsMapObject<A = any> {
+  [key: string]: ActionCreator<A> | AsyncActionCreator<A>
+}
 
 export interface TypesMapObject {
   [type: string]: string,
@@ -59,7 +73,7 @@ export interface DuckAPI {
    */
 
   // Command handlers: return an Event each:
-  actions: ActionCreatorsMapObject,
+  actions: AsyncActionCreatorsMapObject,
 
   // CQRS - `operations` for Command
   operations  : OperationsMapObject,
