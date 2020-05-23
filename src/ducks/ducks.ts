@@ -70,6 +70,13 @@ class Ducks <T extends DucksMapObject> {
     return middlewareList
   }
 
+  /**
+   * Construct a `Ducks` manager for managing the Duck(s)
+   *
+   * @param duckery is a `DucksMapObject` which:
+   *  1. key is the reducer key (namespace)
+   *  2. value is a `Duck` instance
+   */
   constructor (
     protected readonly duckery: T,
   ) {

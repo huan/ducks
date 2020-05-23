@@ -46,20 +46,20 @@ type DuckSelectors <S extends SelectorsMapObject> = {
 }
 type DucksifySelectors <D extends API> = DuckSelectors <D extends { selectors: any } ? D['selectors'] : {}>
 
-class Duck {
+class Duck <A extends API = API> {
 
   static VERSION = VERSION
 
   protected store: Store
   namespaces: string[]
 
-  get reducer (): API['default']    { return this.api.default }
+  get reducer (): A['default']    { return this.api.default }
 
-  get actions () : API['actions']   { return this.api.actions }
-  get types ()   : API['types']     { return this.api.types }
+  get actions () : A['actions']   { return this.api.actions }
+  get types ()   : A['types']     { return this.api.types }
 
-  // get epics () : API['epics'] { return this.api.epics }
-  // get sagas () : API['sagas'] { return this.api.sagas }
+  // get epics () : A['epics'] { return this.api.epics }
+  // get sagas () : A['sagas'] { return this.api.sagas }
 
   get operations () {
     return this.duckOperations
@@ -69,10 +69,10 @@ class Duck {
     return this.duckSelectors
   }
 
-  protected duckSelectors  : DucksifySelectors<API>
-  protected duckOperations : DucksifyOperations<API>
+  protected duckSelectors  : DucksifySelectors<A>
+  protected duckOperations : DucksifyOperations<A>
 
-  protected get state () : ReturnType<API['default']> {
+  protected get state () : ReturnType<A['default']> {
 
     // console.info('[duck] state:', this.store.getState())
     // console.info('[duck] namespaces:', this.namespaces)
@@ -94,7 +94,7 @@ class Duck {
   }
 
   constructor (
-    public api: API,
+    public api: A,
   ) {
     this.store     = TMP_STORE
     this.namespaces = []
@@ -125,8 +125,8 @@ class Duck {
   }
 
   protected ducksifyOperations (
-    api: API,
-  ): DucksifyOperations<API> {
+    api: A,
+  ): DucksifyOperations<A> {
     let duckOperations: DuckOperations<any> = {}
 
     const operations = api.operations
@@ -153,8 +153,8 @@ class Duck {
   }
 
   protected ducksifySelectors (
-    api: API,
-  ): DucksifySelectors<API> {
+    api: A,
+  ): DucksifySelectors<A> {
     let duckSelectors: DuckSelectors<any> = {}
     const selectors = api.selectors
 

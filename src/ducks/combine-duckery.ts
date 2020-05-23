@@ -37,6 +37,9 @@ export type DuckReducersMapObject <D extends DucksMapObject> = {
 //   [key in keyof D]: ActionFromReducersMapObject<D[key]['actions']>
 // }
 
+/**
+ * combineDuckery is combineReducer for Ducks
+ */
 function combineDuckery <D extends DucksMapObject> (
   ducks: D
 ): Reducer <
