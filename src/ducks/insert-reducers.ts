@@ -43,7 +43,7 @@ type ActionFromInsertReducers<
 
 /**
  * We have to do some tricky with insertReducer.
- *  becasue the Redux reduce system will check matching for the the keys of the state and reducers.
+ *  because the Redux reduce system will check matching for the the keys of the state and reducers.
  */
 function insertReducers <
   R extends Reducer,

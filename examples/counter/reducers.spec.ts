@@ -27,24 +27,17 @@ import reducer from './reducers'
 import * as actions from './actions'
 
 test('counter reducer initial state', async t => {
-  const INITIAL_STATE = {
-    total: 0,
-  }
-
   let state = reducer(undefined, {} as any)
   t.deepEqual(state, { total: 0 }, 'should return the initial state')
 
-  state = reducer(INITIAL_STATE, actions.tap())
+  state = reducer(state, actions.tap())
   t.deepEqual(state, { total: 1 }, 'should increase 1 after tap()')
+
+  state = reducer(state, actions.tap(2))
+  t.deepEqual(state, { total: 3 }, 'should increase 3 after tap(2)')
 })
 
-test('counter reducer initial state', async t => {
-  const INITIAL_STATE = {
-    counter: {
-      total: 0,
-    },
-  }
-
+test('counter reducer with combineReducers()', async t => {
   const combinedReducer = combineReducers({
     counter: reducer,
   })
@@ -52,6 +45,6 @@ test('counter reducer initial state', async t => {
   let state = combinedReducer(undefined, {} as any)
   t.deepEqual(state, { counter: { total: 0 } }, 'should return the initial state')
 
-  state = combinedReducer(INITIAL_STATE, actions.tap())
+  state = combinedReducer(state, actions.tap())
   t.deepEqual(state, { counter: { total: 1 } }, 'should increase 1 after tap()')
 })

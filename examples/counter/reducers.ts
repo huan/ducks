@@ -16,7 +16,7 @@
  *   limitations under the License.
  *
  */
-import { Action } from 'redux'
+import { AnyAction } from 'redux'
 
 import * as types from './types'
 
@@ -24,11 +24,11 @@ const initialState = {
   total: 0,
 }
 
-const reducer = (state = initialState, action: Action) => {
+const reducer = (state = initialState, action: AnyAction) => {
   if (action.type === types.TAP) {
     return ({
       ...state,
-      total: (state.total || 0) + 1,
+      total: (state.total || 0) + action.payload.times,
     })
   }
   return state

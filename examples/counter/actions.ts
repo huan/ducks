@@ -18,7 +18,7 @@
  */
 import * as types from './types'
 
-const tap   = () => ({ type: types.TAP })
+const tap = (times = 1) => ({ payload: { times }, type: types.TAP })
 
 export {
   tap,

@@ -20,8 +20,9 @@ export {
   VERSION,
 }                    from './config'
 export {
-  Duck,
   API,
+  Duck,
+  Ducksifiable,
   validateDuckAPI,
 }                    from './duck/'
 export {

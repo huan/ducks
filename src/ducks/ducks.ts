@@ -93,15 +93,21 @@ class Ducks <T extends DucksMapObject> {
       this.asyncMiddlewares.epicMiddleware = require('redux-observable').createEpicMiddleware()
     }
     if (!this.asyncMiddlewares.sagaMiddleware && this.getRootSaga()) {
-      this.asyncMiddlewares.sagaMiddleware = require('redux-saga').default() as SagaMiddleware
+      this.asyncMiddlewares.sagaMiddleware = require('redux-saga').default()
     }
 
-    const asyncMiddlewares = Object.values(this.asyncMiddlewares).filter(Boolean) as Middleware[]
+    const asyncMiddlewareList = Object.values(this.asyncMiddlewares).filter(Boolean) as Middleware[]
 
     return compose(
-      this.storeEnhancer(), // Huan(202005): this should be put before applyMiddleware (to initiate asyncMiddlewares before storeEnhancer)
+      /**
+       * Huan(202005):
+       *  the `this.storeEnhancer()` should be put before applyMiddleware
+       *  (to initiate asyncMiddlewares before storeEnhancer)
+       */
+      this.storeEnhancer(),
+
       applyMiddleware(
-        ...asyncMiddlewares,
+        ...asyncMiddlewareList,
         ...this.middlewares
       ),
     )
