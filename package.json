@@ -1,7 +1,7 @@
 {
   "name": "ducks",
   "version": "0.2.9",
-  "description": "🦆🦆🦆 Ducks is a Reducer Bundle Manager that Implementing the Redux Ducks Modular Proposal with Great Convenience.",
+  "description": "🦆🦆🦆 Ducks is a Reducer Bundles Manager that Implementing the Redux Ducks Modular Proposal with Great Convenience.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "directories": {
