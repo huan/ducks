@@ -190,7 +190,7 @@ console.info('getTotal:', counterDuckAPI.selectors.getTotal(store.getState().cou
 // Output: getTotal: 1
 ```
 
-#### The Ducks Style
+#### The Ducksify Style
 
 ```ts
 counter.operations.tap()
@@ -198,7 +198,7 @@ console.info('getTotal:', counter.selectors.getTotal()))
 // Output: getTotal: 2
 ```
 
-It turns out that the Ducks Style is more clear and easy to use by currying them with the store as their first argument.
+It turns out that the Ducksify Style is more clear and easy to use by currying them with the store as their first argument.
 
 That's it!
 
