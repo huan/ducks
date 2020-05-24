@@ -27,5 +27,5 @@ export {
 }                    from './duck/'
 export {
   Ducks,
-  nopReducer,
+  noopReducer,
 }                    from './ducks/'

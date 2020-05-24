@@ -18,8 +18,8 @@
  */
 import { Reducer } from 'redux'
 
-const nopReducer: Reducer<{}, any> = state => state || {}
+const noopReducer: Reducer<{}, any> = state => state || {}
 
 export {
-  nopReducer,
+  noopReducer,
 }

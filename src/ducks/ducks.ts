@@ -39,7 +39,7 @@ import { Duck }         from '../duck/'
 
 import { combineDuckery } from './combine-duckery'
 import { insertReducers } from './insert-reducers'
-import { nopReducer }     from './nop-reducer'
+import { noopReducer }     from './noop-reducer'
 
 export interface DucksMapObject {
   [namespace: string]: Duck,
@@ -165,7 +165,7 @@ class Ducks <T extends DucksMapObject> {
     }
 
     const store = createStore(
-      nopReducer,
+      noopReducer,
       preloadedState,
       this.enhancer(),
     )
