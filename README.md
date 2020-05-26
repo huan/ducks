@@ -140,11 +140,6 @@ In order to build a better Ducks, [I](https://github.com/huan) defined the follo
     ├── middlewares.js
     ```
 
-## Requirements
-
-1. Node.js v12+
-1. Browsers
-
 ## Install
 
 Run
