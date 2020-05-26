@@ -16,7 +16,7 @@
  *   limitations under the License.
  *
  */
-const TOGGLE   = 'ducks/examples/switch/TOGGLE'
+const TOGGLE   = 'ducks/examples/switcher/TOGGLE'
 
 export {
   TOGGLE,

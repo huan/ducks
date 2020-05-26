@@ -78,7 +78,8 @@
     "Ducksify",
     "Hassaine",
     "duckery",
-    "middlewares"
+    "middlewares",
+    "pingpong"
   ],
 
 }

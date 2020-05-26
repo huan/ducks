@@ -16,7 +16,9 @@
  *   limitations under the License.
  *
  */
-const getStatus = (state: { status: boolean }) => () => state.status
+import { State } from './reducers'
+
+const getStatus = (state: State) => () => state.status
 
 export {
   getStatus,

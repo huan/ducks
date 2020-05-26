@@ -16,22 +16,27 @@
  *   limitations under the License.
  *
  */
-import { Action } from 'redux'
+import {
+  createReducer,
+  ActionType,
+}                 from 'typesafe-actions'
+import { DeepReadonly }  from 'utility-types'
 
-import * as types from './types'
+import * as actions from './actions'
 
-const initialState = {
+const initialState: DeepReadonly<{
+  status: boolean,
+}> = {
   status: false,
 }
 
-const reducer = (state = initialState, action: Action) => {
-  if (action.type === types.TOGGLE) {
-    return ({
-      ...state,
-      status: !state.status,
-    })
-  }
-  return state
-}
+export type State   = typeof initialState
+type Actions = ActionType<typeof actions>
+
+const reducer = createReducer<State, Actions>(initialState)
+  .handleAction(actions.toggle, state => ({
+    ...state,
+    status: !state.status,
+  }))
 
 export default reducer
