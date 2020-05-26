@@ -102,7 +102,7 @@ Here's the full version of Re-ducks proposal: [Building on the duck legacy, An a
 
 In order to build a better Ducks, [I](https://github.com/huan) defined the following rules and I call it **Ducksify**:
 
-1. MUST export its module interface as the following Ducks `API` to satisfies the **Ducks**, **Re-Ducks**, **Ducksify** specifications:
+1. MUST export its module interface as the following Ducks `API`:
 
     ```ts
     export interface API {
@@ -117,7 +117,7 @@ In order to build a better Ducks, [I](https://github.com/huan) defined the follo
       types?     : TypesMapObject,
 
       /**
-       * Ducksify Extension (https://github.com/huan/ducks#ducksify-extension)
+       * Ducksify Extension (https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
       */
       middlewares?: MiddlewaresMapObject,
       epics?: EpicsMapObject,
@@ -313,7 +313,7 @@ For validating the `API` form the redux module (a.k.a reducer bundle), we have a
 
 ### 1 `API`
 
-The Ducks `API` is defined from the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), extended from both [Re-Ducks](https://github.com/alexnm/re-ducks) and [Ducksify](https://github.com/huan/ducks#ducksify-extension).
+The Ducks `API` is defined from the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), extended from both [Re-Ducks](https://github.com/alexnm/re-ducks) and [Ducksify](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface).
 
 Example:
 

@@ -73,8 +73,11 @@ export interface SagasMapObject {
 export interface API {
   /**
    *
-   * Ducks Proposal: https://github.com/erikras/ducks-modular-redux
-   *  Ducks: Redux Reducer Bundles - A proposal for bundling reducers, action types and actions when using Redux
+   * Ducks Proposal:
+   *  Ducks: Redux Reducer Bundles
+   *    - A proposal for bundling reducers, action types and actions when using Redux
+   *
+   *  https://github.com/erikras/ducks-modular-redux
    *
    */
 
@@ -93,7 +96,8 @@ export interface API {
 
   /**
    *
-   * Ducksify Extension
+   * Ducksify Extension: Currying & API Interface
+   *  https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface
    *
    */
   // Middlewares
