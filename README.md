@@ -11,7 +11,7 @@
 
 [![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
 [![Re-Ducks Extended](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
-[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension)
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
 
 Ducks offers a method of handling redux module packaging, installing, and running with your Redux store, with middleware support.
 
@@ -98,17 +98,11 @@ Here's the full version of Re-ducks proposal: [Building on the duck legacy, An a
 
 ### 3 Ducksify Extension: Currying & API Interface
 
-[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension)
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
 
 In order to build a better Ducks, [I](https://github.com/huan) defined the following rules and I call it **Ducksify**:
 
-1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `selectors.*` with a `State` object
-1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `operations.*` with a `Dispatch` function
-1. MAY export its middlewares functions called `*Middleware()`
-1. MAY export its saga functions called `*Saga()`
-1. MAY export its epic functions called `*Epic()`
-1. MAY use [typesafe-actions](https://github.com/piotrwitek/typesafe-actions) to creating reducers, actions, and middlewares.
-1. MUST export its module interface as the following Ducks `API` to satisfies all the Ducks specifications:
+1. MUST export its module interface as the following Ducks `API` to satisfies the **Ducks**, **Re-Ducks**, **Ducksify** specifications:
 
     ```ts
     export interface API {
@@ -131,6 +125,12 @@ In order to build a better Ducks, [I](https://github.com/huan) defined the follo
     }
     ```
 
+1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `selectors.*` with a `State` object
+1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `operations.*` with a `Dispatch` function
+1. MAY export its middlewares functions called `*Middleware()`
+1. MAY export its saga functions called `*Saga()`
+1. MAY export its epic functions called `*Epic()`
+1. MAY use [typesafe-actions](https://github.com/piotrwitek/typesafe-actions) to creating reducers, actions, and middlewares.
 1. If we has `sagas`, `epics`, or `middlewares` the **duck** folder would like:
 
     ```sh
@@ -181,9 +181,9 @@ export default function reducer (state = initialState, action) {
 
 ```ts
 import { Ducks, Duck }     from 'ducks'
-import * as counterDuckAPI from './counter'
+import * as counterAPI from './counter'
 
-const counter = new Duck(counterDuckAPI)
+const counter = new Duck(counterAPI)
 const ducks   = new Ducks({ counter })
 ```
 
@@ -207,8 +207,8 @@ The Vanilla Style and Ducks Style is doing exactly the same thing.
 #### The Vanilla Style
 
 ```ts
-store.dispatch(counterDuckAPI.actions.tap())
-console.info('getTotal:', counterDuckAPI.selectors.getTotal(store.getState().counter)))
+store.dispatch(counterAPI.actions.tap())
+console.info('getTotal:', counterAPI.selectors.getTotal(store.getState().counter)))
 // Output: getTotal: 1
 ```
 
@@ -240,15 +240,15 @@ It shows that:
 import { createStore } from 'redux'
 import { Duck, Ducks } from 'ducks'
 
-import * as counterDuckAPI  from './counter'    // Vanilla Duck: +1
-import * as dingDongDuckAPI from './ding-dong'  // Observable Middleware
-import * as pingPongDuckAPI from './ping-pong'  // Saga Middleware
-import * as switcherDuckAPI from './switcher'   // Type Safe Actions: ON/OFF
+import * as counterAPI  from './counter'    // Vanilla Duck: +1
+import * as dingDongAPI from './ding-dong'  // Observable Middleware
+import * as pingPongAPI from './ping-pong'  // Saga Middleware
+import * as switcherAPI from './switcher'   // Type Safe Actions: ON/OFF
 
-const counter  = new Duck(counterDuckAPI)
-const switcher = new Duck(switcherDuckAPI)
-const dingDong = new Duck(dingDongDuckAPI)
-const pingPong = new Duck(pingPongDuckAPI)
+const counter  = new Duck(counterAPI)
+const switcher = new Duck(switcherAPI)
+const dingDong = new Duck(dingDongAPI)
+const pingPong = new Duck(pingPongAPI)
 
 const ducks = new Ducks({
   counter,
@@ -307,9 +307,9 @@ npm start
 
 Ducks is very easy to use, because one of the goals of designing it is to maximum the convenience.
 
-We use `Ducks` to manage all `Duck` who is constructed from the `DuckAPI` specified by [ducks modular proposal](https://github.com/erikras/ducks-modular-redux).
+We use `Ducks` to manage all `Duck` who is constructed from the `API` specified by [ducks modular proposal](https://github.com/erikras/ducks-modular-redux).
 
-For validating the `DuckAPI` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDuckAPI` that accepts a `DuckAPI` to make sure it's valid (it will throws an Error when it's invalid).
+For validating the `API` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDuckAPI` that accepts a `API` to make sure it's valid (it will throws an Error when it's invalid).
 
 ### 1 `API`
 
@@ -346,7 +346,7 @@ import * as counterAPI from './counter'
 const counterDuck = new Duck(counterAPI)
 ```
 
-For example, when we start using `Duck` instead of the `DuckAPI`, we will get the following differences:
+For example, when we start using `Duck` instead of the `API`, we will get the following differences:
 
 For `selectors`:
 
@@ -447,9 +447,9 @@ To make sure your Ducks API is following the specification of the [ducks modular
 
 ```ts
 import { validateDuckAPI } from 'ducks'
-import * as counterDuckAPI from './counter'
+import * as counterAPI from './counter'
 
-validateDuckAPI(counterDuckAPI) // will throw if the counterDuckAPI is invalid.
+validateDuckAPI(counterAPI) // will throw if the counterAPI is invalid.
 ```
 
 ## Resources

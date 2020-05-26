@@ -26,15 +26,15 @@ import {
   Ducks,
 }         from '../src'
 
-import * as counterDuckAPI  from './counter'    // Vanilla Duck: +1
-import * as dingDongDuckAPI from './ding-dong'  // Observable Middleware
-import * as pingPongDuckAPI from './ping-pong'  // Saga Middleware
-import * as switcherDuckAPI from './switcher'   // Vanilla Duck: ON/OFF
+import * as counterAPI  from './counter'    // Vanilla Duck: +1
+import * as dingDongAPI from './ding-dong'  // Observable Middleware
+import * as pingPongAPI from './ping-pong'  // Saga Middleware
+import * as switcherAPI from './switcher'   // Vanilla Duck: ON/OFF
 
-const counter  = new Duck(counterDuckAPI)
-const dingDong = new Duck(dingDongDuckAPI)
-const pingPong = new Duck(pingPongDuckAPI)
-const switcher = new Duck(switcherDuckAPI)
+const counter  = new Duck(counterAPI)
+const dingDong = new Duck(dingDongAPI)
+const pingPong = new Duck(pingPongAPI)
+const switcher = new Duck(switcherAPI)
 
 const ducks = new Ducks({
   counter,
