@@ -96,27 +96,49 @@ A duck folder:
 
 Here's the full version of Re-ducks proposal: [Building on the duck legacy, An attempt to extend the original proposal for redux modular architecture, Alex Moldovan, 2016](https://github.com/alexnm/re-ducks) and [blog](https://medium.com/better-programming/scaling-your-redux-app-with-ducks-6115955638be#.4ppptx7oq)
 
-### 3 Ducksify Extension: Currying
+### 3 Ducksify Extension: Currying & API Interface
 
 [![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension)
 
 In order to build a better Ducks, [I](https://github.com/huan) defined the following rules and I call it **Ducksify**:
 
-1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `selectors` with a `State` object
-1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `operations` with a `Dispatch` function
+1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `selectors.*` with a `State` object
+1. MUST support [Currying](https://stackoverflow.com/a/36321/1123955) the first argument for `operations.*` with a `Dispatch` function
 1. MAY export its middlewares functions called `*Middleware()`
 1. MAY export its saga functions called `*Saga()`
 1. MAY export its epic functions called `*Epic()`
 1. MAY use [typesafe-actions](https://github.com/piotrwitek/typesafe-actions) to creating reducers, actions, and middlewares.
+1. MUST export its module interface as the following Ducks `API` to satisfies all the Ducks specifications:
 
-If we has `sagas` or `epics`, the duck folder should be:
+    ```ts
+    export interface API {
+      /**
+       * Ducks Modular Proposal (https://github.com/erikras/ducks-modular-redux)
+      */
+      default: Reducer,
 
-```sh
-duck/
-├── epics.js
-├── sagas.js
-├── middlewares.js
-```
+      actions    : ActionCreatorsMapObject,
+      operations?: OperationsMapObject,
+      selectors? : SelectorsMapObject,
+      types?     : TypesMapObject,
+
+      /**
+       * Ducksify Extension (https://github.com/huan/ducks#ducksify-extension)
+      */
+      middlewares?: MiddlewaresMapObject,
+      epics?: EpicsMapObject,
+      sagas?: SagasMapObject,
+    }
+    ```
+
+1. If we has `sagas`, `epics`, or `middlewares` the **duck** folder would like:
+
+    ```sh
+    duck/
+    ├── epics.js
+    ├── sagas.js
+    ├── middlewares.js
+    ```
 
 ## Requirements
 
@@ -289,38 +311,39 @@ We use `Ducks` to manage all `Duck` who is constructed from the `DuckAPI` specif
 
 For validating the `DuckAPI` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDuckAPI` that accepts a `DuckAPI` to make sure it's valid (it will throws an Error when it's invalid).
 
-### 1 `DuckAPI`
+### 1 `API`
 
-The `DuckAPI` is defined from the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), and it may extend from both [Re-Ducks](https://github.com/alexnm/re-ducks) and [Ducksify](https://github.com/huan/ducks#ducksify-extension).
+The Ducks `API` is defined from the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), extended from both [Re-Ducks](https://github.com/alexnm/re-ducks) and [Ducksify](https://github.com/huan/ducks#ducksify-extension).
+
+Example:
+
+Duck `API` counter example from our [examples](examples/counter/index.ts)
 
 ```ts
-export interface DuckAPI {
-  /**
-   * Ducks Modular Proposal (https://github.com/erikras/ducks-modular-redux)
-   */
-  default: Reducer,
+import * as actions     from './actions'
+import * as operations  from './operations'
+import * as selectors   from './selectors'
+import * as types       from './types'
 
-  actions    : ActionCreatorsMapObject,
-  operations : OperationsMapObject,
-  selectors  : SelectorsMapObject,
-  types      : TypesMapObject,
+import reducer from './reducers'
 
-  /**
-   * Ducksify Extension (https://github.com/huan/ducks#ducksify-extension)
-   */
-  middlewares?: MiddlewaresMapObject,
-  epics?: EpicsMapObject,
-  sagas?: SagasMapObject,
+export {
+  actions,
+  operations,
+  selectors,
+  types,
 }
+
+export default reducer
 ```
 
 ### 2 `Duck`
 
-The `Duck` class is in charge of convert the `DuckAPI` to an instance of `Duck` for the future usage.
+The `Duck` class is in charge of convert the Ducks `API` to an instance of `Duck` for the future usage.
 
 ```ts
-import * as counterDuckAPI from './counter'
-const counterDuck = new Duck(counterDuckAPI)
+import * as counterAPI from './counter'
+const counterDuck = new Duck(counterAPI)
 ```
 
 For example, when we start using `Duck` instead of the `DuckAPI`, we will get the following differences:
@@ -328,14 +351,14 @@ For example, when we start using `Duck` instead of the `DuckAPI`, we will get th
 For `selectors`:
 
 ```diff
-- counterDuckAPI.selectors.getTotal(store.getState().counter)()
+- counterAPI.selectors.getTotal(store.getState().counter)()
 + counterDuck.selectors.getTotal()
 ```
 
 For `operations`:
 
 ```diff
-- counterDuckAPI.operations.tap(store.dispatch)()
+- counterAPI.operations.tap(store.dispatch)()
 + counterDuck.operations.tap()
 ```
 
@@ -349,9 +372,9 @@ The `Ducks` class is in charge of managing the `Duck`s and connecting them to th
 
 ```ts
 import { Ducks } from 'ducks'
-import * as counterDuckAPI from './counter'
+import * as counterAPI from './counter'
 
-const counter = new Duck(counterDuckAPI)
+const counter = new Duck(counterAPI)
 const ducks = new Ducks({
   counter,
 })
@@ -360,10 +383,6 @@ const store = createStore(
   state => state,
   ducks.enhancer(),
 )
-
-// For convenience, we can use the `configureStore()` from the `Ducks`:
-// const store = ducks.configureStore()
-
 // Duck will be ready to use after the store has been created.
 ```
 
