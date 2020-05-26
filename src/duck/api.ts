@@ -18,9 +18,10 @@
  */
 import {
   ActionCreator,
-  Reducer,
+  AnyAction,
   Dispatch,
   Middleware,
+  Reducer,
 }                               from 'redux'
 
 import { Epic } from 'redux-observable'
@@ -92,7 +93,7 @@ export interface API {
   types?: TypesMapObject,
 
   // Domain Aggregates: reducer & middlewares
-  default: Reducer,
+  default: Reducer<any, AnyAction & { payload: any }>,
 
   /**
    *
