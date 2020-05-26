@@ -16,11 +16,9 @@
  *   limitations under the License.
  *
  */
-import { createAction } from 'typesafe-actions'
-
 import * as types from './types'
 
-const toggle = createAction(types.TOGGLE)()
+const toggle = () => ({ type: types.TOGGLE })
 
 export {
   toggle,

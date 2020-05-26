@@ -16,9 +16,13 @@
  *   limitations under the License.
  *
  */
+import { createAction } from 'typesafe-actions'
+
 import * as types from './types'
 
-const tap = (times = 1) => ({ payload: { times }, type: types.TAP })
+const prepareTimes = (times = 1) => ({ times })
+
+const tap = createAction(types.TAP, prepareTimes)()
 
 export {
   tap,

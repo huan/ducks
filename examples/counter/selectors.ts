@@ -16,8 +16,10 @@
  *   limitations under the License.
  *
  */
-const getCounter       = (state: { total: number }) => () => state.total
-const getMeaningOfLife = (_state: any) => (_: any) => 42
+import { State } from './reducers'
+
+const getCounter       = (state: State) => () => state.total
+const getMeaningOfLife = (_state: State) => (_: any) => 42
 
 export {
   getCounter,

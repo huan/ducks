@@ -112,14 +112,14 @@ class Duck <A extends API = API> {
 
   public setStore (store: Store): void {
     if (this.store !== TMP_STORE) {
-      throw new Error('A store can only be initialized once for one Duck.')
+      throw new Error('A store has already been set, and it can not be set twice.')
     }
     this.store = store
   }
 
   public setNamespaces (...namespaces: string[]): void {
     if (this.namespaces.length > 0) {
-      throw new Error('Namespaces can only be initialized once for one Duck.')
+      throw new Error('Namespaces has already been set, and it can not be set twice.')
     }
     this.namespaces = namespaces
   }

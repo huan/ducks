@@ -16,22 +16,25 @@
  *   limitations under the License.
  *
  */
-import { AnyAction } from 'redux'
+import {
+  createReducer,
+  ActionType,
+}                       from 'typesafe-actions'
+import { DeepReadonly } from 'utility-types'
 
-import * as types from './types'
+import * as actions from './actions'
 
-const initialState = {
+const initialState: DeepReadonly<{
+  total: number,
+}> = {
   total: 0,
 }
 
-const reducer = (state = initialState, action: AnyAction) => {
-  if (action.type === types.TAP) {
-    return ({
-      ...state,
-      total: (state.total || 0) + action.payload.times,
-    })
-  }
-  return state
-}
+const reducer = createReducer<typeof initialState, ActionType<typeof actions>>(initialState)
+  .handleAction(actions.tap, (state, action) => ({
+    ...state,
+    total: (state.total || 0) + action.payload.times,
+  }))
 
 export default reducer
+export type State = ReturnType<typeof reducer>

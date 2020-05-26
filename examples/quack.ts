@@ -26,15 +26,15 @@ import {
   Ducks,
 }         from '../src'
 
-import * as counterAPI  from './counter'    // Vanilla Duck: +1
+import * as switcherAPI from './switcher'   // Vanilla Duck: ON/OFF
+import * as counterAPI  from './counter'    // TypeSafe Actions: +1
 import * as dingDongAPI from './ding-dong'  // Observable Middleware
 import * as pingPongAPI from './ping-pong'  // Saga Middleware
-import * as switcherAPI from './switcher'   // Vanilla Duck: ON/OFF
 
+const switcher = new Duck(switcherAPI)
 const counter  = new Duck(counterAPI)
 const dingDong = new Duck(dingDongAPI)
 const pingPong = new Duck(pingPongAPI)
-const switcher = new Duck(switcherAPI)
 
 const ducks = new Ducks({
   counter,
@@ -61,19 +61,19 @@ console.info('# Initial Store State:', store.getState())
 // store.subscribe(() => console.info(store.getState()))
 
 /**
- * Vanilla: Counter
+ * Vanilla: Switchers
+ */
+assert.strictEqual(switcher.selectors.getStatus(), false)
+switcher.operations.toggle()
+assert.strictEqual(switcher.selectors.getStatus(), true)
+
+/**
+ * TypeSafe Actions: Counter
  */
 assert.strictEqual(counter.selectors.getCounter(), 0)
 counter.operations.tap()
 assert.strictEqual(counter.selectors.getCounter(), 1)
 assert.strictEqual(counter.selectors.getMeaningOfLife(3), 42)
-
-/**
- * TypeSafe Actions: Switchers
- */
-assert.strictEqual(switcher.selectors.getStatus(), false)
-switcher.operations.toggle()
-assert.strictEqual(switcher.selectors.getStatus(), true)
 
 /**
  * Epic Middleware: DingDong
@@ -93,7 +93,7 @@ assert.strictEqual(pingPong.selectors.getPong(), 1)
 console.info('# Final Store State:', store.getState())
 
 /**
- * We can export the Ducks to provide a clean API!
+ * We can export the Ducks to provide the Ducks API!
  */
 export {
   counter,
