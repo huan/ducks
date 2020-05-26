@@ -221,13 +221,16 @@ import { Duck, Ducks } from 'ducks'
 import * as counterDuckAPI  from './counter'    // Vanilla Duck: +1
 import * as dingDongDuckAPI from './ding-dong'  // Observable Middleware
 import * as pingPongDuckAPI from './ping-pong'  // Saga Middleware
+import * as switcherDuckAPI from './switcher'   // Type Safe Actions: ON/OFF
 
 const counter  = new Duck(counterDuckAPI)
+const switcher = new Duck(switcherDuckAPI)
 const dingDong = new Duck(dingDongDuckAPI)
 const pingPong = new Duck(pingPongDuckAPI)
 
 const ducks = new Ducks({
   counter,
+  switcher,
   dingDong,
   pingPong,
 })
@@ -243,6 +246,13 @@ const store = createStore(
 assert.strictEqual(counter.selectors.getCounter(), 0)
 counter.operations.tap()
 assert.strictEqual(counter.selectors.getCounter(), 1)
+
+/**
+ * TypeSafe Actions: Switchers
+ */
+assert.strictEqual(switcher.selectors.getStatus(), false)
+switcher.operations.toggle()
+assert.strictEqual(switcher.selectors.getStatus(), true)
 
 /**
  * Epic Middleware: DingDong

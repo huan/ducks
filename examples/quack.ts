@@ -69,7 +69,7 @@ assert.strictEqual(counter.selectors.getCounter(), 1)
 assert.strictEqual(counter.selectors.getMeaningOfLife(3), 42)
 
 /**
- * Vanilla: Switchers
+ * TypeSafe Actions: Switchers
  */
 assert.strictEqual(switcher.selectors.getStatus(), false)
 switcher.operations.toggle()
