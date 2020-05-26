@@ -71,7 +71,7 @@ export interface SagasMapObject {
  *  (a.k.a. Redux Reducer Bundles)
  *
  */
-export interface API {
+export interface API <A> {
   /**
    *
    * Ducks Proposal:
@@ -93,7 +93,7 @@ export interface API {
   types?: TypesMapObject,
 
   // Domain Aggregates: reducer & middlewares
-  default: Reducer<any, AnyAction & { payload: any }>,
+  default: Reducer<any, A extends AnyAction ? A : never>,
 
   /**
    *
