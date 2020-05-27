@@ -46,7 +46,7 @@ type DuckSelectors <S extends SelectorsMapObject> = {
 }
 type DucksifySelectors <D extends API> = DuckSelectors <D extends { selectors: any } ? D['selectors'] : {}>
 
-class Duck <A extends API = API> {
+class Duck <A extends API> {
 
   static VERSION = VERSION
 
@@ -96,7 +96,7 @@ class Duck <A extends API = API> {
   constructor (
     public api: A,
   ) {
-    this.store     = TMP_STORE
+    this.store = TMP_STORE
     this.namespaces = []
 
     /**

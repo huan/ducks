@@ -18,11 +18,10 @@
  */
 import {
   ActionCreator,
-  AnyAction,
   Dispatch,
   Middleware,
   Reducer,
-}                               from 'redux'
+}                   from 'redux'
 
 import { Epic } from 'redux-observable'
 import { Saga } from 'redux-saga'
@@ -67,11 +66,11 @@ export interface SagasMapObject {
 
 /**
  *
- * API for Ducks Modular Proposal
+ * Ducksify API for Ducks Modular Proposal
  *  (a.k.a. Redux Reducer Bundles)
  *
  */
-export interface API <A> {
+export interface API {
   /**
    *
    * Ducks Proposal:
@@ -93,7 +92,7 @@ export interface API <A> {
   types?: TypesMapObject,
 
   // Domain Aggregates: reducer & middlewares
-  default: Reducer<any, A extends AnyAction ? A : never>,
+  default: Reducer,
 
   /**
    *
