@@ -23,7 +23,9 @@ import * as types from './types'
 const prepareTimes = (times = 1) => ({ times })
 
 const tap = createAction(types.TAP, prepareTimes)()
+const noop = createAction(types.NOOP)()
 
 export {
+  noop,
   tap,
 }
