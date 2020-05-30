@@ -22,7 +22,7 @@ export {
 export {
   API,
   Duck,
-  Ducksifiable,
+  Ducksiable,
   validateDuckAPI,
 }                    from './duck/'
 export {

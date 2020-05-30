@@ -64,7 +64,7 @@ test("ducksify functions' names", async t => {
   })
 })
 
-test('ducksified selectors & operations', async t => {
+test('ducksify selectors & operations', async t => {
   const duck = new Duck(counterDuckAPI)
 
   const NAMESPACE = 'duck'

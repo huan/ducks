@@ -24,7 +24,7 @@ The goal of Ducks is to:
 
 1. Organizing your code for the long term.
 1. Maximum your convenience when using Redux Ducks.
-1. Full TypeScript typing support.
+1. Type-safe with strong typing with TypeScript Generic Templates.
 
 ## Features
 

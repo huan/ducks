@@ -46,7 +46,7 @@ type DuckSelectors <S extends SelectorsMapObject> = {
 }
 type DucksifySelectors <D extends API> = DuckSelectors <D extends { selectors: any } ? D['selectors'] : {}>
 
-class Duck <A extends API> {
+class Duck <A extends API = API> {
 
   static VERSION = VERSION
 

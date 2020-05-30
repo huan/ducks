@@ -1,3 +1,5 @@
+#!/usr/bin/env ts-node
+
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -16,13 +18,14 @@
  *   limitations under the License.
  *
  */
+import test  from 'tstest'
+
 import {
-  Reducer,
-  AnyAction,
-}             from 'redux'
-
-const noopReducer: Reducer<{}, AnyAction> = state => state || {}
-
-export {
+  Ducks,
   noopReducer,
-}
+}                 from './'
+
+test('Check the exports for the directory', async t => {
+  t.ok(Ducks, 'should export `Ducks`')
+  t.ok(noopReducer, 'should export `noopReducer`')
+})

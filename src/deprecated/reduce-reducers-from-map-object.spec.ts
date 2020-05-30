@@ -39,7 +39,7 @@ test('reduceReducersFromMapObject()', async t => {
    * https://stackoverflow.com/a/44371190/1123955
    *
    * First, reducerAdd is called, which gives us initial state { sum: 0 }
-   * Second, reducerMult is called, which doesn't have payload, so it
+   * Second, reducerMulti is called, which doesn't have payload, so it
    * just returns state unchanged.
    * That's why there isn't any `product` prop.
    */
