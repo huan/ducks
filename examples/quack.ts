@@ -55,7 +55,8 @@ const store = createStore(
 )
 
 // Show the initial store state structure data
-console.info('# Initial Store State:', store.getState())
+const state = store.getState()
+console.info('# Initial Store State:', state)
 
 // Show the initialized store state structure
 // store.subscribe(() => console.info(store.getState()))

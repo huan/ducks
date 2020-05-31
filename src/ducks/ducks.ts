@@ -88,7 +88,7 @@ class Ducks <T extends DucksMapObject> {
     this.asyncMiddlewares = {}
   }
 
-  enhancer (): StoreEnhancer {
+  enhancer (): ReturnType<Ducks<T>['duckeryEnhancer']> {
     if (!this.asyncMiddlewares.epicMiddleware && this.getRootEpic()) {
       this.asyncMiddlewares.epicMiddleware = require('redux-observable').createEpicMiddleware()
     }
@@ -104,7 +104,7 @@ class Ducks <T extends DucksMapObject> {
        *  the `this.storeEnhancer()` should be put before applyMiddleware
        *  (to initiate asyncMiddlewares before storeEnhancer)
        */
-      this.storeEnhancer(),
+      this.duckeryEnhancer(),
 
       applyMiddleware(
         ...asyncMiddlewareList,
@@ -117,7 +117,7 @@ class Ducks <T extends DucksMapObject> {
    * 1. Add Ducks Reducers to Store
    * 2. Bind Store to Ducks
    */
-  protected storeEnhancer () {
+  protected duckeryEnhancer () {
     const enhancer: StoreEnhancer<
       {},
       ReturnType<
