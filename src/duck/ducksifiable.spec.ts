@@ -20,20 +20,13 @@
  */
 import test  from 'tstest'
 
-import {
-  API,
-  Duck,
-  Ducksifiable,
-  validateDuckAPI,
-}                 from './'
+import { API }          from './api'
+import { Ducksifiable } from './ducksifiable'
 
-test('Check the exports for the directory', async t => {
-  t.ok(Duck, 'should export `Duck`')
-  t.ok(validateDuckAPI, 'should export `validateDuckApI`')
-
+test('Ducksifiable', async t => {
   const api: API = {} as any
   const ducksify: Ducksifiable = {} as any
 
-  t.ok(api, 'should has API interface exported')
-  t.ok(ducksify, 'should has Ducksifiable interface exported')
+  t.ok(api, 'should has API interface')
+  t.ok(ducksify, 'should has Ducksifiable interface')
 })
