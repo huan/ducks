@@ -9,9 +9,9 @@
 
 > Image Credit: [Alamy](https://www.alamy.com/cute-duck-and-little-ducks-over-white-background-colorful-design-vector-illustration-image185379753.html)
 
-[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
-[![Re-Ducks Extended](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
-[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
+[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks%202015-yellow)](https://github.com/erikras/ducks-modular-redux)
+[![Re-Ducks Extended](https://img.shields.io/badge/Redux-Re--Ducks%202016-orange)](https://github.com/alexnm/re-ducks)
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify%202020-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
 
 Ducks offers a method of handling redux module packaging, installing, and running with your Redux store, with middleware support.
 
@@ -52,7 +52,7 @@ At last, I decide to write my own manager for ducks, which will implement the fo
 
 ### 1 The Ducks Modular Proposal
 
-[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks-yellow)](https://github.com/erikras/ducks-modular-redux)
+[![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks%202015-yellow)](https://github.com/erikras/ducks-modular-redux)
 
 The specification has rules that a module:
 
@@ -65,7 +65,7 @@ Here's the full version of Ducks proposal: [Redux Reducer Bundles, A proposal fo
 
 ### 2 The Re-Ducks Extension: Duck Folders
 
-[![Re-Ducks Extension](https://img.shields.io/badge/Redux-Re--Ducks-orange)](https://github.com/alexnm/re-ducks)
+[![Re-Ducks Extension](https://img.shields.io/badge/Redux-Re--Ducks%202016-orange)](https://github.com/alexnm/re-ducks)
 
 `Re-Ducks` is an extension to the original proposal for the ducks redux modular architecture.
 
@@ -98,7 +98,7 @@ Here's the full version of Re-ducks proposal: [Building on the duck legacy, An a
 
 ### 3 Ducksify Extension: Currying & Api Interface
 
-[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify%202020-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
 
 In order to build a fully modularized Ducks, we define the **Ducksify** extension with the following rules:
 
@@ -142,11 +142,9 @@ In order to build a fully modularized Ducks, we define the **Ducksify** extensio
 
 ## Requirements
 
-Node.js v12+ or Browser with ES2019
+Node.js v12+, or Browser with ES2019 Support
 
 ## Install
-
-Run
 
 ```sh
 npm install ducks
@@ -154,7 +152,7 @@ npm install ducks
 
 ## Usage
 
-### 1 Setup Ducks
+### 1 Setup Ducks Api
 
 Create the Ducks Api module file: `counter.ts`:
 
@@ -176,7 +174,7 @@ export default function reducer (state = initialState, action) {
 }
 ```
 
-### 2 Load Ducks & Ducksify Api
+### 2 Create Ducks & Ducksify Api
 
 ```ts
 import { Ducks }       from 'ducks'
@@ -186,7 +184,7 @@ const ducks = new Ducks({ counter: counterApi })
 const counter = ducks.ducksify(counterApi)
 ```
 
-### 3 Create Store
+### 3 Configure Store
 
 ```ts
 import { createStore } from 'redux'
@@ -199,7 +197,7 @@ const store = createStore(
 
 You are all set!
 
-### 4 Use Ducks
+### 4 Using Ducks
 
 The Vanilla Style and Ducks Style is doing exactly the same thing.
 
