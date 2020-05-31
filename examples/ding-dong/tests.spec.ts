@@ -26,12 +26,12 @@ import {
 }                         from 'redux-observable'
 
 import {
-  validateDuckAPI,
+  validateDucksApi,
 }                     from '../../src'
 
 import * as api from '.'
 
-validateDuckAPI(api)
+validateDucksApi(api)
 
 test('ding -> dong', async t => {
   const epicMiddleware = createEpicMiddleware()

@@ -16,32 +16,30 @@
  *   limitations under the License.
  *
  */
+import assert from 'assert'
 
 import { createStore } from 'redux'
 
-import assert from 'assert'
+import { Ducks } from '../src'
 
-import {
-  Duck,
-  Ducks,
-}         from '../src'
-
-import * as switcherAPI from './switcher'   // Vanilla Duck: ON/OFF
-import * as counterAPI  from './counter'    // TypeSafe Actions: +1
-import * as dingDongAPI from './ding-dong'  // Observable Middleware
-import * as pingPongAPI from './ping-pong'  // Saga Middleware
-
-const switcher = new Duck(switcherAPI)
-const counter  = new Duck(counterAPI)
-const dingDong = new Duck(dingDongAPI)
-const pingPong = new Duck(pingPongAPI)
+import * as switcherApi from './switcher'   // Vanilla Duck: ON/OFF
+import * as counterApi  from './counter'    // TypeSafe Actions: +1
+import * as dingDongApi from './ding-dong'  // Observable Middleware
+import * as pingPongApi from './ping-pong'  // Saga Middleware
 
 const ducks = new Ducks({
+  counter  : counterApi,
+  dingDong : dingDongApi,
+  pingPong : pingPongApi,
+  switcher : switcherApi,
+})
+
+const {
   counter,
   dingDong,
   pingPong,
   switcher,
-})
+} = ducks.ducksify()
 
 /**
  * Create the store.

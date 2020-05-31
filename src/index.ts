@@ -20,12 +20,10 @@ export {
   VERSION,
 }                    from './config'
 export {
-  API,
-  Duck,
-  Ducksifiable,
-  validateDuckAPI,
-}                    from './duck/'
-export {
   Ducks,
   noopReducer,
 }                    from './ducks/'
+
+export { Api }              from './api'
+export { Duck }             from './duck'
+export { validateDucksApi } from './validate-ducks-api'

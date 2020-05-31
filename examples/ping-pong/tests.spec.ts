@@ -26,12 +26,12 @@ import {
 }         from 'redux-saga/effects'
 
 import {
-  validateDuckAPI,
+  validateDucksApi,
 }                     from '../../src'
 
 import * as api from '.'
 
-validateDuckAPI(api)
+validateDucksApi(api)
 
 test('ping -> pong', async t => {
   const sagaMiddleware = createSagaMiddleware()

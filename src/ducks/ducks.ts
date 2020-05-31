@@ -31,25 +31,36 @@ import { Saga, SagaMiddleware } from 'redux-saga'
 
 import {
   DUCKS_NAMESPACE,
-  TMP_STORE,
   VERSION,
 }                      from '../config'
 
-import { Duck }         from '../duck/'
+import {
+  Duck,
+}                         from '../duck'
+
+import {
+  Api,
+  ApisMapObject,
+}                 from '../api'
 
 import { combineDuckery } from './combine-duckery'
 import { insertReducers } from './insert-reducers'
 import { noopReducer }     from './noop-reducer'
 
-export interface DucksMapObject {
-  [namespace: string]: Duck,
+export type DucksMapObject <A extends ApisMapObject> = {
+  [key in keyof A]: Duck<A[key]>
 }
 
-class Ducks <T extends DucksMapObject> {
+class Ducks <A extends ApisMapObject> {
 
   static VERSION = VERSION
 
-  store: Store
+  get store () {
+    return this._store
+  }
+  protected _store?: Store
+
+  protected ducksNest: DucksMapObject<A>
 
   protected asyncMiddlewares: {
     epicMiddleware?: EpicMiddleware<any>,
@@ -62,7 +73,7 @@ class Ducks <T extends DucksMapObject> {
 
   protected get middlewares (): Middleware[] {
     const middlewareList = Object.values(this.duckery)
-      .map(duck => duck.api.middlewares)
+      .map(api => api.middlewares)
       .filter(Boolean)
       .map(middlewares => Object.values(middlewares!))
       .flat()
@@ -73,22 +84,66 @@ class Ducks <T extends DucksMapObject> {
   /**
    * Construct a `Ducks` manager for managing the Duck(s)
    *
-   * @param duckery is a `DucksMapObject` which:
+   * @param duckery is a `ApiMapObject` which:
    *  1. key is the reducer key (namespace)
    *  2. value is a `Duck` instance
    */
   constructor (
-    protected readonly duckery: T,
+    protected readonly duckery: A,
   ) {
     if (Object.keys(duckery).length <= 0) {
-      throw new Error('You need to provide some ducks for the duckery')
+      throw new Error('You need to provide at least one api for the duckery')
     }
-    this.store = TMP_STORE
-
     this.asyncMiddlewares = {}
+
+    const ducksNest = {} as any
+    for (const [ns, api] of Object.entries(duckery)) {
+      ducksNest[ns as string] = new Duck(api)
+    }
+    this.ducksNest = ducksNest
   }
 
-  enhancer (): ReturnType<Ducks<T>['duckeryEnhancer']> {
+  /**
+   * Return all Ducks
+   */
+  ducksify (): DucksMapObject<A>
+  /**
+   * Return the Duck of `namespace`
+   * @param namespace
+   */
+  ducksify <NS extends keyof A> (namespace: NS): Duck<A[NS]>
+  /**
+   * Return the Duck of `api`
+   * @param api
+   */
+  ducksify <NS extends keyof A> (api: A[NS]): Duck<A[NS]>
+
+  ducksify (nsOrApi?: string | Api): DucksMapObject<A> | Duck {
+    if (!nsOrApi) {
+      return this.ducksNest
+    }
+
+    if (typeof nsOrApi === 'string') {
+      if (nsOrApi in this.duckery) {
+        return this.ducksNest[nsOrApi]
+      }
+      throw new Error('Ducks can not found the Duck for the namespace: ' + nsOrApi)
+    }
+
+    if (typeof nsOrApi === 'object') {
+      const namespaceList = Object.keys(this.duckery)
+        .filter(ns => this.duckery[ns] === nsOrApi)
+      if (namespaceList.length <= 0) {
+        throw new Error('Duck not found for API: ' + nsOrApi)
+      }
+      const namespace = namespaceList[0]
+      return this.ducksify(namespace)
+    }
+
+    throw new Error('unknown param: ' + nsOrApi)
+  }
+
+  enhancer (): ReturnType<Ducks<A>['duckeryEnhancer']> {
     if (!this.asyncMiddlewares.epicMiddleware && this.getRootEpic()) {
       this.asyncMiddlewares.epicMiddleware = require('redux-observable').createEpicMiddleware()
     }
@@ -121,7 +176,7 @@ class Ducks <T extends DucksMapObject> {
     const enhancer: StoreEnhancer<
       {},
       ReturnType<
-        Ducks<T>['reducer']
+        Ducks<A>['reducer']
       >
     > = next => (reducer: Reducer<any, any>, preloadedState: any) => {
 
@@ -157,10 +212,10 @@ class Ducks <T extends DucksMapObject> {
    */
   configureStore (
     preloadedState?: {
-      [DUCKS_NAMESPACE]: ReturnType<Ducks<T>['reducer']>,
+      [DUCKS_NAMESPACE]: ReturnType<Ducks<A>['reducer']>,
     },
   ) {
-    if (this.store !== TMP_STORE) {
+    if (this._store) {
       throw new Error('Ducks can be only configureStore() for once! If you need another store, you can create another Ducks to fullfil your needs.')
     }
 
@@ -177,7 +232,7 @@ class Ducks <T extends DucksMapObject> {
    */
   protected getRootEpic (): undefined | Epic {
     const epics = Object.values(this.duckery)
-      .map(duck => duck.api.epics)
+      .map(api => api.epics)
       .filter(Boolean)
       .map(epics => Object.values(epics!))
       .flat()
@@ -198,7 +253,7 @@ class Ducks <T extends DucksMapObject> {
 
   protected getRootSaga (): undefined | Saga {
     const sagas = Object.values(this.duckery)
-      .map(duck => duck.api.sagas)
+      .map(api => api.sagas)
       .filter(Boolean)
       .map(sagas => Object.values(sagas!))
       .flat()
@@ -224,10 +279,10 @@ class Ducks <T extends DucksMapObject> {
   }
 
   protected initializeDucks (store: Store<any, any>) {
-    if (this.store !== TMP_STORE) {
+    if (this._store) {
       throw new Error('store has already initialized')
     }
-    this.store = store
+    this._store = store
 
     /**
      * Configure Duck
@@ -235,8 +290,8 @@ class Ducks <T extends DucksMapObject> {
     Object.keys(this.duckery).forEach(namespace => {
       // console.info('initializeDucks() namespace', namespace)
       // console.info('initializeDucks() state', this.store.getState())
-      this.duckery[namespace].setStore(this.store)
-      this.duckery[namespace].setNamespaces(DUCKS_NAMESPACE, namespace)
+      this.ducksNest[namespace].setStore(store)
+      this.ducksNest[namespace].setNamespaces(DUCKS_NAMESPACE, namespace)
     })
 
     /**

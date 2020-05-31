@@ -24,11 +24,6 @@ import {
   StateFromReducersMapObject,
 }                                 from 'redux'
 
-// const ducksReducer = {
-//   ...reducer,
-//   [DUCKS_NAMESPACE]: this.reducer,
-// }
-
 type StateFromInsertReducers<
   R extends Reducer,
   M extends ReducersMapObject<any>,

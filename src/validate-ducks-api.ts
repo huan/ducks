@@ -24,7 +24,7 @@ import {
   Reducer,
 }                 from 'redux'
 
-import { API } from './api'
+import { Api } from './api'
 
 export interface MapObject {
   [key: string]: any,
@@ -43,7 +43,7 @@ export interface MapObject {
  *  3. Conditional Type Checks - https://github.com/dsherret/conditional-type-checks
  */
 
-function validateDuckAPI <T extends API> (api: T) {
+function validateDucksApi <T extends Api> (api: T) {
   validateActions(api.actions)
   validateOperations(api.operations)
   validateReducer(api.default)
@@ -166,5 +166,5 @@ function validateEpicType (epic: (...args: any[]) => any) {
 }
 
 export {
-  validateDuckAPI,
+  validateDucksApi,
 }

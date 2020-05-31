@@ -26,7 +26,7 @@ import {
 }                       from 'redux'
 import createMockStore from 'redux-mock-store'
 
-import * as counterDuckAPI from '../../examples/counter/'
+import * as counterDuckAPI from '../examples/counter/'
 
 import { Duck } from './duck'
 

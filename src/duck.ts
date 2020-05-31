@@ -21,12 +21,11 @@ import {
 }                         from 'redux'
 
 import {
-  TMP_STORE,
   VERSION,
-}                   from '../config'
+}                   from './config'
 
 import {
-  API,
+  Api,
   OperationsMapObject,
   SelectorsMapObject,
 }                         from './api'
@@ -39,18 +38,18 @@ import {
 type DuckOperations <O extends OperationsMapObject> = {
   [key in keyof O]: ReturnType<O[key]>
 }
-type DucksifyOperations <D extends API> = DuckOperations <D extends { operations: any } ? D['operations'] : {}>
+type DucksifyOperations <D extends Api> = DuckOperations <D extends { operations: any } ? D['operations'] : {}>
 
 type DuckSelectors <S extends SelectorsMapObject> = {
   [key in keyof S]: ReturnType<S[key]>
 }
-type DucksifySelectors <D extends API> = DuckSelectors <D extends { selectors: any } ? D['selectors'] : {}>
+type DucksifySelectors <D extends Api> = DuckSelectors <D extends { selectors: any } ? D['selectors'] : {}>
 
-class Duck <A extends API = API> {
+class Duck <A extends Api = any> {
 
   static VERSION = VERSION
 
-  protected store: Store
+  protected store?: Store
   namespaces: string[]
 
   get reducer (): A['default']    { return this.api.default }
@@ -79,6 +78,10 @@ class Duck <A extends API = API> {
     // console.info('[duck] state[namespaces[0]]:', this.store.getState()[this.namespaces[0]])
     // console.info('[duck] state[namespaces[1]]:', this.store.getState()[this.namespaces[1]])
 
+    if (!this.store) {
+      throw new Error('Duck store has not been set yet: Duck can only be used after its store has been initialized.')
+    }
+
     const duckStateReducer = (duckState: any, namespace: string, idx: number) => {
       if (namespace in duckState) {
         return duckState[namespace]
@@ -96,7 +99,6 @@ class Duck <A extends API = API> {
   constructor (
     public api: A,
   ) {
-    this.store = TMP_STORE
     this.namespaces = []
 
     /**
@@ -111,7 +113,7 @@ class Duck <A extends API = API> {
   }
 
   public setStore (store: Store): void {
-    if (this.store !== TMP_STORE) {
+    if (this.store) {
       throw new Error('A store has already been set, and it can not be set twice.')
     }
     this.store = store
@@ -135,6 +137,7 @@ class Duck <A extends API = API> {
     }
 
     const that = this
+
     Object.keys(operations).forEach(operation => {
       /**
        * Inferred function names
@@ -144,7 +147,10 @@ class Duck <A extends API = API> {
         ...duckOperations,
         [operation]: function (...args: any[]) {
           return operations[operation](
-            that.store.dispatch
+          /**
+           * We have to make sure `store` has been initialized before the following code has been ran
+           */
+            that.store!.dispatch
           )(...args)
         },
       }

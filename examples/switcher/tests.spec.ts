@@ -24,12 +24,12 @@ import {
 }                         from 'redux'
 
 import {
-  validateDuckAPI,
+  validateDucksApi,
 }                     from '../../src'
 
 import * as api from '.'
 
-validateDuckAPI(api)
+validateDucksApi(api)
 
 test('toggle', async t => {
   const store = createStore(api.default)

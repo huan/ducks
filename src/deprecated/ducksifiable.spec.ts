@@ -1,3 +1,5 @@
+#!/usr/bin/env ts-node
+
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -16,7 +18,15 @@
  *   limitations under the License.
  *
  */
-export { Duck }             from './duck'
-export { API }              from './api'
-export { Ducksifiable }     from './ducksifiable'
-export { validateDuckAPI }  from './validate-duck-api'
+import test  from 'tstest'
+
+import { Api }          from '../api'
+import { Ducksifiable } from './ducksifiable'
+
+test('Ducksifiable', async t => {
+  const api: Api = {} as any
+  const ducksify: Ducksifiable = {} as any
+
+  t.ok(api, 'should has API interface')
+  t.ok(ducksify, 'should has Ducksifiable interface')
+})

@@ -96,16 +96,16 @@ A duck folder:
 
 Here's the full version of Re-ducks proposal: [Building on the duck legacy, An attempt to extend the original proposal for redux modular architecture, Alex Moldovan, 2016](https://github.com/alexnm/re-ducks) and [blog](https://medium.com/better-programming/scaling-your-redux-app-with-ducks-6115955638be#.4ppptx7oq)
 
-### 3 Ducksify Extension: Currying & API Interface
+### 3 Ducksify Extension: Currying & Api Interface
 
 [![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
 
 In order to build a fully modularized Ducks, we define the **Ducksify** extension with the following rules:
 
-1. MUST export its module interface as the following Ducks `API`:
+1. MUST export its module interface as the following Ducks `Api`:
 
     ```ts
-    export interface API {
+    export interface Api {
       /**
        * Ducks Modular Proposal (https://github.com/erikras/ducks-modular-redux)
       */
@@ -156,7 +156,7 @@ npm install ducks
 
 ### 1 Setup Ducks
 
-Create the Ducks API module file: `counter.ts`:
+Create the Ducks Api module file: `counter.ts`:
 
 ```ts
 export const types      = { TAP: 'ducks/examples/counter/TAP' }
@@ -176,14 +176,14 @@ export default function reducer (state = initialState, action) {
 }
 ```
 
-### 2 Load Ducks
+### 2 Load Ducks & Ducksify Api
 
 ```ts
-import { Ducks, Duck }     from 'ducks'
-import * as counterAPI from './counter'
+import { Ducks }       from 'ducks'
+import * as counterApi from './counter'
 
-const counter = new Duck(counterAPI)
-const ducks   = new Ducks({ counter })
+const ducks = new Ducks({ counter: counterApi })
+const counter = ducks.ducksify(counterApi)
 ```
 
 ### 3 Create Store
@@ -206,8 +206,8 @@ The Vanilla Style and Ducks Style is doing exactly the same thing.
 #### The Vanilla Style
 
 ```ts
-store.dispatch(counterAPI.actions.tap())
-console.info('getTotal:', counterAPI.selectors.getTotal(store.getState().counter)))
+store.dispatch(counterApi.actions.tap())
+console.info('getTotal:', counterApi.selectors.getTotal(store.getState().counter)))
 // Output: getTotal: 1
 ```
 
@@ -239,22 +239,24 @@ It shows that:
 import { createStore } from 'redux'
 import { Duck, Ducks } from 'ducks'
 
-import * as counterAPI  from './counter'    // Vanilla Duck: +1
-import * as dingDongAPI from './ding-dong'  // Observable Middleware
-import * as pingPongAPI from './ping-pong'  // Saga Middleware
-import * as switcherAPI from './switcher'   // Type Safe Actions: ON/OFF
-
-const counter  = new Duck(counterAPI)
-const switcher = new Duck(switcherAPI)
-const dingDong = new Duck(dingDongAPI)
-const pingPong = new Duck(pingPongAPI)
+import * as counterApi  from './counter'    // Vanilla Duck: +1
+import * as dingDongApi from './ding-dong'  // Observable Middleware
+import * as pingPongApi from './ping-pong'  // Saga Middleware
+import * as switcherApi from './switcher'   // Type Safe Actions: ON/OFF
 
 const ducks = new Ducks({
+  counter  : counterApi,
+  switcher : switcherApi,
+  dingDong : dingDongApi,
+  pingPong : pingPongApi,
+})
+
+const {
   counter,
-  switcher,
   dingDong,
   pingPong,
-})
+  switcher,
+} = ducks.ducksify()
 
 const store = createStore(
   state => state,     // Here's our normal Redux Reducer
@@ -302,21 +304,21 @@ npm install
 npm start
 ```
 
-## API References
+## Api References
 
 Ducks is very easy to use, because one of the goals of designing it is to maximum the convenience.
 
-We use `Ducks` to manage all `Duck` who is constructed from the `API` specified by [ducks modular proposal](https://github.com/erikras/ducks-modular-redux).
+We use `Ducks` to manage `Api`s that following the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux).
 
-For validating the `API` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDuckAPI` that accepts a `API` to make sure it's valid (it will throws an Error when it's invalid).
+For validating the `Api` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDucksApi` that accepts a `Api` to make sure it's valid (it will throws an Error when it's not).
 
-### 1 `API`
+### 1 `Api`
 
-The Ducks `API` is defined from the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), extended from both [Re-Ducks](https://github.com/alexnm/re-ducks) and [Ducksify](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface).
+The Ducks `Api` is defined from the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), extended from both [Re-Ducks](https://github.com/alexnm/re-ducks) and [Ducksify](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface).
 
 Example:
 
-Duck `API` counter example from our [examples](examples/counter/index.ts)
+Duck `Api` counter example from our [examples](examples/counter/index.ts)
 
 ```ts
 import * as actions     from './actions'
@@ -336,46 +338,16 @@ export {
 export default reducer
 ```
 
-### 2 `Duck`
+### 2 `Ducks`
 
-The `Duck` class is in charge of convert the Ducks `API` to an instance of `Duck` for the future usage.
-
-```ts
-import * as counterAPI from './counter'
-const counterDuck = new Duck(counterAPI)
-```
-
-For example, when we start using `Duck` instead of the `API`, we will get the following differences:
-
-For `selectors`:
-
-```diff
-- counterAPI.selectors.getTotal(store.getState().counter)()
-+ counterDuck.selectors.getTotal()
-```
-
-For `operations`:
-
-```diff
-- counterAPI.operations.tap(store.dispatch)()
-+ counterDuck.operations.tap()
-```
-
-As you see, the above differences showed that the `Duck` will give you great convenience by currying the `Store` inside itself.
-
-> NOTE: A `Duck` can only be used after it has been managed by the `Ducks` (Learn more from the `Ducks` API reference)
-
-### 3 `Ducks`
-
-The `Ducks` class is in charge of managing the `Duck`s and connecting them to the Redux Store by providing a `enhancer()` to Redux `createStore()`.
+The `Ducks` class is in charge of managing the `Api`s and connecting them to the Redux Store by providing a `enhancer()` to Redux `createStore()`.
 
 ```ts
 import { Ducks } from 'ducks'
-import * as counterAPI from './counter'
+import * as counterApi from './counter'
 
-const counter = new Duck(counterAPI)
 const ducks = new Ducks({
-  counter,
+  counter: counterApi,
 })
 
 const store = createStore(
@@ -385,13 +357,13 @@ const store = createStore(
 // Duck will be ready to use after the store has been created.
 ```
 
-There is one important thing that we need to figure out is that when we are passing the `DuckMapObject` to initialize the `Ducks` (`{ counter }` in the code above), the key name of this duck will become the mount point for its state.
+There is one important thing that we need to figure out is that when we are passing the `ApisMapObject` to initialize the `Ducks` (`{ counter: counterApi }` in the above case), the key name of this Api will become the mount point(name space) for its state.
 
 Choose your key name wisely because it will inflect the state structure and the typing for your store.
 
 > There's project named [Ducks++: Redux Reducer Bundles, Djamel Hassaine, 2017](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22) to solve the mount point (namespace) problem, however, we are just use the keys in the `DucksObject` to archive the same goal.
 
-#### 3.1 `enhancer()`
+#### 2.1 `Ducks#enhancer()`
 
 Returns a `StoreEnhancer` for using with the Redux store creator, which is the most important and the only one who are in charge of initializing everything for the Ducks.
 
@@ -421,7 +393,7 @@ const store = createStore(
 
 > NOTE: our `enhancer()` should be put to the most left in the `compose()` argument list, because it would be better to make it to be the most outside one to be called.
 
-#### 3.2 `configureStore()`
+#### 2.2 `Ducks#configureStore()`
 
 If you only use Redux with Ducks without any other reducers, then you can use `configureStore()` shortcut from the Ducks to get the configured store.
 
@@ -440,15 +412,61 @@ const store = createStore(
 )
 ```
 
-### 4 `validateDuckAPI()`
+#### 2.3 `Ducks#ducksify()`
 
-To make sure your Ducks API is following the specification of the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), we provide a validating function to check it.
+`ducksify()` will encapsulate the `Api` into the `Duck` class so that we will have a more convenience way to use it.
+
+1. Return all Ducks: `const { counter } = ducks.ducksify()`
+1. Return the Duck for _namespace_: `const counter = ducks.ducksify('counter')
+1. Return the Duck for _api_: `const counter = ducks.ducksify(counterApi)
+
+For example:
 
 ```ts
-import { validateDuckAPI } from 'ducks'
-import * as counterAPI from './counter'
+import * as counterApi from './counter'
 
-validateDuckAPI(counterAPI) // will throw if the counterAPI is invalid.
+const ducks = new Ducks({ counter: counterAPI })
+const store = ducks.configureStore()
+
+// 1. Return all Ducks
+const { counter } = ducks.ducksify()
+
+// 2. Return the Duck for namespace: `counter`
+const counterByName = ducks.ducksify('counter')
+assert(counterByName === counter)
+
+// 3. Return the Duck for api: `counterApi`
+const counterByApi = ducks.ducksify(counterApi)
+assert(counterByApi === counter)
+```
+
+Comparing the Api with the Duck (ducksified Api), we will get the following differences: (`counter` is the ducksified `counterApi`)
+
+For `selectors`:
+
+```diff
+- counterApi.selectors.getTotal(store.getState().counter)()
++ counter.selectors.getTotal()
+```
+
+For `operations`:
+
+```diff
+- counterApi.operations.tap(store.dispatch)()
++ counter.operations.tap()
+```
+
+As you see, the above differences showed that the ducksified api will give you great convenience by currying the `Store` inside itself.
+
+### 4 `validateDucksApi()`
+
+To make sure your Ducks Api is following the specification of the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), we provide a validating function to check it.
+
+```ts
+import { validateDucksApi } from 'ducks'
+import * as counterApi from './counter'
+
+validateDucksApi(counterApi) // will throw if the counterApi is invalid.
 ```
 
 ## Resources
@@ -506,7 +524,7 @@ validateDuckAPI(counterAPI) // will throw if the counterAPI is invalid.
 
 ## Future Thoughts
 
-Redux Ducks API compares with CQRS, Event Sourcing, and DDD:
+Redux Ducks Api compares with CQRS, Event Sourcing, and DDD:
 
 | Ducks       | CQRS    | Event Sourcing | DDD  |
 | :---        | :---    | :---           | :--- |
@@ -538,16 +556,22 @@ Don't store system state, store events that brought system to this state.
 
 ## History
 
-### master v0.5
+### master
 
-### v0.4 (Jun 2020)
+### v0.6 (Jun 1, 2020)
+
+Refactoring the `Ducks` with better Api interface.
+
+1. Added `ducksify()` method for get `Duck` instance by `namespace` or `api`.
+
+### v0.4 (May 30, 2020)
 
 Fix the TypeScript Generic Template typing problems:
 
 1. Protect String Literal Types in Action Types [#1](https://github.com/huan/ducks/issues/1)
 1. Property 'payload' is missing in type 'AnyAction' [#2](https://github.com/huan/ducks/issues/2)
 
-### v0.2 (May 2020)
+### v0.2 (May, 1 2020)
 
 1. Published the very first version of [Ducks Modular Proposal](https://github.com/erikras/ducks-modular-redux) to Ducks!
 

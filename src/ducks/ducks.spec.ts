@@ -32,32 +32,24 @@ import createSagaMiddleware     from 'redux-saga'
 
 import { Ducks } from './ducks'
 
-import * as counterDuckAPI  from '../../examples/counter/'
-import * as dingdongDuckAPI from '../../examples/ding-dong/'
-import * as pingpongDuckAPI from '../../examples/ping-pong/'
-import * as switcherDuckAPI from '../../examples/switcher/'
-
-import { Duck } from '../duck/duck'
+import * as counterApi  from '../../examples/counter/'
+import * as dingdongApi from '../../examples/ding-dong/'
+import * as pingpongApi from '../../examples/ping-pong/'
+import * as switcherApi from '../../examples/switcher/'
 
 test('construction()', async t => {
-  t.throws(() => new Ducks({}), 'should not happy with empyt duckery')
-
-  const counterDuck = new Duck(counterDuckAPI)
-  const dingdongDuck = new Duck(dingdongDuckAPI)
-  const pingpongDuck = new Duck(pingpongDuckAPI)
+  t.throws(() => new Ducks({}), 'should not happy with empty duckery')
 
   t.doesNotThrow(() => new Ducks({
-    counter : counterDuck,
-    dong    : dingdongDuck,
-    pong    : pingpongDuck,
+    counter : counterApi,
+    dong    : dingdongApi,
+    pong    : pingpongApi,
   }), 'should be able to construct with ducks')
 })
 
 test('reducer()', async t => {
-  const counterDuck = new Duck(counterDuckAPI)
-
   const ducks = new Ducks({
-    counter : counterDuck,
+    counter : counterApi,
   })
 
   const initialState = {}
@@ -72,21 +64,20 @@ test('reducer()', async t => {
   void store
   // store.subscribe(() => console.info(store.getState()))
 
-  t.equal(counterDuck.selectors.getCounter(), 0, 'should get counter 0 after initialization')
-  counterDuck.operations.tap()
-  t.equal(counterDuck.selectors.getCounter(), 1, 'should get counter 1 after tap')
+  const { counter } = ducks.ducksify()
+
+  t.equal(counter.selectors.getCounter(), 0, 'should get counter 0 after initialization')
+  counter.operations.tap()
+  t.equal(counter.selectors.getCounter(), 1, 'should get counter 1 after tap')
 })
 
 test('constructor() with option.middleware', async t => {
-  const dingdongDuck = new Duck(dingdongDuckAPI)
-  const pingpongDuck = new Duck(pingpongDuckAPI)
-
   const epicMiddleware = createEpicMiddleware()
   const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({
-    dong    : dingdongDuck,
-    pong    : pingpongDuck,
+    dong    : dingdongApi,
+    pong    : pingpongApi,
   })
 
   t.doesNotThrow(
@@ -105,16 +96,18 @@ test('constructor() with option.middleware', async t => {
 })
 
 test('Epics & Sagas middlewares', async t => {
-  const dingdongDuck = new Duck(dingdongDuckAPI)
-  const pingpongDuck = new Duck(pingpongDuckAPI)
-
   const epicMiddleware = createEpicMiddleware()
   const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({
-    dong    : dingdongDuck,
-    pong    : pingpongDuck,
+    dong    : dingdongApi,
+    pong    : pingpongApi,
   })
+
+  const {
+    dong,
+    pong,
+  } = ducks.ducksify()
 
   const store = createStore(
     state => state,
@@ -129,26 +122,26 @@ test('Epics & Sagas middlewares', async t => {
 
   void store
 
-  t.equal(pingpongDuck.selectors.getPong(), 0, 'should get pong 0 on initialization')
-  t.equal(dingdongDuck.selectors.getDong(), 0, 'should get dong 0 on initialization')
+  t.equal(pong.selectors.getPong(), 0, 'should get pong 0 on initialization')
+  t.equal(dong.selectors.getDong(), 0, 'should get dong 0 on initialization')
 
-  pingpongDuck.operations.ping()
-  dingdongDuck.operations.ding()
+  pong.operations.ping()
+  dong.operations.ding()
 
-  t.equal(pingpongDuck.selectors.getPong(), 1, 'should get pong 1 after operations.ping()')
-  t.equal(dingdongDuck.selectors.getDong(), 1, 'should get dong 1 after operations.ding()')
+  t.equal(pong.selectors.getPong(), 1, 'should get pong 1 after operations.ping()')
+  t.equal(dong.selectors.getDong(), 1, 'should get dong 1 after operations.ding()')
 })
 
 test('Ducks with other reducers work together', async t => {
-  const counterDuck = new Duck(counterDuckAPI)
-
   const ducks = new Ducks({
-    counter : counterDuck,
+    counter : counterApi,
   })
+
+  const { counter } = ducks.ducksify()
 
   const store = createStore(
     combineReducers({
-      switch: switcherDuckAPI.default,
+      switch: switcherApi.default,
     }),
     compose(
       ducks.enhancer(),
@@ -158,39 +151,61 @@ test('Ducks with other reducers work together', async t => {
   void store
   // store.subscribe(() => console.info(store.getState()))
 
-  t.equal(counterDuck.selectors.getCounter(), 0, 'should get counter 0 on initialization')
+  t.equal(counter.selectors.getCounter(), 0, 'should get counter 0 on initialization')
   t.equal(store.getState().switch.status, false, 'should get false from switch status on initialization')
 
-  counterDuck.operations.tap()
-  t.equal(counterDuck.selectors.getCounter(), 1, 'should get counter 1 after tap')
+  counter.operations.tap()
+  t.equal(counter.selectors.getCounter(), 1, 'should get counter 1 after tap')
 
-  store.dispatch(switcherDuckAPI.actions.toggle())
+  store.dispatch(switcherApi.actions.toggle())
   t.equal(store.getState().switch.status, true, 'should get true from switch status after dispatch actions.toggle()')
 })
 
 test('configureStore() smoke testing', async t => {
-  const counterDuck = new Duck(counterDuckAPI)
-
   const ducks = new Ducks({
-    counter : counterDuck,
+    counter : counterApi,
   })
+
+  const { counter } = ducks.ducksify()
 
   const store = ducks.configureStore()
   void store
   // store.subscribe(() => console.info(store.getState()))
 
-  t.equal(counterDuck.selectors.getCounter(), 0, 'should get counter 0 on initialization')
-  counterDuck.operations.tap()
-  t.equal(counterDuck.selectors.getCounter(), 1, 'should get counter 1 after tap')
+  t.equal(counter.selectors.getCounter(), 0, 'should get counter 0 on initialization')
+  counter.operations.tap()
+  t.equal(counter.selectors.getCounter(), 1, 'should get counter 1 after tap')
 })
 
 test('configureStore() called twice', async t => {
-  const counterDuck = new Duck(counterDuckAPI)
-
   const ducks = new Ducks({
-    counter : counterDuck,
+    counter : counterApi,
   })
 
   t.doesNotThrow(() => ducks.configureStore(), 'should not throw for the first time')
   t.throws(() => ducks.configureStore(), 'should throw for the second time')
+})
+
+test('ducksify(namespace & api)', async t => {
+  const ducks = new Ducks({
+    counter : counterApi,
+    switcher: switcherApi,
+  })
+
+  const {
+    counter,
+    switcher,
+  } = ducks.ducksify()
+
+  const counterByName = ducks.ducksify('counter')
+  const switcherByName = ducks.ducksify('switcher')
+
+  const counterByApi = ducks.ducksify(counterApi)
+  const switcherByApi = ducks.ducksify(switcherApi)
+
+  t.equal(counter, counterByName, 'counter should be same with by name')
+  t.equal(counter, counterByApi, 'counter should be same with by api')
+
+  t.equal(switcher, switcherByName, 'switcher should be same with by name')
+  t.equal(switcher, switcherByApi, 'switcher should be same with by api')
 })
