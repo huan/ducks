@@ -16,7 +16,7 @@
  *   limitations under the License.
  *
  */
-import { Action } from 'redux'
+import { AnyAction } from 'redux'
 
 import * as types from './types'
 
@@ -24,7 +24,7 @@ const initialState = {
   status: false,
 }
 
-const reducer = (state = initialState, action: Action) => {
+const reducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case types.TOGGLE:
       return ({

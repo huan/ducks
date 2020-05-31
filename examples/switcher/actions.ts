@@ -18,7 +18,7 @@
  */
 import * as types from './types'
 
-const toggle = () => ({ type: types.TOGGLE }) as const
+const toggle = () => ({ type: types.TOGGLE })
 
 export {
   toggle,
