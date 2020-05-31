@@ -36,7 +36,6 @@
   },
   "homepage": "https://github.com/huan/ducks#readme",
   "dependencies": {
-    "reduce-reducers": "^1.0.4"
   },
   "devDependencies": {
     "@chatie/eslint-config": "^0.8.1",

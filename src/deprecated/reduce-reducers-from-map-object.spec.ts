@@ -25,7 +25,7 @@ import * as switcherDuckAPI from '../../examples/switcher/'
 
 import { reduceReducersFromMapObject } from './reduce-reducers-from-map-object'
 
-test('reduceReducersFromMapObject()', async t => {
+test.skip('DEPRECATED: reduceReducersFromMapObject()', async t => {
   const reducer = reduceReducersFromMapObject({
     counter  : counterDuckAPI.default,
     switcher : switcherDuckAPI.default,
