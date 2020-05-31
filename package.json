@@ -1,6 +1,6 @@
 {
   "name": "ducks",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "🦆🦆🦆 Ducks is a Reducer Bundles Manager that Implementing the Redux Ducks Modular Proposal with Great Convenience.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -35,8 +35,7 @@
     "url": "https://github.com/huan/ducks/issues"
   },
   "homepage": "https://github.com/huan/ducks#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@chatie/eslint-config": "^0.8.1",
     "@chatie/git-scripts": "^0.6.1",
