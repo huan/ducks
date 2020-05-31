@@ -22,6 +22,7 @@ npm init -y
 npm install *-*.*.*.tgz \
   @chatie/tsconfig \
   redux \
+  typesafe-actions \
 
 ./node_modules/.bin/tsc \
   --esModuleInterop \
