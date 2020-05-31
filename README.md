@@ -540,6 +540,13 @@ Don't store system state, store events that brought system to this state.
 
 ### master
 
+### v0.4 (Jun 2020)
+
+Fix the TypeScript Generic Template typing problems:
+
+1. Protect String Literal Types in Action Types [#1](https://github.com/huan/ducks/issues/1)
+1. Property 'payload' is missing in type 'AnyAction' [#2](https://github.com/huan/ducks/issues/2)
+
 ### v0.2 (May 2020)
 
 1. Published the very first version of [Ducks Modular Proposal](https://github.com/erikras/ducks-modular-redux) to Ducks!
