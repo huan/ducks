@@ -100,7 +100,7 @@ Here's the full version of Re-ducks proposal: [Building on the duck legacy, An a
 
 [![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
 
-In order to build a better Ducks, [I](https://github.com/huan) defined the following rules and I call it **Ducksify**:
+In order to build a fully modularized Ducks, we define the **Ducksify** extension with the following rules:
 
 1. MUST export its module interface as the following Ducks `API`:
 
@@ -131,7 +131,7 @@ In order to build a better Ducks, [I](https://github.com/huan) defined the follo
 1. MAY export its saga functions called `*Saga()`
 1. MAY export its epic functions called `*Epic()`
 1. MAY use [typesafe-actions](https://github.com/piotrwitek/typesafe-actions) to creating reducers, actions, and middlewares.
-1. If we has `sagas`, `epics`, or `middlewares` the **duck** folder would like:
+1. If we has `sagas`, `epics`, or `middlewares`, the **duck** folder would like:
 
     ```sh
     duck/
