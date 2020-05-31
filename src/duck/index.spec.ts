@@ -23,7 +23,7 @@ import test  from 'tstest'
 import {
   API,
   Duck,
-  Ducksiable,
+  Ducksifiable,
   validateDuckAPI,
 }                 from './'
 
@@ -32,8 +32,8 @@ test('Check the exports for the directory', async t => {
   t.ok(validateDuckAPI, 'should export `validateDuckApI`')
 
   const api: API = {} as any
-  const ducksify: Ducksiable<any> = {} as any
+  const ducksify: Ducksifiable<any> = {} as any
 
   t.ok(api, 'should has API interface exported')
-  t.ok(ducksify, 'should has Ducksiable interface exported')
+  t.ok(ducksify, 'should has Ducksifiable interface exported')
 })

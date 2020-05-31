@@ -18,5 +18,5 @@
  */
 export { Duck }             from './duck'
 export { API }              from './api'
-export { Ducksiable }       from './ducksiable'
+export { Ducksifiable }     from './ducksifiable'
 export { validateDuckAPI }  from './validate-duck-api'
