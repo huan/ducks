@@ -538,7 +538,7 @@ Don't store system state, store events that brought system to this state.
 
 ## History
 
-### master
+### master v0.5
 
 ### v0.4 (Jun 2020)
 
