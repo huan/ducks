@@ -49,7 +49,14 @@ class Duck <A extends Api = any> {
 
   static VERSION = VERSION
 
-  protected store?: Store
+  get store () {
+    if (!this._store) {
+      throw new Error('Duck store has not been set yet: Duck can only be used after its store has been initialized.')
+    }
+    return this._store!
+  }
+  _store?: Store
+
   namespaces: string[]
 
   get reducer (): A['default']    { return this.api.default }
@@ -77,10 +84,6 @@ class Duck <A extends Api = any> {
     // console.info('[duck] namespaces:', this.namespaces)
     // console.info('[duck] state[namespaces[0]]:', this.store.getState()[this.namespaces[0]])
     // console.info('[duck] state[namespaces[1]]:', this.store.getState()[this.namespaces[1]])
-
-    if (!this.store) {
-      throw new Error('Duck store has not been set yet: Duck can only be used after its store has been initialized.')
-    }
 
     const duckStateReducer = (duckState: any, namespace: string, idx: number) => {
       if (namespace in duckState) {
@@ -113,10 +116,10 @@ class Duck <A extends Api = any> {
   }
 
   public setStore (store: Store): void {
-    if (this.store) {
+    if (this._store) {
       throw new Error('A store has already been set, and it can not be set twice.')
     }
-    this.store = store
+    this._store = store
   }
 
   public setNamespaces (...namespaces: string[]): void {
@@ -150,7 +153,7 @@ class Duck <A extends Api = any> {
           /**
            * We have to make sure `store` has been initialized before the following code has been ran
            */
-            that.store!.dispatch
+            that.store.dispatch
           )(...args)
         },
       }
