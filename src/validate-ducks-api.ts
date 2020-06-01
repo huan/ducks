@@ -30,6 +30,14 @@ export interface MapObject {
   [key: string]: any,
 }
 
+const getLogger = (debug: boolean) => (msg: string) => {
+  if (debug) {
+    console.info(msg)
+  }
+}
+
+let log: ReturnType<typeof getLogger>
+
 /**
  * Huan(202005) TODO:
  *  Testing static types in TypeScript
@@ -42,8 +50,9 @@ export interface MapObject {
  *  2. check operations take a store as argument and returns a frunction
  *  3. Conditional Type Checks - https://github.com/dsherret/conditional-type-checks
  */
+function validateDucksApi <T extends Api> (api: T, debug = false) {
+  log = getLogger(debug)
 
-function validateDucksApi <T extends Api> (api: T) {
   validateActions(api.actions)
   validateOperations(api.operations)
   validateReducer(api.default)
@@ -73,8 +82,11 @@ function validateReducer <T extends Reducer> (reducer: T) {
 
 function validateActions <T extends MapObject> (actions: T) {
   assert.ok(actions, 'should exported actions')
-  Object.keys(actions).forEach(validateString)
-  Object.values(actions).forEach(validateActionType)
+  for (const [key, val] of Object.entries(actions)) {
+    log('validateActions: validating: ' + key + ', ' + val)
+    validateString(key)
+    validateActionType(val)
+  }
 }
 
 function validateOperations <T extends MapObject> (operations?: T) {
@@ -138,7 +150,32 @@ function validateString (value: any) {
 }
 
 function validateActionType (actionCreator: ActionCreator<AnyAction>) {
-  assert.strictEqual(typeof actionCreator, 'function', 'actionCreator should be a function')
+  if (typeof actionCreator === 'object') {
+    for (const [key, val] of Object.entries(actionCreator)) {
+      // .cancel will be undefined when not defined.
+      if (key === 'cancel' && !val) {
+        continue
+      }
+      assertAsyncKey(key)
+      assertFunction(val)
+    }
+  } else {
+    assertFunction(actionCreator)
+  }
+
+  function assertFunction (creator: any) {
+    assert.strictEqual(typeof creator, 'function', 'actionCreator is expected to be a function, but we got: ' + typeof creator + ', ' + String(creator))
+  }
+
+  function assertAsyncKey (key: string) {
+    const ASYNC_KEY_LIST = [
+      'request',
+      'success',
+      'failure',
+      'cancel',
+    ]
+    assert(ASYNC_KEY_LIST.includes(key), 'async action creator should with object keys: request/success/failure/cancel. we got: ' + key)
+  }
 }
 
 function validateSelectorType (selector: (...args: any[]) => any) {
