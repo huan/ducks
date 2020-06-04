@@ -55,7 +55,7 @@ class Duck <A extends Api = any> {
     }
     return this._store!
   }
-  _store?: Store
+  private _store?: Store
 
   namespaces: string[]
 
