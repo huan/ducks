@@ -233,6 +233,16 @@ It shows that:
 1. Ducks supports `redux-observable` and `redux-saga` out-of-the-box with zero configuration.
 1. How to stick with the best practices to write a redux reducer bundle by following the ducks modular proposal.
 
+Talk is cheap, show me the code: the following example code can be found at [examples/quack.ts](examples/quack.ts), you can try it by running the following commands:
+
+```sh
+git clone git@github.com:huan/ducks.git
+cd ducks
+
+npm install
+npm start
+```
+
 ```ts
 import { createStore } from 'redux'
 import { Duck, Ducks } from 'ducks'
@@ -292,15 +302,7 @@ assert.strictEqual(pingPong.selectors.getPong(), 1)
 console.info('store state:', store.getState())
 ```
 
-The above example code can be found at [examples/quack.ts](examples/quack.ts), you can try it by running the following commands:
-
-```sh
-git clone git@github.com:huan/ducks.git
-cd ducks
-
-npm install
-npm start
-```
+I hope you will like this clean and beautiful `Ducksify` way with using Ducks!
 
 ## Api References
 
