@@ -26,12 +26,12 @@ import {
 }         from 'redux-saga/effects'
 
 import {
-  validateDucksApi,
+  validateDuck,
 }                     from '../../src'
 
-import * as api from '.'
+import * as duck from '.'
 
-validateDucksApi(api)
+validateDuck(duck)
 
 test('ping -> pong', async t => {
   const sagaMiddleware = createSagaMiddleware()
@@ -43,7 +43,7 @@ test('ping -> pong', async t => {
 
   function * rootSaga () {
     yield all(
-      Object.values(api.sagas)
+      Object.values(duck.sagas)
         .map(saga => saga())
     )
   }
@@ -51,11 +51,11 @@ test('ping -> pong', async t => {
   sagaMiddleware.run(rootSaga)
 
   const expectedActions = [
-    { type: api.types.PING },
-    { type: api.types.PONG },
+    { type: duck.types.PING },
+    { type: duck.types.PONG },
   ]
 
-  store.dispatch(api.actions.ping())
+  store.dispatch(duck.actions.ping())
 
   t.deepEqual(store.getActions(), expectedActions, 'should get the PONG after PING')
 })

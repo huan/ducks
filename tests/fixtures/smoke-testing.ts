@@ -23,14 +23,14 @@ import {
   VERSION,
 }                     from 'ducks'
 
-import * as counterApi from 'ducks/dist/examples/counter/'
+import * as counterDuck from 'ducks/dist/examples/counter/'
 
 async function main () {
   if (VERSION === '0.0.0') {
     throw new Error('version should be set before publishing')
   }
 
-  const ducks = new Ducks({ counter: counterApi })
+  const ducks = new Ducks({ counter: counterDuck })
   ducks.configureStore()
 
   return 0

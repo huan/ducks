@@ -24,30 +24,30 @@ import {
 }                         from 'redux'
 
 import {
-  validateDucksApi,
+  validateDuck,
 }                     from '../../src/'
 
-import * as api from '.'
+import * as duck from '.'
 
-validateDucksApi(api)
+validateDuck(duck)
 
 test('counter', async t => {
-  const store = createStore(api.default)
+  const store = createStore(duck.default)
 
-  let n = api.selectors.getCounter(store.getState())()
+  let n = duck.selectors.getCounter(store.getState())()
   t.equal(n, 0, 'should be 0 after init')
 
-  store.dispatch(api.actions.tap())
+  store.dispatch(duck.actions.tap())
 
-  n = api.selectors.getCounter(store.getState())()
+  n = duck.selectors.getCounter(store.getState())()
   t.equal(n, 1, 'should be 1 after tap')
 })
 
 test('operations', async t => {
-  const store = createStore(api.default)
+  const store = createStore(duck.default)
 
-  api.operations.tap(store.dispatch)()
+  duck.operations.tap(store.dispatch)()
 
-  const n = api.selectors.getCounter(store.getState())()
+  const n = duck.selectors.getCounter(store.getState())()
   t.equal(n, 1, 'should be 1 after operations.tap(store)()')
 })

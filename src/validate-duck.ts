@@ -47,10 +47,10 @@ let log: ReturnType<typeof getLogger>
  *
  * To be added in the future:
  *  1. check selectors take a state as argument and returns a function
- *  2. check operations take a store as argument and returns a frunction
+ *  2. check operations take a store as argument and returns a function
  *  3. Conditional Type Checks - https://github.com/dsherret/conditional-type-checks
  */
-function validateDucksApi <D extends Duck> (duck: D, debug = false) {
+function validateDuck <D extends Duck> (duck: D, debug = false) {
   log = getLogger(debug)
 
   validateActions(duck.actions)
@@ -203,5 +203,5 @@ function validateEpicType (epic: (...args: any[]) => any) {
 }
 
 export {
-  validateDucksApi,
+  validateDuck,
 }

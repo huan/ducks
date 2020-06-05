@@ -84,7 +84,7 @@ class Ducks <A extends DucksMapObject> {
   /**
    * Construct a `Ducks` manager for managing the Duck(s)
    *
-   * @param duckery is a `ApiMapObject` which:
+   * @param duckery is a `DucksMapObject` which:
    *  1. key is the reducer key (namespace)
    *  2. value is a `Duck` instance
    */
@@ -134,7 +134,7 @@ class Ducks <A extends DucksMapObject> {
       const namespaceList = Object.keys(this.duckery)
         .filter(ns => this.duckery[ns] === nsOrDuck)
       if (namespaceList.length <= 0) {
-        throw new Error('Duck not found for API: ' + nsOrDuck)
+        throw new Error('Duck not found: ' + nsOrDuck)
       }
       const namespace = namespaceList[0]
       return this.ducksify(namespace)

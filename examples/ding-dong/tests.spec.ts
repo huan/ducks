@@ -26,12 +26,12 @@ import {
 }                         from 'redux-observable'
 
 import {
-  validateDucksApi,
+  validateDuck,
 }                     from '../../src'
 
-import * as api from '.'
+import * as duck from '.'
 
-validateDucksApi(api)
+validateDuck(duck)
 
 test('ding -> dong', async t => {
   const epicMiddleware = createEpicMiddleware()
@@ -41,16 +41,16 @@ test('ding -> dong', async t => {
   const mockStore = configureMockStore([epicMiddleware])
 
   const expectedActions = [
-    { type: api.types.DING },
-    { type: api.types.DONG },
+    { type: duck.types.DING },
+    { type: duck.types.DONG },
   ]
   const store = mockStore()
 
   epicMiddleware.run(combineEpics(
-    ...Object.values(api.epics)
+    ...Object.values(duck.epics)
   ))
 
-  store.dispatch(api.actions.ding())
+  store.dispatch(duck.actions.ding())
 
   t.deepEqual(store.getActions(), expectedActions, 'should get the DONG after DING')
 })

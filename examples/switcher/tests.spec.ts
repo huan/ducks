@@ -24,21 +24,21 @@ import {
 }                         from 'redux'
 
 import {
-  validateDucksApi,
+  validateDuck,
 }                     from '../../src'
 
-import * as api from '.'
+import * as duck from '.'
 
-validateDucksApi(api)
+validateDuck(duck)
 
 test('toggle', async t => {
-  const store = createStore(api.default)
+  const store = createStore(duck.default)
 
-  let s = api.selectors.getStatus(store.getState())()
+  let s = duck.selectors.getStatus(store.getState())()
   t.equal(s, false, 'should be false after init')
 
-  store.dispatch(api.actions.toggle())
+  store.dispatch(duck.actions.toggle())
 
-  s = api.selectors.getStatus(store.getState())()
+  s = duck.selectors.getStatus(store.getState())()
   t.equal(s, true, 'should be true after toggle')
 })

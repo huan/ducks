@@ -26,4 +26,4 @@ export {
 
 export { Duck }              from './duck'
 // export { Bundle }             from './bundle'
-export { validateDucksApi } from './validate-ducks-api'
+export { validateDuck } from './validate-duck'

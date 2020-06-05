@@ -22,23 +22,23 @@ import test  from 'tstest'
 
 import { combineDuckery } from './combine-duckery'
 
-import * as counterApi  from '../../examples/counter'
-import * as switcherApi from '../../examples/switcher'
+import * as counterDuck  from '../../examples/counter'
+import * as switcherDuck from '../../examples/switcher'
 
 test('combineDuckery()', async t => {
   const reducer = combineDuckery({
-    counter: counterApi,
-    switcher: switcherApi,
+    counter: counterDuck,
+    switcher: switcherDuck,
   })
 
   let state = reducer({} as any, { type: 'INIT' })
 
-  t.equal(counterApi.selectors.getCounter(state.counter)(), 0, 'should get 0 on init')
-  t.equal(switcherApi.selectors.getStatus(state.switcher)(), false, 'should get false on init')
+  t.equal(counterDuck.selectors.getCounter(state.counter)(), 0, 'should get 0 on init')
+  t.equal(switcherDuck.selectors.getStatus(state.switcher)(), false, 'should get false on init')
 
-  state = reducer(state, counterApi.actions.tap())
-  state = reducer(state, switcherApi.actions.toggle())
+  state = reducer(state, counterDuck.actions.tap())
+  state = reducer(state, switcherDuck.actions.toggle())
 
-  t.equal(counterApi.selectors.getCounter(state.counter)(), 1, 'should get 1 after tap()')
-  t.equal(switcherApi.selectors.getStatus(state.switcher)(), true, 'should get true after toggle()')
+  t.equal(counterDuck.selectors.getCounter(state.counter)(), 1, 'should get 1 after tap()')
+  t.equal(switcherDuck.selectors.getStatus(state.switcher)(), true, 'should get true after toggle()')
 })

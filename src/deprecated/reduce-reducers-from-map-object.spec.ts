@@ -20,20 +20,20 @@
  */
 import test  from 'tstest'
 
-import * as counterDuckAPI  from '../../examples/counter/'
-import * as switcherDuckAPI from '../../examples/switcher/'
+import * as counterDuck  from '../../examples/counter/'
+import * as switcherDuck from '../../examples/switcher/'
 
 import { reduceReducersFromMapObject } from './reduce-reducers-from-map-object'
 
 test.skip('DEPRECATED: reduceReducersFromMapObject()', async t => {
   const reducer = reduceReducersFromMapObject({
-    counter  : counterDuckAPI.default,
-    switcher : switcherDuckAPI.default,
+    counter  : counterDuck.default,
+    switcher : switcherDuck.default,
   })
 
   let state = reducer(undefined as any, { type: 'INIT' })
 
-  t.equal(counterDuckAPI.selectors.getCounter(state)(), 0, 'should get 0 on init')
+  t.equal(counterDuck.selectors.getCounter(state)(), 0, 'should get 0 on init')
 
   /**
    * https://stackoverflow.com/a/44371190/1123955
@@ -43,11 +43,11 @@ test.skip('DEPRECATED: reduceReducersFromMapObject()', async t => {
    * just returns state unchanged.
    * That's why there isn't any `product` prop.
    */
-  t.equal(switcherDuckAPI.selectors.getStatus(state)(), undefined, 'should get ~~false~~ UNDEFINED on init')
+  t.equal(switcherDuck.selectors.getStatus(state)(), undefined, 'should get ~~false~~ UNDEFINED on init')
 
-  state = reducer(state, counterDuckAPI.actions.tap())
-  state = reducer(state, switcherDuckAPI.actions.toggle())
+  state = reducer(state, counterDuck.actions.tap())
+  state = reducer(state, switcherDuck.actions.toggle())
 
-  t.equal(counterDuckAPI.selectors.getCounter(state)(), 1, 'should get 1 after tap()')
-  t.equal(switcherDuckAPI.selectors.getStatus(state)(), true, 'should get true after toggle()')
+  t.equal(counterDuck.selectors.getCounter(state)(), 1, 'should get 1 after tap()')
+  t.equal(switcherDuck.selectors.getStatus(state)(), true, 'should get true after toggle()')
 })

@@ -20,8 +20,8 @@
  */
 import test  from 'tstest'
 
-import * as counterApi  from '../../examples/counter/'
-import * as switcherApi from '../../examples/switcher/'
+import * as counterDuck  from '../../examples/counter/'
+import * as switcherDuck from '../../examples/switcher/'
 
 import { combineDuckery }   from './combine-duckery'
 import { insertReducers } from './insert-reducers'
@@ -31,11 +31,11 @@ import { insertReducers } from './insert-reducers'
  */
 test('insertReducers(counter, switcher)', async t => {
   const originalReducer = combineDuckery({
-    counter: counterApi,
+    counter: counterDuck,
   })
 
   const insertReducer = {
-    switcher: switcherApi.default,
+    switcher: switcherDuck.default,
   }
 
   const newReducer = insertReducers(
@@ -49,14 +49,14 @@ test('insertReducers(counter, switcher)', async t => {
   t.equal(state0.counter.total, 0, 'should get state.count.total = 0 on initialization')
   t.equal(state0.switcher.status, false, 'should get state.switcher.status = false on initialization')
 
-  const state1 = newReducer(state0, counterApi.actions.tap())
+  const state1 = newReducer(state0, counterDuck.actions.tap())
   t.notEqual(state1, state0, 'should not mutate the state 0')
 
   /**
-   * We have lost the typing information from the switcher API
+   * We have lost the typing information from the switcher Duck
    *  because the Reducer is using the AnyAction
    */
-  const state2 = newReducer(state1, switcherApi.actions.toggle() as any)
+  const state2 = newReducer(state1, switcherDuck.actions.toggle() as any)
   t.notEqual(state2, state1, 'should not mutate the state 1')
 
   t.equal(state2.counter.total, 1, 'should get state.count.total = 1 after tap()')
@@ -71,11 +71,11 @@ test('insertReducers(counter, switcher)', async t => {
  */
 test('insertReducers(switcher, counter)', async t => {
   const originalReducer = combineDuckery({
-    switcher: switcherApi,
+    switcher: switcherDuck,
   })
 
   const insertReducer = {
-    counter: counterApi.default,
+    counter: counterDuck.default,
   }
 
   const newReducer = insertReducers(
@@ -89,10 +89,10 @@ test('insertReducers(switcher, counter)', async t => {
   t.equal(state0.counter.total, 0, 'should get state.count.total = 0 on initialization')
   t.equal(state0.switcher.status, false, 'should get state.switcher.status = false on initialization')
 
-  const state1 = newReducer(state0, counterApi.actions.tap())
+  const state1 = newReducer(state0, counterDuck.actions.tap())
   t.notEqual(state1, state0, 'should not mutate the state 0')
 
-  const state2 = newReducer(state1, switcherApi.actions.toggle())
+  const state2 = newReducer(state1, switcherDuck.actions.toggle())
   t.notEqual(state2, state1, 'should not mutate the state 1')
 
   t.equal(state2.counter.total, 1, 'should get state.count.total = 1 after tap()')

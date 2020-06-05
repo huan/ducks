@@ -22,16 +22,16 @@ import { createStore } from 'redux'
 
 import { Ducks } from '../src'
 
-import * as switcherApi from './switcher'   // Vanilla Duck: ON/OFF
-import * as counterApi  from './counter'    // TypeSafe Actions: +1
-import * as dingDongApi from './ding-dong'  // Observable Middleware
-import * as pingPongApi from './ping-pong'  // Saga Middleware
+import * as switcherDuck from './switcher'   // Vanilla Duck: ON/OFF
+import * as counterDuck  from './counter'    // TypeSafe Actions: +1
+import * as dingDongDuck from './ding-dong'  // Observable Middleware
+import * as pingPongDuck from './ping-pong'  // Saga Middleware
 
 const ducks = new Ducks({
-  counter  : counterApi,
-  dingDong : dingDongApi,
-  pingPong : pingPongApi,
-  switcher : switcherApi,
+  counter  : counterDuck,
+  dingDong : dingDongDuck,
+  pingPong : pingPongDuck,
+  switcher : switcherDuck,
 })
 
 const {
@@ -92,7 +92,7 @@ assert.strictEqual(pingPong.selectors.getPong(), 1)
 console.info('# Final Store State:', store.getState())
 
 /**
- * We can export the Ducks to provide the Ducks API!
+ * We can export the Ducks to provide the Ducks Bundles!
  */
 export {
   counter,

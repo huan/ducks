@@ -26,7 +26,7 @@ import {
 }                       from 'redux'
 import createMockStore from 'redux-mock-store'
 
-import * as counterDuckAPI from '../examples/counter/'
+import * as counterDuck from '../examples/counter/'
 
 import { Bundle } from './bundle'
 
@@ -35,7 +35,7 @@ test('VERSION', async t => {
 })
 
 test('setStore()', async t => {
-  const duck = new Bundle(counterDuckAPI)
+  const duck = new Bundle(counterDuck)
 
   const store = createMockStore()()
 
@@ -50,22 +50,22 @@ test("ducksify functions' names", async t => {
    * Inferred function names
    *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
    */
-  const duck = new Bundle(counterDuckAPI)
+  const duck = new Bundle(counterDuck)
 
-  Object.keys(counterDuckAPI.selectors).forEach(selector => {
-    const duckSelectorsFunc = duck.selectors[selector as keyof typeof duck.selectors]
-    const apiSelectorsFunc  = counterDuckAPI.selectors[selector as keyof typeof duck.selectors]
+  Object.keys(counterDuck.selectors).forEach(selector => {
+    const bundleSelectorsFunc = duck.selectors[selector as keyof typeof duck.selectors]
+    const duckSelectorsFunc  = counterDuck.selectors[selector as keyof typeof duck.selectors]
 
     t.equals(
+      bundleSelectorsFunc.name,
       duckSelectorsFunc.name,
-      apiSelectorsFunc.name,
       'selectors function name should keep the same after ducksify',
     )
   })
 })
 
 test('ducksify selectors & operations', async t => {
-  const duck = new Bundle(counterDuckAPI)
+  const duck = new Bundle(counterDuck)
 
   const NAMESPACE = 'duck'
 

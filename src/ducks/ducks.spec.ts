@@ -32,24 +32,24 @@ import createSagaMiddleware     from 'redux-saga'
 
 import { Ducks } from './ducks'
 
-import * as counterApi  from '../../examples/counter/'
-import * as dingdongApi from '../../examples/ding-dong/'
-import * as pingpongApi from '../../examples/ping-pong/'
-import * as switcherApi from '../../examples/switcher/'
+import * as counterDuck  from '../../examples/counter/'
+import * as dingdongDuck from '../../examples/ding-dong/'
+import * as pingpongDuck from '../../examples/ping-pong/'
+import * as switcherDuck from '../../examples/switcher/'
 
 test('construction()', async t => {
   t.throws(() => new Ducks({}), 'should not happy with empty duckery')
 
   t.doesNotThrow(() => new Ducks({
-    counter : counterApi,
-    dong    : dingdongApi,
-    pong    : pingpongApi,
+    counter : counterDuck,
+    dong    : dingdongDuck,
+    pong    : pingpongDuck,
   }), 'should be able to construct with ducks')
 })
 
 test('reducer()', async t => {
   const ducks = new Ducks({
-    counter : counterApi,
+    counter : counterDuck,
   })
 
   const initialState = {}
@@ -76,8 +76,8 @@ test('constructor() with option.middleware', async t => {
   const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({
-    dong    : dingdongApi,
-    pong    : pingpongApi,
+    dong    : dingdongDuck,
+    pong    : pingpongDuck,
   })
 
   t.doesNotThrow(
@@ -100,8 +100,8 @@ test('Epics & Sagas middlewares', async t => {
   const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({
-    dong    : dingdongApi,
-    pong    : pingpongApi,
+    dong    : dingdongDuck,
+    pong    : pingpongDuck,
   })
 
   const {
@@ -134,14 +134,14 @@ test('Epics & Sagas middlewares', async t => {
 
 test('Ducks with other reducers work together', async t => {
   const ducks = new Ducks({
-    counter : counterApi,
+    counter : counterDuck,
   })
 
   const { counter } = ducks.ducksify()
 
   const store = createStore(
     combineReducers({
-      switch: switcherApi.default,
+      switch: switcherDuck.default,
     }),
     compose(
       ducks.enhancer(),
@@ -157,13 +157,13 @@ test('Ducks with other reducers work together', async t => {
   counter.operations.tap()
   t.equal(counter.selectors.getCounter(), 1, 'should get counter 1 after tap')
 
-  store.dispatch(switcherApi.actions.toggle())
+  store.dispatch(switcherDuck.actions.toggle())
   t.equal(store.getState().switch.status, true, 'should get true from switch status after dispatch actions.toggle()')
 })
 
 test('configureStore() smoke testing', async t => {
   const ducks = new Ducks({
-    counter : counterApi,
+    counter : counterDuck,
   })
 
   const { counter } = ducks.ducksify()
@@ -179,17 +179,17 @@ test('configureStore() smoke testing', async t => {
 
 test('configureStore() called twice', async t => {
   const ducks = new Ducks({
-    counter : counterApi,
+    counter : counterDuck,
   })
 
   t.doesNotThrow(() => ducks.configureStore(), 'should not throw for the first time')
   t.throws(() => ducks.configureStore(), 'should throw for the second time')
 })
 
-test('ducksify(namespace & api)', async t => {
+test('ducksify(namespace & duck)', async t => {
   const ducks = new Ducks({
-    counter : counterApi,
-    switcher: switcherApi,
+    counter : counterDuck,
+    switcher: switcherDuck,
   })
 
   const {
@@ -200,12 +200,12 @@ test('ducksify(namespace & api)', async t => {
   const counterByName = ducks.ducksify('counter')
   const switcherByName = ducks.ducksify('switcher')
 
-  const counterByApi = ducks.ducksify(counterApi)
-  const switcherByApi = ducks.ducksify(switcherApi)
+  const counterByDuck = ducks.ducksify(counterDuck)
+  const switcherByDuck = ducks.ducksify(switcherDuck)
 
   t.equal(counter, counterByName, 'counter should be same with by name')
-  t.equal(counter, counterByApi, 'counter should be same with by api')
+  t.equal(counter, counterByDuck, 'counter should be same with by duck')
 
   t.equal(switcher, switcherByName, 'switcher should be same with by name')
-  t.equal(switcher, switcherByApi, 'switcher should be same with by api')
+  t.equal(switcher, switcherByDuck, 'switcher should be same with by duck')
 })

@@ -70,7 +70,7 @@ export interface DucksMapObject {
 
 /**
  *
- * Ducksify API for Ducks Modular Proposal
+ * Ducksify API Interface for Ducks Modular Proposal
  *  (a.k.a. Redux Reducer Bundles)
  *
  */
