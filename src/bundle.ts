@@ -25,10 +25,10 @@ import {
 }                   from './config'
 
 import {
-  Api,
+  Duck,
   OperationsMapObject,
   SelectorsMapObject,
-}                         from './api'
+}                         from './duck'
 
 /**
  * Map types from a Map Object
@@ -38,14 +38,14 @@ import {
 type BundleOperations <O extends OperationsMapObject> = {
   [key in keyof O]: ReturnType<O[key]>
 }
-type DucksifyOperations <D extends Api> = BundleOperations <D extends { operations: any } ? D['operations'] : {}>
+type DucksifyOperations <D extends Duck> = BundleOperations <D extends { operations: any } ? D['operations'] : {}>
 
 type BundleSelectors <S extends SelectorsMapObject> = {
   [key in keyof S]: ReturnType<S[key]>
 }
-type DucksifySelectors <D extends Api> = BundleSelectors <D extends { selectors: any } ? D['selectors'] : {}>
+type DucksifySelectors <D extends Duck> = BundleSelectors <D extends { selectors: any } ? D['selectors'] : {}>
 
-class Bundle <A extends Api = any> {
+class Bundle <D extends Duck = any> {
 
   static VERSION = VERSION
 
@@ -59,13 +59,13 @@ class Bundle <A extends Api = any> {
 
   namespaces: string[]
 
-  get reducer (): A['default']    { return this.api.default }
+  get reducer (): D['default']    { return this.duck.default }
 
-  get actions () : A['actions']   { return this.api.actions }
-  get types ()   : A['types']     { return this.api.types }
+  get actions () : D['actions']   { return this.duck.actions }
+  get types ()   : D['types']     { return this.duck.types }
 
-  // get epics () : A['epics'] { return this.api.epics }
-  // get sagas () : A['sagas'] { return this.api.sagas }
+  // get epics () : A['epics'] { return this.duck.epics }
+  // get sagas () : A['sagas'] { return this.duck.sagas }
 
   get operations () {
     return this.ducksifiedOperations
@@ -75,10 +75,10 @@ class Bundle <A extends Api = any> {
     return this.ducksifiedSelectors
   }
 
-  protected ducksifiedSelectors  : DucksifySelectors<A>
-  protected ducksifiedOperations : DucksifyOperations<A>
+  protected ducksifiedSelectors  : DucksifySelectors<D>
+  protected ducksifiedOperations : DucksifyOperations<D>
 
-  protected get state () : ReturnType<A['default']> {
+  protected get state () : ReturnType<D['default']> {
 
     // console.info('[duck] state:', this.store.getState())
     // console.info('[duck] namespaces:', this.namespaces)
@@ -100,7 +100,7 @@ class Bundle <A extends Api = any> {
   }
 
   constructor (
-    public api: A,
+    public duck: D,
   ) {
     this.namespaces = []
 
@@ -111,8 +111,8 @@ class Bundle <A extends Api = any> {
      *
      * Huan(202005): I'd like to call this: ducksify
      */
-    this.ducksifiedOperations = this.ducksifyOperations(this.api)
-    this.ducksifiedSelectors  = this.ducksifySelectors(this.api)
+    this.ducksifiedOperations = this.ducksifyOperations(this.duck)
+    this.ducksifiedSelectors  = this.ducksifySelectors(this.duck)
   }
 
   public setStore (store: Store): void {
@@ -130,11 +130,11 @@ class Bundle <A extends Api = any> {
   }
 
   protected ducksifyOperations (
-    api: A,
-  ): DucksifyOperations<A> {
+    duck: D,
+  ): DucksifyOperations<D> {
     let ducksifiedOperations: BundleOperations<any> = {}
 
-    const operations = api.operations
+    const operations = duck.operations
     if (!operations) {
       return ducksifiedOperations
     }
@@ -162,10 +162,10 @@ class Bundle <A extends Api = any> {
   }
 
   protected ducksifySelectors (
-    api: A,
-  ): DucksifySelectors<A> {
+    duck: D,
+  ): DucksifySelectors<D> {
     let ducksifiedSelectors: BundleSelectors<any> = {}
-    const selectors = api.selectors
+    const selectors = duck.selectors
 
     if (!selectors) {
       return ducksifiedSelectors

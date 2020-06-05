@@ -64,8 +64,8 @@ export interface SagasMapObject {
   [saga: string]: Saga,
 }
 
-export interface ApisMapObject {
-  [namespace: string]: Api,
+export interface DucksMapObject {
+  [namespace: string]: Duck,
 }
 
 /**
@@ -74,7 +74,7 @@ export interface ApisMapObject {
  *  (a.k.a. Redux Reducer Bundles)
  *
  */
-export interface Api {
+export interface Duck {
   /**
    *
    * Ducks Proposal:

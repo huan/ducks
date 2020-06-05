@@ -24,7 +24,7 @@ import {
   Reducer,
 }                 from 'redux'
 
-import { Api } from './api'
+import { Duck } from './duck'
 
 export interface MapObject {
   [key: string]: any,
@@ -50,21 +50,21 @@ let log: ReturnType<typeof getLogger>
  *  2. check operations take a store as argument and returns a frunction
  *  3. Conditional Type Checks - https://github.com/dsherret/conditional-type-checks
  */
-function validateDucksApi <T extends Api> (api: T, debug = false) {
+function validateDucksApi <D extends Duck> (duck: D, debug = false) {
   log = getLogger(debug)
 
-  validateActions(api.actions)
-  validateOperations(api.operations)
-  validateReducer(api.default)
-  validateSelectors(api.selectors)
-  validateTypes(api.types)
+  validateActions(duck.actions)
+  validateOperations(duck.operations)
+  validateReducer(duck.default)
+  validateSelectors(duck.selectors)
+  validateTypes(duck.types)
 
   /**
    * Middlewares
    */
-  validateMiddlewares(api.middlewares)
-  validateEpics(api.epics)
-  validateSagas(api.sagas)
+  validateMiddlewares(duck.middlewares)
+  validateEpics(duck.epics)
+  validateSagas(duck.sagas)
 }
 
 /**

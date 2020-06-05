@@ -24,6 +24,6 @@ export {
   noopReducer,
 }                    from './ducks/'
 
-export { Api }              from './api'
+export { Duck }              from './duck'
 // export { Bundle }             from './bundle'
 export { validateDucksApi } from './validate-ducks-api'

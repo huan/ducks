@@ -39,19 +39,19 @@ import {
 }                         from '../bundle'
 
 import {
-  Api,
-  ApisMapObject,
-}                 from '../api'
+  Duck,
+  DucksMapObject,
+}                 from '../duck'
 
 import { combineDuckery } from './combine-duckery'
 import { insertReducers } from './insert-reducers'
 import { noopReducer }     from './noop-reducer'
 
-export type DucksMapObject <A extends ApisMapObject> = {
+export type BundlesMapObject <A extends DucksMapObject> = {
   [key in keyof A]: Bundle<A[key]>
 }
 
-class Ducks <A extends ApisMapObject> {
+class Ducks <A extends DucksMapObject> {
 
   static VERSION = VERSION
 
@@ -60,7 +60,7 @@ class Ducks <A extends ApisMapObject> {
   }
   protected _store?: Store
 
-  protected ducksNest: DucksMapObject<A>
+  protected ducksNest: BundlesMapObject<A>
 
   protected asyncMiddlewares: {
     epicMiddleware?: EpicMiddleware<any>,
@@ -73,7 +73,7 @@ class Ducks <A extends ApisMapObject> {
 
   protected get middlewares (): Middleware[] {
     const middlewareList = Object.values(this.duckery)
-      .map(api => api.middlewares)
+      .map(duck => duck.middlewares)
       .filter(Boolean)
       .map(middlewares => Object.values(middlewares!))
       .flat()
@@ -92,13 +92,13 @@ class Ducks <A extends ApisMapObject> {
     protected readonly duckery: A,
   ) {
     if (Object.keys(duckery).length <= 0) {
-      throw new Error('You need to provide at least one api for the duckery')
+      throw new Error('You need to provide at least one duck for the duckery')
     }
     this.asyncMiddlewares = {}
 
     const ducksNest = {} as any
-    for (const [ns, api] of Object.entries(duckery)) {
-      ducksNest[ns as string] = new Bundle(api)
+    for (const [ns, duck] of Object.entries(duckery)) {
+      ducksNest[ns as string] = new Bundle(duck)
     }
     this.ducksNest = ducksNest
   }
@@ -106,41 +106,41 @@ class Ducks <A extends ApisMapObject> {
   /**
    * Return all Ducks
    */
-  ducksify (): DucksMapObject<A>
+  ducksify (): BundlesMapObject<A>
   /**
    * Return the Duck of `namespace`
    * @param namespace
    */
   ducksify <NS extends keyof A> (namespace: NS): Bundle<A[NS]>
   /**
-   * Return the Duck of `api`
-   * @param api
+   * Return the Bundle of `duck`
+   * @param duck
    */
-  ducksify <NS extends keyof A> (api: A[NS]): Bundle<A[NS]>
+  ducksify <NS extends keyof A> (duck: A[NS]): Bundle<A[NS]>
 
-  ducksify (nsOrApi?: string | Api): DucksMapObject<A> | Bundle {
-    if (!nsOrApi) {
+  ducksify (nsOrDuck?: string | Duck): BundlesMapObject<A> | Bundle {
+    if (!nsOrDuck) {
       return this.ducksNest
     }
 
-    if (typeof nsOrApi === 'string') {
-      if (nsOrApi in this.duckery) {
-        return this.ducksNest[nsOrApi]
+    if (typeof nsOrDuck === 'string') {
+      if (nsOrDuck in this.duckery) {
+        return this.ducksNest[nsOrDuck]
       }
-      throw new Error('Ducks can not found the Duck for the namespace: ' + nsOrApi)
+      throw new Error('Ducks can not found the Duck for the namespace: ' + nsOrDuck)
     }
 
-    if (typeof nsOrApi === 'object') {
+    if (typeof nsOrDuck === 'object') {
       const namespaceList = Object.keys(this.duckery)
-        .filter(ns => this.duckery[ns] === nsOrApi)
+        .filter(ns => this.duckery[ns] === nsOrDuck)
       if (namespaceList.length <= 0) {
-        throw new Error('Duck not found for API: ' + nsOrApi)
+        throw new Error('Duck not found for API: ' + nsOrDuck)
       }
       const namespace = namespaceList[0]
       return this.ducksify(namespace)
     }
 
-    throw new Error('unknown param: ' + nsOrApi)
+    throw new Error('unknown param: ' + nsOrDuck)
   }
 
   enhancer (): ReturnType<Ducks<A>['duckeryEnhancer']> {
@@ -232,7 +232,7 @@ class Ducks <A extends ApisMapObject> {
    */
   protected getRootEpic (): undefined | Epic {
     const epics = Object.values(this.duckery)
-      .map(api => api.epics)
+      .map(duck => duck.epics)
       .filter(Boolean)
       .map(epics => Object.values(epics!))
       .flat()
@@ -253,7 +253,7 @@ class Ducks <A extends ApisMapObject> {
 
   protected getRootSaga (): undefined | Saga {
     const sagas = Object.values(this.duckery)
-      .map(api => api.sagas)
+      .map(duck => duck.sagas)
       .filter(Boolean)
       .map(sagas => Object.values(sagas!))
       .flat()

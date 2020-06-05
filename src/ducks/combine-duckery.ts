@@ -23,9 +23,9 @@ import {
   ActionFromReducersMapObject,
 }                                 from 'redux'
 
-import { ApisMapObject } from '../api'
+import { DucksMapObject } from '../duck'
 
-export type ApiReducersMapObject <A extends ApisMapObject> = {
+export type DuckReducersMapObject <A extends DucksMapObject> = {
   [key in keyof A]: A[key]['default']
 }
 
@@ -36,22 +36,22 @@ export type ApiReducersMapObject <A extends ApisMapObject> = {
 /**
  * combineDuckery is combineReducer for Ducks
  */
-function combineDuckery <A extends ApisMapObject> (
-  apis: A
+function combineDuckery <D extends DucksMapObject> (
+  duckery: D
 ): Reducer <
-  StateFromReducersMapObject<ApiReducersMapObject<A>>,
-  ActionFromReducersMapObject<ApiReducersMapObject<A>>
+  StateFromReducersMapObject<DuckReducersMapObject<D>>,
+  ActionFromReducersMapObject<DuckReducersMapObject<D>>
 > {
-  let apiReducers: ApiReducersMapObject<A> = {} as any
+  let duckReducers: DuckReducersMapObject<D> = {} as any
 
-  Object.keys(apis).forEach(namespace => {
-    apiReducers = {
-      ...apiReducers,
-      [namespace]: apis[namespace].default,
+  Object.keys(duckery).forEach(namespace => {
+    duckReducers = {
+      ...duckReducers,
+      [namespace]: duckery[namespace].default,
     }
   })
 
-  return combineReducers(apiReducers)
+  return combineReducers(duckReducers)
 }
 
 export {
