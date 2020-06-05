@@ -28,14 +28,14 @@ import createMockStore from 'redux-mock-store'
 
 import * as counterDuckAPI from '../examples/counter/'
 
-import { Duck } from './duck'
+import { Bundle } from './bundle'
 
 test('VERSION', async t => {
-  t.ok(Duck.VERSION, 'has VERSION')
+  t.ok(Bundle.VERSION, 'has VERSION')
 })
 
 test('setStore()', async t => {
-  const duck = new Duck(counterDuckAPI)
+  const duck = new Bundle(counterDuckAPI)
 
   const store = createMockStore()()
 
@@ -50,7 +50,7 @@ test("ducksify functions' names", async t => {
    * Inferred function names
    *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
    */
-  const duck = new Duck(counterDuckAPI)
+  const duck = new Bundle(counterDuckAPI)
 
   Object.keys(counterDuckAPI.selectors).forEach(selector => {
     const duckSelectorsFunc = duck.selectors[selector as keyof typeof duck.selectors]
@@ -65,7 +65,7 @@ test("ducksify functions' names", async t => {
 })
 
 test('ducksify selectors & operations', async t => {
-  const duck = new Duck(counterDuckAPI)
+  const duck = new Bundle(counterDuckAPI)
 
   const NAMESPACE = 'duck'
 

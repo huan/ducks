@@ -35,23 +35,23 @@ import {
  *  https://github.com/microsoft/TypeScript/issues/24220#issuecomment-390063153
  */
 
-type DuckOperations <O extends OperationsMapObject> = {
+type BundleOperations <O extends OperationsMapObject> = {
   [key in keyof O]: ReturnType<O[key]>
 }
-type DucksifyOperations <D extends Api> = DuckOperations <D extends { operations: any } ? D['operations'] : {}>
+type DucksifyOperations <D extends Api> = BundleOperations <D extends { operations: any } ? D['operations'] : {}>
 
-type DuckSelectors <S extends SelectorsMapObject> = {
+type BundleSelectors <S extends SelectorsMapObject> = {
   [key in keyof S]: ReturnType<S[key]>
 }
-type DucksifySelectors <D extends Api> = DuckSelectors <D extends { selectors: any } ? D['selectors'] : {}>
+type DucksifySelectors <D extends Api> = BundleSelectors <D extends { selectors: any } ? D['selectors'] : {}>
 
-class Duck <A extends Api = any> {
+class Bundle <A extends Api = any> {
 
   static VERSION = VERSION
 
   get store () {
     if (!this._store) {
-      throw new Error('Duck store has not been set yet: Duck can only be used after its store has been initialized.')
+      throw new Error('Bundle store has not been set yet: Bundle can only be used after its store has been initialized.')
     }
     return this._store!
   }
@@ -68,15 +68,15 @@ class Duck <A extends Api = any> {
   // get sagas () : A['sagas'] { return this.api.sagas }
 
   get operations () {
-    return this.duckOperations
+    return this.ducksifiedOperations
   }
 
   get selectors () {
-    return this.duckSelectors
+    return this.ducksifiedSelectors
   }
 
-  protected duckSelectors  : DucksifySelectors<A>
-  protected duckOperations : DucksifyOperations<A>
+  protected ducksifiedSelectors  : DucksifySelectors<A>
+  protected ducksifiedOperations : DucksifyOperations<A>
 
   protected get state () : ReturnType<A['default']> {
 
@@ -111,8 +111,8 @@ class Duck <A extends Api = any> {
      *
      * Huan(202005): I'd like to call this: ducksify
      */
-    this.duckOperations = this.ducksifyOperations(this.api)
-    this.duckSelectors  = this.ducksifySelectors(this.api)
+    this.ducksifiedOperations = this.ducksifyOperations(this.api)
+    this.ducksifiedSelectors  = this.ducksifySelectors(this.api)
   }
 
   public setStore (store: Store): void {
@@ -132,11 +132,11 @@ class Duck <A extends Api = any> {
   protected ducksifyOperations (
     api: A,
   ): DucksifyOperations<A> {
-    let duckOperations: DuckOperations<any> = {}
+    let ducksifiedOperations: BundleOperations<any> = {}
 
     const operations = api.operations
     if (!operations) {
-      return duckOperations
+      return ducksifiedOperations
     }
 
     const that = this
@@ -146,8 +146,8 @@ class Duck <A extends Api = any> {
        * Inferred function names
        *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
        */
-      duckOperations = {
-        ...duckOperations,
+      ducksifiedOperations = {
+        ...ducksifiedOperations,
         [operation]: function (...args: any[]) {
           return operations[operation](
           /**
@@ -158,17 +158,17 @@ class Duck <A extends Api = any> {
         },
       }
     })
-    return duckOperations
+    return ducksifiedOperations
   }
 
   protected ducksifySelectors (
     api: A,
   ): DucksifySelectors<A> {
-    let duckSelectors: DuckSelectors<any> = {}
+    let ducksifiedSelectors: BundleSelectors<any> = {}
     const selectors = api.selectors
 
     if (!selectors) {
-      return duckSelectors
+      return ducksifiedSelectors
     }
 
     const that = this
@@ -177,8 +177,8 @@ class Duck <A extends Api = any> {
        * Inferred function names
        *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
        */
-      duckSelectors = {
-        ...duckSelectors,
+      ducksifiedSelectors = {
+        ...ducksifiedSelectors,
         [selector]: function (...args: any[]) {
           return selectors[selector](
             that.state,
@@ -186,11 +186,11 @@ class Duck <A extends Api = any> {
         },
       }
     })
-    return duckSelectors
+    return ducksifiedSelectors
   }
 
 }
 
 export {
-  Duck,
+  Bundle,
 }

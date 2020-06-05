@@ -35,8 +35,8 @@ import {
 }                      from '../config'
 
 import {
-  Duck,
-}                         from '../duck'
+  Bundle,
+}                         from '../bundle'
 
 import {
   Api,
@@ -48,7 +48,7 @@ import { insertReducers } from './insert-reducers'
 import { noopReducer }     from './noop-reducer'
 
 export type DucksMapObject <A extends ApisMapObject> = {
-  [key in keyof A]: Duck<A[key]>
+  [key in keyof A]: Bundle<A[key]>
 }
 
 class Ducks <A extends ApisMapObject> {
@@ -98,7 +98,7 @@ class Ducks <A extends ApisMapObject> {
 
     const ducksNest = {} as any
     for (const [ns, api] of Object.entries(duckery)) {
-      ducksNest[ns as string] = new Duck(api)
+      ducksNest[ns as string] = new Bundle(api)
     }
     this.ducksNest = ducksNest
   }
@@ -111,14 +111,14 @@ class Ducks <A extends ApisMapObject> {
    * Return the Duck of `namespace`
    * @param namespace
    */
-  ducksify <NS extends keyof A> (namespace: NS): Duck<A[NS]>
+  ducksify <NS extends keyof A> (namespace: NS): Bundle<A[NS]>
   /**
    * Return the Duck of `api`
    * @param api
    */
-  ducksify <NS extends keyof A> (api: A[NS]): Duck<A[NS]>
+  ducksify <NS extends keyof A> (api: A[NS]): Bundle<A[NS]>
 
-  ducksify (nsOrApi?: string | Api): DucksMapObject<A> | Duck {
+  ducksify (nsOrApi?: string | Api): DucksMapObject<A> | Bundle {
     if (!nsOrApi) {
       return this.ducksNest
     }
