@@ -560,7 +560,7 @@ Don't store system state, store events that brought system to this state.
 
 ### v0.8 (Jun 5, 2020)
 
-Renaming for better names with more more intuition.
+Renaming for better names with a better straightforward intuition.
 
 1. Rename `interface Api` to `interface Duck`
 1. Rename `class Duck` to `class Bundle`
@@ -589,7 +589,7 @@ Fix the TypeScript Generic Template typing problems:
 
 ## Author
 
-[Huan LI](https://github.com/huan) ([李卓桓](http://linkedin.com/in/zixia)) Microsoft Regional Director \<zixia@zixia.net\>
+[Huan LI](https://github.com/huan) ([李卓桓](http://linkedin.com/in/zixia)), Microsoft Regional Director, \<zixia@zixia.net\>
 
 [![Profile of Huan LI (李卓桓) on StackOverflow](https://stackexchange.com/users/flair/265499.png)](https://stackexchange.com/users/265499)
 
