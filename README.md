@@ -11,7 +11,7 @@
 
 [![Ducks Modular Proposal](https://img.shields.io/badge/Redux-Ducks%202015-yellow)](https://github.com/erikras/ducks-modular-redux)
 [![Re-Ducks Extended](https://img.shields.io/badge/Redux-Re--Ducks%202016-orange)](https://github.com/alexnm/re-ducks)
-[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify%202020-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify%202020-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface)
 
 Ducks offers a method of handling redux module packaging, installing, and running with your Redux store, with middleware support.
 
@@ -96,16 +96,16 @@ A duck folder:
 
 Here's the full version of Re-ducks proposal: [Building on the duck legacy, An attempt to extend the original proposal for redux modular architecture, Alex Moldovan, 2016](https://github.com/alexnm/re-ducks) and [blog](https://medium.com/better-programming/scaling-your-redux-app-with-ducks-6115955638be#.4ppptx7oq)
 
-### 3 Ducksify Extension: Currying & Api Interface
+### 3 Ducksify Extension: Currying & Ducksify Interface
 
-[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify%202020-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify%202020-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface)
 
 In order to build a fully modularized Ducks, we define the **Ducksify** extension with the following rules:
 
-1. MUST export its module interface as the following Ducks `Api`:
+1. MUST export its module interface as the following `Duck` interface:
 
     ```ts
-    export interface Api {
+    export interface Duck {
       /**
        * Ducks Modular Proposal (https://github.com/erikras/ducks-modular-redux)
       */
@@ -117,7 +117,7 @@ In order to build a fully modularized Ducks, we define the **Ducksify** extensio
       types?     : TypesMapObject,
 
       /**
-       * Ducksify Extension (https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface)
+       * Ducksify Extension (https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface)
       */
       middlewares?: MiddlewaresMapObject,
       epics?: EpicsMapObject,
@@ -152,9 +152,9 @@ npm install ducks
 
 ## Usage
 
-### 1 Setup Ducks Api
+### 1 Create Redux Reducer Bundle as a `Duck`
 
-Create the Ducks Api module file: `counter.ts`:
+For example, let's create a Duck module file named `counter.ts`:
 
 ```ts
 export const types      = { TAP: 'ducks/examples/counter/TAP' }
@@ -174,17 +174,17 @@ export default function reducer (state = initialState, action) {
 }
 ```
 
-### 2 Create Ducks & Ducksify Api
+### 2 Manage the Bundles with `Ducks` Manager
 
 ```ts
 import { Ducks }       from 'ducks'
-import * as counterApi from './counter'
+import * as counterDuck from './counter'
 
-const ducks = new Ducks({ counter: counterApi })
-const counter = ducks.ducksify(counterApi)
+const ducks = new Ducks({ counter: counterDuck })
+const counter = ducks.ducksify(counterDuck)
 ```
 
-### 3 Configure Store
+### 3 Configure Redux Store
 
 ```ts
 import { createStore } from 'redux'
@@ -199,7 +199,7 @@ You are all set!
 
 ### 4 Using Ducks
 
-The Vanilla Style and Ducks Style is doing exactly the same thing.
+The Vanilla Style and Ducksify Style is doing exactly the same thing.
 
 #### The Vanilla Style
 
@@ -237,16 +237,16 @@ It shows that:
 import { createStore } from 'redux'
 import { Duck, Ducks } from 'ducks'
 
-import * as counterApi  from './counter'    // Vanilla Duck: +1
-import * as dingDongApi from './ding-dong'  // Observable Middleware
-import * as pingPongApi from './ping-pong'  // Saga Middleware
-import * as switcherApi from './switcher'   // Type Safe Actions: ON/OFF
+import * as counterDuck  from './counter'    // Vanilla Duck: +1
+import * as dingDongDuck from './ding-dong'  // Observable Middleware
+import * as pingPongDuck from './ping-pong'  // Saga Middleware
+import * as switcherDuck from './switcher'   // Type Safe Actions: ON/OFF
 
 const ducks = new Ducks({
-  counter  : counterApi,
-  switcher : switcherApi,
-  dingDong : dingDongApi,
-  pingPong : pingPongApi,
+  counter  : counterDuck,
+  switcher : switcherDuck,
+  dingDong : dingDongDuck,
+  pingPong : pingPongDuck,
 })
 
 const {
@@ -306,17 +306,17 @@ npm start
 
 Ducks is very easy to use, because one of the goals of designing it is to maximum the convenience.
 
-We use `Ducks` to manage `Api`s that following the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux).
+We use `Ducks` to manage `Redux Reducer Bundle`s with the `Duck` interface that following the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux).
 
-For validating the `Api` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDucksApi` that accepts a `Api` to make sure it's valid (it will throws an Error when it's not).
+For validating your `Duck` form the redux module (a.k.a reducer bundle), we have a validating helper function `validateDuck` that accepts a `Duck` to make sure it's valid (it will throws an Error when it's not).
 
-### 1 `Api`
+### 1 `Duck`
 
-The Ducks `Api` is defined from the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), extended from both [Re-Ducks](https://github.com/alexnm/re-ducks) and [Ducksify](https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface).
+The `Duck` is a interface which is defined from the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), extended from both [Re-Ducks](https://github.com/alexnm/re-ducks) and [Ducksify](https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface).
 
 Example:
 
-Duck `Api` counter example from our [examples](examples/counter/index.ts)
+`Duck` counter example from our [examples](examples/counter/index.ts)
 
 ```ts
 import * as actions     from './actions'
@@ -338,7 +338,7 @@ export default reducer
 
 ### 2 `Ducks`
 
-The `Ducks` class is in charge of managing the `Api`s and connecting them to the Redux Store by providing a `enhancer()` to Redux `createStore()`.
+The `Ducks` class is the manager for `Duck`s and connecting them to the Redux Store by providing a `enhancer()` to Redux `createStore()`.
 
 ```ts
 import { Ducks } from 'ducks'
@@ -355,11 +355,11 @@ const store = createStore(
 // Duck will be ready to use after the store has been created.
 ```
 
-There is one important thing that we need to figure out is that when we are passing the `ApisMapObject` to initialize the `Ducks` (`{ counter: counterApi }` in the above case), the key name of this Api will become the mount point(name space) for its state.
+There is one important thing that we need to figure out is that when we are passing the `DucksMapObject` to initialize the `Ducks` (`{ counter: counterDuck }` in the above case), the key name of this Api will become the mount point(name space) for its state.
 
 Choose your key name wisely because it will inflect the state structure and the typing for your store.
 
-> There's project named [Ducks++: Redux Reducer Bundles, Djamel Hassaine, 2017](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22) to solve the mount point (namespace) problem, however, we are just use the keys in the `DucksObject` to archive the same goal.
+> There's project named [Ducks++: Redux Reducer Bundles, Djamel Hassaine, 2017](https://medium.com/@DjamelH/ducks-redux-reducer-bundles-44267f080d22) to solve the mount point (namespace) problem, however, we are just use the keys in the `DucksMapObject` to archive the same goal.
 
 #### 2.1 `Ducks#enhancer()`
 
@@ -412,59 +412,59 @@ const store = createStore(
 
 #### 2.3 `Ducks#ducksify()`
 
-`ducksify()` will encapsulate the `Api` into the `Duck` class so that we will have a more convenience way to use it.
+`ducksify()` will encapsulate the `Api` into the `Bundle` class so that we will have a more convenience way to use it.
 
-1. Return all Ducks: `const { counter } = ducks.ducksify()`
-1. Return the Duck for _namespace_: `const counter = ducks.ducksify('counter')
-1. Return the Duck for _api_: `const counter = ducks.ducksify(counterApi)
+1. Return all Bundles: `const { counter } = ducks.ducksify()`
+1. Return the Bundle for _namespace_: `const counter = ducks.ducksify('counter')
+1. Return the Bundle for _api_: `const counter = ducks.ducksify(counterApi)
 
 For example:
 
 ```ts
-import * as counterApi from './counter'
+import * as counterDuck from './counter'
 
-const ducks = new Ducks({ counter: counterAPI })
+const ducks = new Ducks({ counter: counterDuck })
 const store = ducks.configureStore()
 
-// 1. Return all Ducks
+// 1. Return all Bundles
 const { counter } = ducks.ducksify()
 
-// 2. Return the Duck for namespace: `counter`
+// 2. Return the Bundle for namespace: `counter`
 const counterByName = ducks.ducksify('counter')
 assert(counterByName === counter)
 
-// 3. Return the Duck for api: `counterApi`
-const counterByApi = ducks.ducksify(counterApi)
+// 3. Return the Bundle for api: `counterDuck`
+const counterByApi = ducks.ducksify(counterDuck)
 assert(counterByApi === counter)
 ```
 
-Comparing the Api with the Duck (ducksified Api), we will get the following differences: (`counter` is the ducksified `counterApi`)
+Comparing the Duck with the Bundle (ducksified Duck), we will get the following differences: (`counterBundle` is the ducksified `counterDuck`)
 
 For `selectors`:
 
 ```diff
-- counterApi.selectors.getTotal(store.getState().counter)()
-+ counter.selectors.getTotal()
+- counterDuck.selectors.getTotal(store.getState().counter)()
++ counterBundle.selectors.getTotal()
 ```
 
 For `operations`:
 
 ```diff
-- counterApi.operations.tap(store.dispatch)()
-+ counter.operations.tap()
+- counterDuck.operations.tap(store.dispatch)()
++ counterBundle.operations.tap()
 ```
 
 As you see, the above differences showed that the ducksified api will give you great convenience by currying the `Store` inside itself.
 
-### 4 `validateDucksApi()`
+### 4 `validateDuck()`
 
 To make sure your Ducks Api is following the specification of the [ducks modular proposal](https://github.com/erikras/ducks-modular-redux), we provide a validating function to check it.
 
 ```ts
-import { validateDucksApi } from 'ducks'
-import * as counterApi from './counter'
+import { validateDuck } from 'ducks'
+import * as counterDuck from './counter'
 
-validateDucksApi(counterApi) // will throw if the counterApi is invalid.
+validateDuck(counterDuck) // will throw if the counterApi is invalid.
 ```
 
 ## Resources
@@ -555,6 +555,14 @@ Don't store system state, store events that brought system to this state.
 ## History
 
 ### master
+
+### v0.8 (Jun 5, 2020)
+
+Renaming for better names with more more intuition.
+
+1. Rename `interface Api` to `interface Duck`
+1. Rename `class Duck` to `class Bundle`
+1. Rename `function validateDucksApi` to `function validateDuck`
 
 ### v0.6 (Jun 1, 2020)
 

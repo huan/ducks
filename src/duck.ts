@@ -101,7 +101,7 @@ export interface Duck {
   /**
    *
    * Ducksify Extension: Currying & API Interface
-   *  https://github.com/huan/ducks#3-ducksify-extension-currying--api-interface
+   *  https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface
    *
    */
   // Middlewares
