@@ -16,26 +16,12 @@
  *   limitations under the License.
  *
  */
-import {
-  VERSION,
-}               from './config'
-import {
-  Ducks,
-  noopReducer,
-}               from './ducks/'
+import { createAction } from 'typesafe-actions'
 
-import { Duck } from './duck'
+import * as types from './types'
 
-import { validateDuck } from './validate-duck'
-import * as Api from './api/'
-
-// import { Bundle }             from './bundle'
+const noop = createAction(types.NOOP)()
 
 export {
-  Api,
-  Duck,
-  Ducks,
-  noopReducer,
-  validateDuck,
-  VERSION,
+  noop,
 }

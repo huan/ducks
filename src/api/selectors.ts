@@ -16,26 +16,10 @@
  *   limitations under the License.
  *
  */
-import {
-  VERSION,
-}               from './config'
-import {
-  Ducks,
-  noopReducer,
-}               from './ducks/'
+import { State } from './reducers'
 
-import { Duck } from './duck'
-
-import { validateDuck } from './validate-duck'
-import * as Api from './api/'
-
-// import { Bundle }             from './bundle'
+const getNoop = (_state: State) => () => undefined
 
 export {
-  Api,
-  Duck,
-  Ducks,
-  noopReducer,
-  validateDuck,
-  VERSION,
+  getNoop,
 }

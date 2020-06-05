@@ -16,26 +16,18 @@
  *   limitations under the License.
  *
  */
-import {
-  VERSION,
-}               from './config'
-import {
-  Ducks,
-  noopReducer,
-}               from './ducks/'
+import * as actions     from './actions'
+import * as operations  from './operations'
+import * as selectors   from './selectors'
+import * as types       from './types'
 
-import { Duck } from './duck'
-
-import { validateDuck } from './validate-duck'
-import * as Api from './api/'
-
-// import { Bundle }             from './bundle'
+import reducer from './reducers'
 
 export {
-  Api,
-  Duck,
-  Ducks,
-  noopReducer,
-  validateDuck,
-  VERSION,
+  actions,
+  operations,
+  selectors,
+  types,
 }
+
+export default reducer

@@ -16,26 +16,12 @@
  *   limitations under the License.
  *
  */
-import {
-  VERSION,
-}               from './config'
-import {
-  Ducks,
-  noopReducer,
-}               from './ducks/'
+import { Dispatch } from 'redux'
 
-import { Duck } from './duck'
+import * as actions from './actions'
 
-import { validateDuck } from './validate-duck'
-import * as Api from './api/'
-
-// import { Bundle }             from './bundle'
+const noop = (dispatch: Dispatch) => () => dispatch(actions.noop())
 
 export {
-  Api,
-  Duck,
-  Ducks,
-  noopReducer,
-  validateDuck,
-  VERSION,
+  noop,
 }

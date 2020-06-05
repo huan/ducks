@@ -1,3 +1,5 @@
+#!/usr/bin/env ts-node
+
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -16,26 +18,16 @@
  *   limitations under the License.
  *
  */
-import {
-  VERSION,
-}               from './config'
-import {
-  Ducks,
-  noopReducer,
-}               from './ducks/'
+import { test } from 'tstest'
 
-import { Duck } from './duck'
+import reducer from './reducers'
 
-import { validateDuck } from './validate-duck'
-import * as Api from './api/'
+import * as actions from './actions'
 
-// import { Bundle }             from './bundle'
+test('ducks reducer initial state', async t => {
+  let state = reducer(undefined, {} as any)
+  t.deepEqual(state, {}, 'should return the initial state')
 
-export {
-  Api,
-  Duck,
-  Ducks,
-  noopReducer,
-  validateDuck,
-  VERSION,
-}
+  state = reducer(state, actions.noop())
+  t.deepEqual(state, {}, 'should return the noop state')
+})

@@ -17,25 +17,17 @@
  *
  */
 import {
-  VERSION,
-}               from './config'
-import {
-  Ducks,
-  noopReducer,
-}               from './ducks/'
+  createReducer,
+  ActionType,
+}                       from 'typesafe-actions'
+import { DeepReadonly } from 'utility-types'
 
-import { Duck } from './duck'
+import * as actions from './actions'
 
-import { validateDuck } from './validate-duck'
-import * as Api from './api/'
+const initialState: DeepReadonly<{}> = {}
 
-// import { Bundle }             from './bundle'
+const reducer = createReducer<typeof initialState, ActionType<typeof actions>>(initialState)
+  .handleAction(actions.noop, state => state)
 
-export {
-  Api,
-  Duck,
-  Ducks,
-  noopReducer,
-  validateDuck,
-  VERSION,
-}
+export default reducer
+export type State = ReturnType<typeof reducer>
