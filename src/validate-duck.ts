@@ -65,6 +65,7 @@ function validateDuck <D extends Duck> (duck: D, debug = false) {
   validateMiddlewares(duck.middlewares)
   validateEpics(duck.epics)
   validateSagas(duck.sagas)
+  validateSetDucks(duck.setDucks)
 }
 
 /**
@@ -138,6 +139,13 @@ function validateEpics <T extends MapObject> (epics?: T) {
   Object.keys(epics).forEach(validateString)
   Object.values(epics).forEach(validateEpicType)
 
+}
+
+function validateSetDucks (setDucks?: Function) {
+  if (setDucks) {
+    assert.strictEqual(typeof setDucks, 'function', 'setDucks should be a function')
+    assert.strictEqual(setDucks.length, 1, 'setDucks() should take 1 argument for the Ducks instance')
+  }
 }
 
 /**
