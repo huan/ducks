@@ -99,6 +99,14 @@ class Ducks <A extends DucksMapObject> {
     const ducksNest = {} as any
     for (const [ns, duck] of Object.entries(duckery)) {
       ducksNest[ns as string] = new Bundle(duck)
+
+      /**
+       * Huan(202006): Binding the Ducks to Duck,
+       *  so that the Duck can use other Duck modules (if needed)
+       */
+      if (duck.setDucks) {
+        duck.setDucks(this)
+      }
     }
     this.ducksNest = ducksNest
   }

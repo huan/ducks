@@ -26,6 +26,8 @@ import {
 import { Epic } from 'redux-observable'
 import { Saga } from 'redux-saga'
 
+import { Ducks } from './ducks/'
+
 /**
  * Huan(202005): typesafe style Async Action Creator
  */
@@ -110,6 +112,8 @@ export interface Duck {
   // Middleware entries
   epics? : EpicsMapObject,
   sagas? : SagasMapObject,
+
+  setDucks?: (ducks: Ducks<any>) => void
 }
 
 /**

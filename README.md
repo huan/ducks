@@ -122,6 +122,8 @@ In order to build a fully modularized Ducks, we define the **Ducksify** extensio
       middlewares?: MiddlewaresMapObject,
       epics?: EpicsMapObject,
       sagas?: SagasMapObject,
+
+      setDucks?: (ducks: Ducks<any>) => void
     }
     ```
 
@@ -557,6 +559,13 @@ Don't store system state, store events that brought system to this state.
 ## History
 
 ### master
+
+### v0.10 (Jun 6, 2020)
+
+Add `setDucks()` to `Duck` API interface,
+so that all the `Duck` can get the `Ducks` instance
+(if needed, by providing a `setDucks()` method from the API),
+which helps the `Duck`s talk to each others.
 
 ### v0.8 (Jun 5, 2020)
 
