@@ -29,10 +29,11 @@ import { Duck } from './duck'
 import { validateDuck } from './validate-duck'
 import * as Api from './api/'
 
-// import { Bundle }             from './bundle'
+import { Bundle }             from './bundle'
 
 export {
   Api,
+  Bundle,
   Duck,
   Ducks,
   noopReducer,
