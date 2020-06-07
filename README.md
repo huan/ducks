@@ -596,6 +596,14 @@ Fix the TypeScript Generic Template typing problems:
 
 [@gobwas](https://github.com/gobwas) is the gentleman who owned this [ducks](https://www.npmjs.com/package/ducks) NPM module name, and he's so kind for letting me use this great NPM module name `ducks` for my project. Appreciate it!
 
+## Badge
+
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify%202020-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface)
+
+```md
+[![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify%202020-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface)
+```
+
 ## Author
 
 [Huan LI](https://github.com/huan) ([李卓桓](http://linkedin.com/in/zixia)), Microsoft Regional Director, \<zixia@zixia.net\>
