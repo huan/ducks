@@ -598,6 +598,16 @@ Fix the TypeScript Generic Template typing problems:
 
 ## Badge
 
+### Powered by Ducks
+
+[![Powered by Ducks](https://img.shields.io/badge/Powered%20by-Ducks-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface)
+
+```md
+[![Powered by Ducks](https://img.shields.io/badge/Powered%20by-Ducks-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface)
+```
+
+### Ducksify
+
 [![Ducksify Extension](https://img.shields.io/badge/Redux-Ducksify%202020-yellowgreen)](https://github.com/huan/ducks#3-ducksify-extension-currying--ducksify-interface)
 
 ```md
