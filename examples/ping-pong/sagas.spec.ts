@@ -19,8 +19,6 @@
  */
 import { test } from 'tstest'
 
-void test
-
 /**
  * Huan(202109): https://github.com/huan/ducks/issues/4
  */
