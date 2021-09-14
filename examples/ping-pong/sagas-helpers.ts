@@ -20,7 +20,7 @@ import {
   put,
 }             from 'redux-saga/effects'
 
-import * as actions from './actions'
+import * as actions from './actions.js'
 
 export function * emitPong () {
   yield put(actions.pong())

@@ -18,13 +18,13 @@
  */
 import assert from 'assert'
 
-import {
+import type {
   ActionCreator,
   AnyAction,
   Reducer,
 }                 from 'redux'
 
-import { Duck } from './duck'
+import type { Duck } from './duck.js'
 
 export interface MapObject {
   [key: string]: any,

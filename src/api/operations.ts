@@ -16,9 +16,9 @@
  *   limitations under the License.
  *
  */
-import { Dispatch } from 'redux'
+import type { Dispatch } from 'redux'
 
-import * as actions from './actions'
+import * as actions from './actions.js'
 
 const noop = (dispatch: Dispatch) => () => dispatch(actions.noop())
 

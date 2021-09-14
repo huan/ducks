@@ -16,15 +16,17 @@
  *   limitations under the License.
  *
  */
-import {
-  takeEvery,
-}             from 'redux-saga/effects'
 
-import * as types   from './types'
+/**
+ * Huan(202109): https://github.com/huan/ducks/issues/4
+ */
+import { takeEvery }  from 'redux-saga/effects'
+
+import * as types   from './types.js'
 
 import {
   emitPong,
-}             from './sagas-helpers'
+}             from './sagas-helpers.js'
 
 function * pingSaga () {
   yield takeEvery(types.PING, emitPong)

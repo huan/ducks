@@ -1,3 +1,5 @@
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
+
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -16,27 +18,14 @@
  *   limitations under the License.
  *
  */
-import {
-  VERSION,
-}               from './config'
-import {
-  Ducks,
-  noopReducer,
-}               from './ducks/'
+import { test }  from 'tstest'
 
-import { Duck } from './duck'
+import * as ducks from './mod.js'
 
-import { validateDuck } from './validate-duck'
-import * as Api from './api/'
-
-import { Bundle }             from './bundle'
-
-export {
-  Api,
-  Bundle,
-  Duck,
-  Ducks,
-  noopReducer,
-  validateDuck,
-  VERSION,
-}
+test('ducks exports', async t => {
+  t.ok(ducks.Api, 'export Api')
+  t.ok(ducks.Ducks, 'export Ducks')
+  t.ok(ducks.VERSION, 'export VERSION')
+  t.ok(ducks.noopReducer, 'export noopReducer')
+  t.ok(ducks.validateDuck, 'export validateDuck')
+})

@@ -23,7 +23,7 @@ import {
   ActionFromReducersMapObject,
 }                                 from 'redux'
 
-import { DucksMapObject } from '../duck'
+import type { DucksMapObject } from '../duck.js'
 
 export type DuckReducersMapObject <A extends DucksMapObject> = {
   [key in keyof A]: A[key]['default']
@@ -47,7 +47,7 @@ function combineDuckery <D extends DucksMapObject> (
   Object.keys(duckery).forEach(namespace => {
     duckReducers = {
       ...duckReducers,
-      [namespace]: duckery[namespace].default,
+      [namespace]: duckery[namespace]!.default,
     }
   })
 

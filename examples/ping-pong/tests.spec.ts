@@ -1,4 +1,4 @@
-#!/usr/bin/env node -r ts-node/register
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -27,9 +27,9 @@ import {
 
 import {
   validateDuck,
-}                     from '../../src'
+}                     from '../../src/mod.js'
 
-import * as duck from '.'
+import * as duck from './mod.js'
 
 validateDuck(duck)
 
@@ -57,5 +57,5 @@ test('ping -> pong', async t => {
 
   store.dispatch(duck.actions.ping())
 
-  t.deepEqual(store.getActions(), expectedActions, 'should get the PONG after PING')
+  t.same(store.getActions(), expectedActions, 'should get the PONG after PING')
 })

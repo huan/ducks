@@ -18,7 +18,7 @@
  */
 import { Action, combineReducers } from 'redux'
 
-import * as types from './types'
+import * as types from './types.js'
 
 const initialState = {
   dong: 0,

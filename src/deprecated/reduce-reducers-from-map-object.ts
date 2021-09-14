@@ -16,7 +16,7 @@
  *   limitations under the License.
  *
  */
-import {
+import type {
   ActionFromReducersMapObject,
   Reducer,
   ReducersMapObject,

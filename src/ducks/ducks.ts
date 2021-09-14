@@ -26,26 +26,32 @@ import {
   createStore,
 }                               from 'redux'
 
-import { Epic, EpicMiddleware } from 'redux-observable'
-import { Saga, SagaMiddleware } from 'redux-saga'
+import type {
+  Epic,
+  EpicMiddleware,
+}                   from 'redux-observable'
+import type {
+  Saga,
+  SagaMiddleware,
+}                   from 'redux-saga'
 
 import {
   DUCKS_NAMESPACE,
   VERSION,
-}                      from '../config'
+}                      from '../config.js'
 
 import {
   Bundle,
-}                         from '../bundle'
+}                         from '../bundle.js'
 
-import {
+import type {
   Duck,
   DucksMapObject,
-}                 from '../duck'
+}                 from '../duck.js'
 
-import { combineDuckery } from './combine-duckery'
-import { insertReducers } from './insert-reducers'
-import { noopReducer }     from './noop-reducer'
+import { combineDuckery } from './combine-duckery.js'
+import { insertReducers } from './insert-reducers.js'
+import { noopReducer }     from './noop-reducer.js'
 
 export type BundlesMapObject <A extends DucksMapObject> = {
   [key in keyof A]: Bundle<A[key]>
@@ -58,6 +64,7 @@ class Ducks <A extends DucksMapObject> {
   get store () {
     return this._store
   }
+
   protected _store?: Store
 
   protected ducksNest: BundlesMapObject<A>
@@ -133,7 +140,7 @@ class Ducks <A extends DucksMapObject> {
 
     if (typeof nsOrDuck === 'string') {
       if (nsOrDuck in this.duckery) {
-        return this.ducksNest[nsOrDuck]
+        return this.ducksNest[nsOrDuck]!
       }
       throw new Error('Ducks can not found the Duck for the namespace: ' + nsOrDuck)
     }
@@ -144,7 +151,7 @@ class Ducks <A extends DucksMapObject> {
       if (namespaceList.length <= 0) {
         throw new Error('Duck not found: ' + nsOrDuck)
       }
-      const namespace = namespaceList[0]
+      const namespace = namespaceList[0]!
       return this.ducksify(namespace)
     }
 
@@ -188,7 +195,7 @@ class Ducks <A extends DucksMapObject> {
       >
     > = next => (reducer: Reducer<any, any>, preloadedState: any) => {
 
-      let newReducer = insertReducers(
+      const newReducer = insertReducers(
         reducer,
         {
           [DUCKS_NAMESPACE]: this.reducer as any, // Huan(202005) FIXME: any ?
@@ -196,7 +203,7 @@ class Ducks <A extends DucksMapObject> {
       )
 
       // FIXME: any
-      let store = next<any, any>(
+      const store = next<any, any>(
         newReducer,
         preloadedState,
       )
@@ -298,8 +305,8 @@ class Ducks <A extends DucksMapObject> {
     Object.keys(this.duckery).forEach(namespace => {
       // console.info('initializeDucks() namespace', namespace)
       // console.info('initializeDucks() state', this.store.getState())
-      this.ducksNest[namespace].setStore(store)
-      this.ducksNest[namespace].setNamespaces(DUCKS_NAMESPACE, namespace)
+      this.ducksNest[namespace]!.setStore(store)
+      this.ducksNest[namespace]!.setNamespaces(DUCKS_NAMESPACE, namespace)
     })
 
     /**
@@ -307,7 +314,7 @@ class Ducks <A extends DucksMapObject> {
      */
     const rootEpic = this.getRootEpic()
     if (rootEpic) {
-      let epicMiddleware = this.asyncMiddlewares.epicMiddleware
+      const epicMiddleware = this.asyncMiddlewares.epicMiddleware
       if (!epicMiddleware) {
         throw new Error('epicMiddleware is required but not found in the this.asyncMiddlewares.')
       }
@@ -319,7 +326,7 @@ class Ducks <A extends DucksMapObject> {
      */
     const rootSaga = this.getRootSaga()
     if (rootSaga) {
-      let sagaMiddleware = this.asyncMiddlewares.sagaMiddleware
+      const sagaMiddleware = this.asyncMiddlewares.sagaMiddleware
       if (!sagaMiddleware) {
         throw new Error('sagaMiddleware is required but not found in the this.asyncMiddlewares.')
       }

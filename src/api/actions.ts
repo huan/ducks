@@ -18,7 +18,7 @@
  */
 import { createAction } from 'typesafe-actions'
 
-import * as types from './types'
+import * as types from './types.js'
 
 const noop = createAction(types.NOOP)()
 

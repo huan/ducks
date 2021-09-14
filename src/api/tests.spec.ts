@@ -1,4 +1,4 @@
-#!/usr/bin/env node -r ts-node/register
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -25,9 +25,9 @@ import {
 
 import {
   validateDuck,
-}                     from '..'
+}                     from '../mod.js'
 
-import * as duck from './'
+import * as duck from './mod.js'
 
 validateDuck(duck)
 

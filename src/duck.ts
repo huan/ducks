@@ -16,17 +16,17 @@
  *   limitations under the License.
  *
  */
-import {
+import type {
   ActionCreator,
   Dispatch,
   Middleware,
   Reducer,
 }                   from 'redux'
 
-import { Epic } from 'redux-observable'
-import { Saga } from 'redux-saga'
+import type { Epic } from 'redux-observable'
+import type { Saga } from 'redux-saga'
 
-import { Ducks } from './ducks/'
+import type { Ducks } from './ducks/mod.js'
 
 /**
  * Huan(202005): typesafe style Async Action Creator
@@ -64,10 +64,6 @@ export interface EpicsMapObject {
 
 export interface SagasMapObject {
   [saga: string]: Saga,
-}
-
-export interface DucksMapObject {
-  [namespace: string]: Duck,
 }
 
 /**
@@ -114,6 +110,10 @@ export interface Duck {
   sagas? : SagasMapObject,
 
   setDucks?: (ducks: Ducks<any>) => void
+}
+
+export interface DucksMapObject {
+  [namespace: string]: Duck,
 }
 
 /**

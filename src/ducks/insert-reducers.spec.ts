@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 /**
  *   Ducks - https://github.com/huan/ducks
@@ -18,13 +18,13 @@
  *   limitations under the License.
  *
  */
-import test  from 'tstest'
+import { test }  from 'tstest'
 
-import * as counterDuck  from '../../examples/counter/'
-import * as switcherDuck from '../../examples/switcher/'
+import * as counterDuck  from '../../examples/counter/mod.js'
+import * as switcherDuck from '../../examples/switcher/mod.js'
 
-import { combineDuckery }   from './combine-duckery'
-import { insertReducers } from './insert-reducers'
+import { combineDuckery }   from './combine-duckery.js'
+import { insertReducers } from './insert-reducers.js'
 
 /**
  * Insert switcher to counter

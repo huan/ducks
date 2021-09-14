@@ -16,7 +16,7 @@
  *   limitations under the License.
  *
  */
-import { State } from './reducers'
+import type { State } from './reducers.js'
 
 const getCounter       = (state: State) => () => state.total
 const getMeaningOfLife = (_state: State) => (_: any) => 42

@@ -20,12 +20,12 @@ import assert from 'assert'
 
 import { createStore } from 'redux'
 
-import { Ducks } from '../src'
+import { Ducks } from '../src/mod.js'
 
-import * as switcherDuck from './switcher'   // Vanilla Duck: ON/OFF
-import * as counterDuck  from './counter'    // TypeSafe Actions: +1
-import * as dingDongDuck from './ding-dong'  // Observable Middleware
-import * as pingPongDuck from './ping-pong'  // Saga Middleware
+import * as switcherDuck from './switcher/mod.js'   // Vanilla Duck: ON/OFF
+import * as counterDuck  from './counter/mod.js'    // TypeSafe Actions: +1
+import * as dingDongDuck from './ding-dong/mod.js'  // Observable Middleware
+import * as pingPongDuck from './ping-pong/mod.js'  // Saga Middleware
 
 const ducks = new Ducks({
   counter  : counterDuck,

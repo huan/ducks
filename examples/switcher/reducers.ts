@@ -16,9 +16,9 @@
  *   limitations under the License.
  *
  */
-import { AnyAction } from 'redux'
+import type { AnyAction } from 'redux'
 
-import * as types from './types'
+import * as types from './types.js'
 
 const initialState = {
   status: false,

@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 /**
  *   Ducks - https://github.com/huan/ducks
@@ -18,7 +18,7 @@
  *   limitations under the License.
  *
  */
-import test  from 'tstest'
+import { test }  from 'tstest'
 
 import {
   createStore,
@@ -30,12 +30,12 @@ import {
 import { createEpicMiddleware } from 'redux-observable'
 import createSagaMiddleware     from 'redux-saga'
 
-import { Ducks } from './ducks'
+import { Ducks } from './ducks.js'
 
-import * as counterDuck  from '../../examples/counter/'
-import * as dingdongDuck from '../../examples/ding-dong/'
-import * as pingpongDuck from '../../examples/ping-pong/'
-import * as switcherDuck from '../../examples/switcher/'
+import * as counterDuck  from '../../examples/counter/mod.js'
+import * as dingdongDuck from '../../examples/ding-dong/mod.js'
+import * as pingpongDuck from '../../examples/ping-pong/mod.js'
+import * as switcherDuck from '../../examples/switcher/mod.js'
 
 test('construction()', async t => {
   t.throws(() => new Ducks({}), 'should not happy with empty duckery')
@@ -54,7 +54,7 @@ test('reducer()', async t => {
 
   const initialState = {}
   const store = createStore(
-    state => state,
+    (state?: object) => ({ ...state }),
     initialState,
     compose(
       ducks.enhancer(),
@@ -73,6 +73,10 @@ test('reducer()', async t => {
 
 test('constructor() with option.middleware', async t => {
   const epicMiddleware = createEpicMiddleware()
+
+  /**
+   * Huan(202109): https://github.com/huan/ducks/issues/4
+   */
   const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({
@@ -97,6 +101,9 @@ test('constructor() with option.middleware', async t => {
 
 test('Epics & Sagas middlewares', async t => {
   const epicMiddleware = createEpicMiddleware()
+  /**
+   * Huan(202109): https://github.com/huan/ducks/issues/4
+   */
   const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({

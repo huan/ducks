@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 /**
  *   Ducks - https://github.com/huan/ducks
@@ -24,11 +24,14 @@ import {
   combineReducers,
   createStore,
 }                       from 'redux'
-import createMockStore from 'redux-mock-store'
+import reduxMockStorePkg  from 'redux-mock-store'
 
-import * as counterDuck from '../examples/counter/'
+import * as counterDuck from '../examples/counter/mod.js'
 
-import { Bundle } from './bundle'
+import { Bundle } from './bundle.js'
+
+// https://github.com/huan/ducks/issues/3
+const createMockStore = (reduxMockStorePkg as any).default
 
 test('VERSION', async t => {
   t.ok(Bundle.VERSION, 'has VERSION')

@@ -16,10 +16,5 @@
  *   limitations under the License.
  *
  */
-
-export const VERSION = '0.0.0'
-
-/**
- * This file will be overwrite when we publish NPM module
- * by scripts/generate_version.ts
- */
+export { Ducks }       from './ducks.js'
+export { noopReducer } from './noop-reducer.js'

@@ -16,7 +16,7 @@
  *   limitations under the License.
  *
  */
-import * as types from './types'
+import * as types from './types.js'
 
 const toggle = () => ({ type: types.TOGGLE })
 

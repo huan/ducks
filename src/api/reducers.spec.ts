@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 /**
  *   Ducks - https://github.com/huan/ducks
@@ -20,14 +20,14 @@
  */
 import { test } from 'tstest'
 
-import reducer from './reducers'
+import reducer from './reducers.js'
 
-import * as actions from './actions'
+import * as actions from './actions.js'
 
 test('ducks reducer initial state', async t => {
   let state = reducer(undefined, {} as any)
-  t.deepEqual(state, {}, 'should return the initial state')
+  t.same(state, {}, 'should return the initial state')
 
   state = reducer(state, actions.noop())
-  t.deepEqual(state, {}, 'should return the noop state')
+  t.same(state, {}, 'should return the noop state')
 })

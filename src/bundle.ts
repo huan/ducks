@@ -16,19 +16,19 @@
  *   limitations under the License.
  *
  */
-import {
+import type {
   Store,
 }                         from 'redux'
 
 import {
   VERSION,
-}                   from './config'
+}                   from './config.js'
 
-import {
+import type {
   Duck,
   OperationsMapObject,
   SelectorsMapObject,
-}                         from './duck'
+}                         from './duck.js'
 
 /**
  * Map types from a Map Object
@@ -55,6 +55,7 @@ class Bundle <D extends Duck = any> {
     }
     return this._store!
   }
+
   private _store?: Store
 
   namespaces: string[]
@@ -149,7 +150,7 @@ class Bundle <D extends Duck = any> {
       ducksifiedOperations = {
         ...ducksifiedOperations,
         [operation]: function (...args: any[]) {
-          return operations[operation](
+          return operations[operation]!(
           /**
            * We have to make sure `store` has been initialized before the following code has been ran
            */
@@ -180,7 +181,7 @@ class Bundle <D extends Duck = any> {
       ducksifiedSelectors = {
         ...ducksifiedSelectors,
         [selector]: function (...args: any[]) {
-          return selectors[selector](
+          return selectors[selector]!(
             that.state,
           )(...args)
         },

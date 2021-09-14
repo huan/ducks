@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 /**
  *   Ducks - https://github.com/huan/ducks
@@ -18,12 +18,12 @@
  *   limitations under the License.
  *
  */
-import test  from 'tstest'
+import { test }  from 'tstest'
 
-import * as counterDuck  from '../../examples/counter/'
-import * as switcherDuck from '../../examples/switcher/'
+import * as counterDuck  from '../../examples/counter/mod.js'
+import * as switcherDuck from '../../examples/switcher/mod.js'
 
-import { reduceReducersFromMapObject } from './reduce-reducers-from-map-object'
+import { reduceReducersFromMapObject } from './reduce-reducers-from-map-object.js'
 
 test.skip('DEPRECATED: reduceReducersFromMapObject()', async t => {
   const reducer = reduceReducersFromMapObject({
