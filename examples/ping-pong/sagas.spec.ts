@@ -25,30 +25,30 @@ void test
  * Huan(202109): https://github.com/huan/ducks/issues/4
  */
 
-// import {
-//   takeEvery,
-//   put,
-// }               from 'redux-saga/effects'
+import {
+  takeEvery,
+  put,
+}               from 'redux-saga/effects'
 
-// import * as actions from './actions.js'
-// import * as sagas   from './sagas.js'
-// import * as types   from './types.js'
+import * as actions from './actions.js'
+import * as sagas   from './sagas.js'
+import * as types   from './types.js'
 
-// import {
-//   emitPong,
-// }           from './sagas-helpers.js'
+import {
+  emitPong,
+}           from './sagas-helpers.js'
 
-// test('pingSaga()', async t => {
-//   t.same(
-//     sagas.pingSaga().next().value,
-//     takeEvery(types.PING, emitPong),
-//     'should not get emitPong without actions.ping()',
-//   )
-// })
+test('pingSaga()', async t => {
+  t.same(
+    sagas.pingSaga().next().value,
+    takeEvery(types.PING, emitPong),
+    'should not get emitPong without actions.ping()',
+  )
+})
 
-// test('emitPong()', async t => {
-//   t.same(
-//     emitPong().next().value,
-//     put(actions.pong()),
-//   )
-// })
+test('emitPong()', async t => {
+  t.same(
+    emitPong().next().value,
+    put(actions.pong()),
+  )
+})
