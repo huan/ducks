@@ -121,7 +121,8 @@ In order to build a fully modularized Ducks, we define the **Ducksify** extensio
       */
       middlewares?: MiddlewaresMapObject,
       epics?: EpicsMapObject,
-      sagas?: SagasMapObject,
+      // Disabled temporary. See: https://github.com/huan/ducks/issues/4
+      // sagas?: SagasMapObject,
 
       setDucks?: (ducks: Ducks<any>) => void
     }
@@ -558,7 +559,9 @@ Don't store system state, store events that brought system to this state.
 
 ## History
 
-### master
+### master v0.11 (Sep 2021)
+
+1. Disable `saga` support temporary due to ([#4](https://github.com/huan/ducks/issues/4))
 
 ### v0.10 (Jun 6, 2020)
 

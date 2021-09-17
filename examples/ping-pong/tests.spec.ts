@@ -17,45 +17,51 @@
  *   limitations under the License.
  *
  */
-import { test } from 'tstest'
 
-import configureMockStore   from 'redux-mock-store'
-import createSagaMiddleware from 'redux-saga'
-import {
-  all,
-}         from 'redux-saga/effects'
+/**
+ * Huan(202109): disable saga
+ *  See: https://github.com/huan/ducks/issues/4
+ */
 
-import {
-  validateDuck,
-}                     from '../../src/mod.js'
+// import { test } from 'tstest'
 
-import * as duck from './mod.js'
+// import configureMockStore   from 'redux-mock-store'
+// import createSagaMiddleware from 'redux-saga'
+// import {
+//   all,
+// }         from 'redux-saga/effects'
 
-validateDuck(duck)
+// import {
+//   validateDuck,
+// }                     from '../../src'
 
-test('ping -> pong', async t => {
-  const sagaMiddleware = createSagaMiddleware()
-  /**
-   * https://redux.js.org/recipes/writing-tests#async-action-creators
-   */
-  const mockStore = configureMockStore([sagaMiddleware])
-  const store = mockStore({})
+// import * as duck from '.'
 
-  function * rootSaga () {
-    yield all(
-      Object.values(duck.sagas)
-        .map(saga => saga())
-    )
-  }
+// validateDuck(duck)
 
-  sagaMiddleware.run(rootSaga)
+// test('ping -> pong', async t => {
+//   const sagaMiddleware = createSagaMiddleware()
+//   /**
+//    * https://redux.js.org/recipes/writing-tests#async-action-creators
+//    */
+//   const mockStore = configureMockStore([sagaMiddleware])
+//   const store = mockStore({})
 
-  const expectedActions = [
-    { type: duck.types.PING },
-    { type: duck.types.PONG },
-  ]
+//   function * rootSaga () {
+//     yield all(
+//       Object.values(duck.sagas)
+//         .map(saga => saga())
+//     )
+//   }
 
-  store.dispatch(duck.actions.ping())
+//   sagaMiddleware.run(rootSaga)
 
-  t.same(store.getActions(), expectedActions, 'should get the PONG after PING')
-})
+//   const expectedActions = [
+//     { type: duck.types.PING },
+//     { type: duck.types.PONG },
+//   ]
+
+//   store.dispatch(duck.actions.ping())
+
+//   t.deepEqual(store.getActions(), expectedActions, 'should get the PONG after PING')
+// })

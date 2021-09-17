@@ -18,20 +18,24 @@
  */
 
 /**
- * Huan(202109): https://github.com/huan/ducks/issues/4
+ * Huan(202109): disable saga
+ *  See: https://github.com/huan/ducks/issues/4
  */
-import { takeEvery }  from 'redux-saga/effects'
 
-import * as types   from './types.js'
+// import {
+//   takeEvery,
+// }             from 'redux-saga/effects'
 
-import {
-  emitPong,
-}             from './sagas-helpers.js'
+// import * as types   from './types'
 
-function * pingSaga () {
-  yield takeEvery(types.PING, emitPong)
-}
+// import {
+//   emitPong,
+// }             from './sagas-helpers'
 
-export {
-  pingSaga,
-}
+// function * pingSaga () {
+//   yield takeEvery(types.PING, emitPong)
+// }
+
+// export {
+//   pingSaga,
+// }
