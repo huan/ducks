@@ -25,19 +25,19 @@ import { Ducks } from '../src'
 import * as switcherDuck from './switcher'   // Vanilla Duck: ON/OFF
 import * as counterDuck  from './counter'    // TypeSafe Actions: +1
 import * as dingDongDuck from './ding-dong'  // Observable Middleware
-import * as pingPongDuck from './ping-pong'  // Saga Middleware
+// import * as pingPongDuck from './ping-pong'  // Saga Middleware
 
 const ducks = new Ducks({
   counter  : counterDuck,
   dingDong : dingDongDuck,
-  pingPong : pingPongDuck,
+  // pingPong : pingPongDuck,
   switcher : switcherDuck,
 })
 
 const {
   counter,
   dingDong,
-  pingPong,
+  // pingPong,
   switcher,
 } = ducks.ducksify()
 
@@ -83,10 +83,13 @@ assert.strictEqual(dingDong.selectors.getDong(), 1)
 
 /**
  * Saga Middleware: PingPong
+ *
+ * Huan(202109): disable saga
+ *  See: https://github.com/huan/ducks/issues/4
  */
-assert.strictEqual(pingPong.selectors.getPong(), 0)
-pingPong.operations.ping()
-assert.strictEqual(pingPong.selectors.getPong(), 1)
+// assert.strictEqual(pingPong.selectors.getPong(), 0)
+// pingPong.operations.ping()
+// assert.strictEqual(pingPong.selectors.getPong(), 1)
 
 // Show the new store state structure data
 console.info('# Final Store State:', store.getState())
@@ -97,5 +100,5 @@ console.info('# Final Store State:', store.getState())
 export {
   counter,
   dingDong,
-  pingPong,
+  // pingPong,
 }

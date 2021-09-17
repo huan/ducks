@@ -275,15 +275,22 @@ class Ducks <A extends DucksMapObject> {
      *
      *  We are using `require` at here because we will only load `redux-saga` module when we need it
      */
-    const effects = require('redux-saga/effects')
 
-    return function * rootSaga () {
-      yield effects.all(
-        sagas.map(
-          saga => saga()
-        )
-      )
-    } as Saga
+    /**
+     * Huan(202109): disable saga
+     *  See: https://github.com/huan/ducks/issues/4
+     */
+
+    // const effects = require('redux-saga/effects')
+
+    // return function * rootSaga () {
+    //   yield effects.all(
+    //     sagas.map(
+    //       saga => saga()
+    //     )
+    //   )
+    // } as Saga
+    throw new Error('Saga is disabled. See: https://github.com/huan/ducks/issues/4')
   }
 
   protected initializeDucks (store: Store<any, any>) {

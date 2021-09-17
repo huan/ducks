@@ -16,20 +16,26 @@
  *   limitations under the License.
  *
  */
-import {
-  takeEvery,
-}             from 'redux-saga/effects'
 
-import * as types   from './types'
+/**
+ * Huan(202109): disable saga
+ *  See: https://github.com/huan/ducks/issues/4
+ */
 
-import {
-  emitPong,
-}             from './sagas-helpers'
+// import {
+//   takeEvery,
+// }             from 'redux-saga/effects'
 
-function * pingSaga () {
-  yield takeEvery(types.PING, emitPong)
-}
+// import * as types   from './types'
 
-export {
-  pingSaga,
-}
+// import {
+//   emitPong,
+// }             from './sagas-helpers'
+
+// function * pingSaga () {
+//   yield takeEvery(types.PING, emitPong)
+// }
+
+// export {
+//   pingSaga,
+// }
