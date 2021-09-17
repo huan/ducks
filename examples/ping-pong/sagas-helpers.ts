@@ -16,12 +16,17 @@
  *   limitations under the License.
  *
  */
-import {
-  put,
-}             from 'redux-saga/effects'
+/**
+ * Huan(202109): disable saga
+ *  See: https://github.com/huan/ducks/issues/4
+ */
 
-import * as actions from './actions'
+// import {
+//   put,
+// }             from 'redux-saga/effects'
 
-export function * emitPong () {
-  yield put(actions.pong())
-}
+// import * as actions from './actions'
+
+// export function * emitPong () {
+//   yield put(actions.pong())
+// }

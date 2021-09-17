@@ -17,32 +17,38 @@
  *   limitations under the License.
  *
  */
-import { test } from 'tstest'
+// import { test } from 'tstest'
 
-import {
-  takeEvery,
-  put,
-}               from 'redux-saga/effects'
+/**
+ * Huan(202109): disable saga
+ *  See: https://github.com/huan/ducks/issues/4
+ */
+// import {
+//   takeEvery,
+//   put,
+// }               from 'redux-saga/effects'
 
-import * as actions from './actions'
-import * as sagas   from './sagas'
-import * as types   from './types'
+// import * as actions from './actions'
+// import * as sagas   from './sagas'
+// import * as types   from './types'
 
-import {
-  emitPong,
-}           from './sagas-helpers'
+// import {
+//   emitPong,
+// }           from './sagas-helpers'
 
-test('pingSaga()', async t => {
-  t.deepEqual(
-    sagas.pingSaga().next().value,
-    takeEvery(types.PING, emitPong),
-    'should not get emitPong without actions.ping()',
-  )
-})
+// test('pingSaga()', async t => {
+//   t.deepEqual(
+//     sagas.pingSaga().next().value,
+//     takeEvery(types.PING, emitPong),
+//     'should not get emitPong without actions.ping()',
+//   )
+// })
 
-test('emitPong()', async t => {
-  t.deepEqual(
-    emitPong().next().value,
-    put(actions.pong()),
-  )
-})
+// test('emitPong()', async t => {
+//   t.deepEqual(
+//     emitPong().next().value,
+//     put(actions.pong()),
+//   )
+// })
+
+export {}

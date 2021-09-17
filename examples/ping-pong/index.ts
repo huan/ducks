@@ -20,14 +20,18 @@ import * as actions     from './actions'
 import * as operations  from './operations'
 import * as selectors   from './selectors'
 import * as types       from './types'
-import * as sagas       from './sagas'
+/**
+ * Huan(202109): disable saga
+ *  See: https://github.com/huan/ducks/issues/4
+ */
+// import * as sagas       from './sagas'
 
 import reducer from './reducers'
 
 export {
   actions,
   operations,
-  sagas,
+  // sagas,
   selectors,
   types,
 }
