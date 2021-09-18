@@ -65,3 +65,5 @@
 
 //   t.deepEqual(store.getActions(), expectedActions, 'should get the PONG after PING')
 // })
+
+export {}

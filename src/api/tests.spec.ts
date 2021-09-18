@@ -35,12 +35,12 @@ test('noop', async t => {
   const store = createStore(duck.default)
 
   let noop = duck.selectors.getNoop(store.getState())()
-  t.false(noop, 'should be undefined')
+  t.notOk(noop, 'should be undefined')
 
   store.dispatch(duck.actions.noop())
 
   noop = duck.selectors.getNoop(store.getState())()
-  t.false(noop, 'should be undefined after noop')
+  t.notOk(noop, 'should be undefined after noop')
 })
 
 test('operations', async t => {
@@ -49,5 +49,5 @@ test('operations', async t => {
   duck.operations.noop(store.dispatch)()
 
   const noop = duck.selectors.getNoop(store.getState())()
-  t.false(noop, 'should be undefined after operations.noop(store)()')
+  t.notOk(noop, 'should be undefined after operations.noop(store)()')
 })

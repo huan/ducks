@@ -145,7 +145,7 @@ In order to build a fully modularized Ducks, we define the **Ducksify** extensio
 
 ## Requirements
 
-Node.js v12+, or Browser with ES2019 Support
+Node.js v14+, or Browser with ES2020 Support
 
 ## Install
 
@@ -236,7 +236,9 @@ It shows that:
 1. Ducks supports `redux-observable` and `redux-saga` out-of-the-box with zero configuration.
 1. How to stick with the best practices to write a redux reducer bundle by following the ducks modular proposal.
 
-Talk is cheap, show me the code: the following example code can be found at [examples/quack.ts](examples/quack.ts), you can try it by running the following commands:
+### Talk is cheap, show me the code
+
+The following example code can be found at [examples/quack.ts](examples/quack.ts), you can try it by running the following commands:
 
 ```sh
 git clone git@github.com:huan/ducks.git
