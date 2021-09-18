@@ -29,7 +29,11 @@ import {
 import type {
   Epic,
   EpicMiddleware,
-}                   from 'redux-observable'
+}                         from 'redux-observable'
+import {
+  createEpicMiddleware,
+  combineEpics,
+}                         from 'redux-observable'
 import type {
   Saga,
   SagaMiddleware,
@@ -160,10 +164,15 @@ class Ducks <A extends DucksMapObject> {
 
   enhancer (): ReturnType<Ducks<A>['duckeryEnhancer']> {
     if (!this.asyncMiddlewares.epicMiddleware && this.getRootEpic()) {
-      this.asyncMiddlewares.epicMiddleware = require('redux-observable').createEpicMiddleware()
+      this.asyncMiddlewares.epicMiddleware = createEpicMiddleware()
     }
     if (!this.asyncMiddlewares.sagaMiddleware && this.getRootSaga()) {
-      this.asyncMiddlewares.sagaMiddleware = require('redux-saga').default()
+      /**
+       * Huan(202109): disable saga
+       *  See: https://github.com/huan/ducks/issues/4
+       */
+      // this.asyncMiddlewares.sagaMiddleware = require('redux-saga').default()
+      throw new Error('saga is disabled. See: https://github.com/huan/ducks/issues/4')
     }
 
     const asyncMiddlewareList = Object.values(this.asyncMiddlewares).filter(Boolean) as Middleware[]
@@ -261,8 +270,6 @@ class Ducks <A extends DucksMapObject> {
      *
      *  We are using `require` at here because we will only load `redux-observable` module when we need it
      */
-    const combineEpics = require('redux-observable').combineEpics
-
     return combineEpics(...epics) as Epic
   }
 

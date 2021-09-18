@@ -19,7 +19,7 @@
  */
 import { test } from 'tstest'
 
-import configureMockStore  from 'redux-mock-store'
+import reduxMockStorePkg from 'redux-mock-store'
 import {
   createEpicMiddleware,
   combineEpics,
@@ -29,7 +29,13 @@ import {
   validateDuck,
 }                     from '../../src/mod.js'
 
-import * as duck from './mod'
+import * as duck from './mod.js'
+
+/**
+ * Huan(202109): FIXME: CJS import problem should be fixed.
+ *  remove `as any` when import problem fixed.
+ */
+const configureMockStore: typeof reduxMockStorePkg = (reduxMockStorePkg as any).default
 
 validateDuck(duck)
 

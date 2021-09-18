@@ -564,6 +564,7 @@ Don't store system state, store events that brought system to this state.
 ### master v0.11 (Sep 2021)
 
 1. Disable `saga` support temporary due to ([#4](https://github.com/huan/ducks/issues/4))
+1. ES Modules support
 
 ### v0.10 (Jun 6, 2020)
 

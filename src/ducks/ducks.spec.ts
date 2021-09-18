@@ -28,7 +28,7 @@ import {
 }                   from 'redux'
 
 import { createEpicMiddleware } from 'redux-observable'
-import createSagaMiddleware     from 'redux-saga'
+// import createSagaMiddleware     from 'redux-saga'
 
 import { Ducks } from './ducks.js'
 
@@ -77,7 +77,7 @@ test('constructor() with option.middleware', async t => {
   /**
    * Huan(202109): https://github.com/huan/ducks/issues/4
    */
-  const sagaMiddleware = createSagaMiddleware()
+  // const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({
     dong    : dingdongDuck,
@@ -91,7 +91,7 @@ test('constructor() with option.middleware', async t => {
         ducks.enhancer(),
         applyMiddleware(
           epicMiddleware,
-          sagaMiddleware,
+          // sagaMiddleware,
         ),
       ),
     ),
@@ -103,35 +103,35 @@ test('constructor() with option.middleware', async t => {
  * Huan(202109): disable saga
  *  See: https://github.com/huan/ducks/issues/4
  */
-test.skip('Sagas middlewares', async t => {
-  const sagaMiddleware = createSagaMiddleware()
+// test('Sagas middlewares', async t => {
+//   const sagaMiddleware = createSagaMiddleware()
 
-  const ducks = new Ducks({
-    pong    : pingpongDuck,
-  })
+//   const ducks = new Ducks({
+//     pong    : pingpongDuck,
+//   })
 
-  const {
-    pong,
-  }         = ducks.ducksify()
+//   const {
+//     pong,
+//   }         = ducks.ducksify()
 
-  const store = createStore(
-    state => state,
-    compose(
-      ducks.enhancer(),
-      applyMiddleware(
-        sagaMiddleware,
-      ),
-    ),
-  )
+//   const store = createStore(
+//     state => state,
+//     compose(
+//       ducks.enhancer(),
+//       applyMiddleware(
+//         sagaMiddleware,
+//       ),
+//     ),
+//   )
 
-  void store
+//   void store
 
-  t.equal(pong.selectors.getPong(), 0, 'should get pong 0 on initialization')
+//   t.equal(pong.selectors.getPong(), 0, 'should get pong 0 on initialization')
 
-  pong.operations.ping()
+//   pong.operations.ping()
 
-  t.equal(pong.selectors.getPong(), 1, 'should get pong 1 after operations.ping()')
-})
+//   t.equal(pong.selectors.getPong(), 1, 'should get pong 1 after operations.ping()')
+// })
 
 test('Epics middlewares', async t => {
   const epicMiddleware = createEpicMiddleware()
