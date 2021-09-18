@@ -134,17 +134,12 @@ test('constructor() with option.middleware', async t => {
 // })
 
 test('Epics middlewares', async t => {
+  const ducks = new Ducks({ dong: dingdongDuck })
+  const dong  = ducks.ducksify('dong')
+
   const epicMiddleware = createEpicMiddleware()
 
-  const ducks = new Ducks({
-    dong    : dingdongDuck,
-  })
-
-  const {
-    dong,
-  } = ducks.ducksify()
-
-  const store = createStore(
+  /* const store = */ createStore(
     state => state,
     compose(
       ducks.enhancer(),
@@ -153,8 +148,6 @@ test('Epics middlewares', async t => {
       ),
     ),
   )
-
-  void store
 
   t.equal(dong.selectors.getDong(), 0, 'should get dong 0 on initialization')
 

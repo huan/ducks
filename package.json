@@ -64,7 +64,7 @@
     "utility-types": "^3.10.0"
   },
   "dependencies": {
-    "redux-observable": "^1.2.0"
+    "redux-observable": "^2.0.0-rc2"
   },
   "peerDependencies": {
     "redux": "^4.0.5"
