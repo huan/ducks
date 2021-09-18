@@ -23,7 +23,7 @@ import {
 
 import {
   mapTo,
-}             from 'rxjs/operators/index.js'
+}             from 'rxjs/operators'
 
 import * as actions from './actions.js'
 import * as types   from './types.js'

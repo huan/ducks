@@ -13,9 +13,6 @@
   "engines": {
     "node": ">=14"
   },
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
     "build": "tsc && tsc -p tsconfig.cjs.json",
     "clean": "shx rm -fr dist/*",
@@ -60,6 +57,7 @@
     "reduce-reducers": "^1.0.4",
     "redux": "^4.0.5",
     "redux-mock-store": "^1.5.4",
+    "rxjs": "^7.3.0",
     "shx": "^0.3.3",
     "tstest": "^0.5.16",
     "typesafe-actions": "^5.1.0",
