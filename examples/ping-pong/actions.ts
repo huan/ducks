@@ -16,7 +16,7 @@
  *   limitations under the License.
  *
  */
-import * as types from './types'
+import * as types from './types.js'
 
 const ping = () => ({ type: types.PING })
 const pong = () => ({ type: types.PONG })

@@ -1,4 +1,4 @@
-#!/usr/bin/env node -r ts-node/register
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -65,3 +65,5 @@
 
 //   t.deepEqual(store.getActions(), expectedActions, 'should get the PONG after PING')
 // })
+
+export {}

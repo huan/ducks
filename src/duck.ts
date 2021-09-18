@@ -16,58 +16,54 @@
  *   limitations under the License.
  *
  */
-import {
+import type {
   ActionCreator,
   Dispatch,
   Middleware,
   Reducer,
 }                   from 'redux'
 
-import { Epic } from 'redux-observable'
-import { Saga } from 'redux-saga'
+import type { Epic } from 'redux-observable'
+import type { Saga } from 'redux-saga'
 
-import { Ducks } from './ducks/'
+import type { Ducks } from './ducks/mod.js'
 
 /**
  * Huan(202005): typesafe style Async Action Creator
  */
-export interface AsyncActionCreator<A> {
+interface AsyncActionCreator<A> {
   request: (...args: any[]) => A,
   success: (...args: any[]) => A,
   failure: (...args: any[]) => A,
   cancel?: (...args: any[]) => A,
 }
 
-export interface AsyncActionCreatorsMapObject<A = any> {
+interface AsyncActionCreatorsMapObject<A = any> {
   [key: string]: ActionCreator<A> | AsyncActionCreator<A>
 }
 
-export interface TypesMapObject {
+interface TypesMapObject {
   [type: string]: string,
 }
 
-export interface OperationsMapObject {
+interface OperationsMapObject {
   [operation: string]: (dispatch: Dispatch) => (...args: any[]) => any,
 }
 
-export interface SelectorsMapObject <S extends {} = any> {
+interface SelectorsMapObject <S extends {} = any> {
   [selector: string]: (state: S) => (...args: any[]) => any,
 }
 
-export interface MiddlewaresMapObject {
+interface MiddlewaresMapObject {
   [middleware: string]: Middleware,
 }
 
-export interface EpicsMapObject {
+interface EpicsMapObject {
   [epic: string]: Epic,
 }
 
-export interface SagasMapObject {
+interface SagasMapObject {
   [saga: string]: Saga,
-}
-
-export interface DucksMapObject {
-  [namespace: string]: Duck,
 }
 
 /**
@@ -76,7 +72,7 @@ export interface DucksMapObject {
  *  (a.k.a. Redux Reducer Bundles)
  *
  */
-export interface Duck {
+interface Duck {
   /**
    *
    * Ducks Proposal:
@@ -116,6 +112,10 @@ export interface Duck {
   setDucks?: (ducks: Ducks<any>) => void
 }
 
+interface DucksMapObject {
+  [namespace: string]: Duck,
+}
+
 /**
  * Allow a module to implement an interface #420
  *  https://github.com/microsoft/TypeScript/issues/420
@@ -128,3 +128,16 @@ export interface Duck {
  *  1. `operations` for Command
  *  2. `selectors` for Query
  */
+
+export type {
+  AsyncActionCreator,
+  AsyncActionCreatorsMapObject,
+  TypesMapObject,
+  OperationsMapObject,
+  SelectorsMapObject,
+  MiddlewaresMapObject,
+  EpicsMapObject,
+  SagasMapObject,
+  Duck,
+  DucksMapObject,
+}

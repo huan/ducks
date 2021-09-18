@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 /**
  *   Ducks - https://github.com/huan/ducks
@@ -20,17 +20,17 @@
  */
 import { test } from 'tstest'
 
-import reducer from './reducers'
+import reducer from './reducers.js'
 
-import * as actions from './actions'
+import * as actions from './actions.js'
 
 test('toggle reducer initial state', async t => {
   let state = reducer(undefined, {} as any)
-  t.deepEqual(state, { status: false }, 'should return the initial state')
+  t.same(state, { status: false }, 'should return the initial state')
 
   state = reducer(state, actions.toggle())
-  t.deepEqual(state, { status: true }, 'should be true after taggle()')
+  t.same(state, { status: true }, 'should be true after taggle()')
 
   state = reducer(state, actions.toggle())
-  t.deepEqual(state, { status: false }, 'should be false after taggle() again')
+  t.same(state, { status: false }, 'should be false after taggle() again')
 })

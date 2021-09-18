@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 /**
  *   Ducks - https://github.com/huan/ducks
@@ -22,19 +22,19 @@ import { test } from 'tstest'
 
 import { combineReducers } from 'redux'
 
-import reducer from './reducers'
+import reducer from './reducers.js'
 
-import * as actions from './actions'
+import * as actions from './actions.js'
 
 test('counter reducer initial state', async t => {
   let state = reducer(undefined, {} as any)
-  t.deepEqual(state, { total: 0 }, 'should return the initial state')
+  t.same(state, { total: 0 }, 'should return the initial state')
 
   state = reducer(state, actions.tap())
-  t.deepEqual(state, { total: 1 }, 'should increase 1 after tap()')
+  t.same(state, { total: 1 }, 'should increase 1 after tap()')
 
   state = reducer(state, actions.tap(2))
-  t.deepEqual(state, { total: 3 }, 'should increase 3 after tap(2)')
+  t.same(state, { total: 3 }, 'should increase 3 after tap(2)')
 })
 
 test('counter reducer with combineReducers()', async t => {
@@ -43,8 +43,8 @@ test('counter reducer with combineReducers()', async t => {
   })
 
   let state = combinedReducer(undefined, {} as any)
-  t.deepEqual(state, { counter: { total: 0 } }, 'should return the initial state')
+  t.same(state, { counter: { total: 0 } }, 'should return the initial state')
 
   state = combinedReducer(state, actions.tap())
-  t.deepEqual(state, { counter: { total: 1 } }, 'should increase 1 after tap()')
+  t.same(state, { counter: { total: 1 } }, 'should increase 1 after tap()')
 })

@@ -145,7 +145,7 @@ In order to build a fully modularized Ducks, we define the **Ducksify** extensio
 
 ## Requirements
 
-Node.js v12+, or Browser with ES2019 Support
+Node.js v14+, or Browser with ES2020 Support
 
 ## Install
 
@@ -181,7 +181,7 @@ export default function reducer (state = initialState, action) {
 
 ```ts
 import { Ducks }       from 'ducks'
-import * as counterDuck from './counter'
+import * as counterDuck from './counter.js'
 
 const ducks = new Ducks({ counter: counterDuck })
 const counter = ducks.ducksify(counterDuck)
@@ -236,7 +236,9 @@ It shows that:
 1. Ducks supports `redux-observable` and `redux-saga` out-of-the-box with zero configuration.
 1. How to stick with the best practices to write a redux reducer bundle by following the ducks modular proposal.
 
-Talk is cheap, show me the code: the following example code can be found at [examples/quack.ts](examples/quack.ts), you can try it by running the following commands:
+### Talk is cheap, show me the code
+
+The following example code can be found at [examples/quack.ts](examples/quack.ts), you can try it by running the following commands:
 
 ```sh
 git clone git@github.com:huan/ducks.git
@@ -250,10 +252,10 @@ npm start
 import { createStore } from 'redux'
 import { Duck, Ducks } from 'ducks'
 
-import * as counterDuck  from './counter'    // Vanilla Duck: +1
-import * as dingDongDuck from './ding-dong'  // Observable Middleware
-import * as pingPongDuck from './ping-pong'  // Saga Middleware
-import * as switcherDuck from './switcher'   // Type Safe Actions: ON/OFF
+import * as counterDuck  from './counter.js'    // Vanilla Duck: +1
+import * as dingDongDuck from './ding-dong.js'  // Observable Middleware
+import * as pingPongDuck from './ping-pong.js'  // Saga Middleware
+import * as switcherDuck from './switcher.js'   // Type Safe Actions: ON/OFF
 
 const ducks = new Ducks({
   counter  : counterDuck,
@@ -324,12 +326,12 @@ Example:
 `Duck` counter example from our [examples](examples/counter/index.ts)
 
 ```ts
-import * as actions     from './actions'
-import * as operations  from './operations'
-import * as selectors   from './selectors'
-import * as types       from './types'
+import * as actions     from './actions.js'
+import * as operations  from './operations.js'
+import * as selectors   from './selectors.js'
+import * as types       from './types.js'
 
-import reducer from './reducers'
+import reducer from './reducers.js'
 
 export {
   actions,
@@ -347,7 +349,7 @@ The `Ducks` class is the manager for `Duck`s and connecting them to the Redux St
 
 ```ts
 import { Ducks } from 'ducks'
-import * as counterApi from './counter'
+import * as counterApi from './counter.js'
 
 const ducks = new Ducks({
   counter: counterApi,
@@ -426,7 +428,7 @@ const store = createStore(
 For example:
 
 ```ts
-import * as counterDuck from './counter'
+import * as counterDuck from './counter.js'
 
 const ducks = new Ducks({ counter: counterDuck })
 const store = ducks.configureStore()
@@ -467,7 +469,7 @@ To make sure your Ducks Api is following the specification of the [ducks modular
 
 ```ts
 import { validateDuck } from 'ducks'
-import * as counterDuck from './counter'
+import * as counterDuck from './counter.js'
 
 validateDuck(counterDuck) // will throw if the counterApi is invalid.
 ```
@@ -562,6 +564,7 @@ Don't store system state, store events that brought system to this state.
 ### master v0.11 (Sep 2021)
 
 1. Disable `saga` support temporary due to ([#4](https://github.com/huan/ducks/issues/4))
+1. ES Modules support
 
 ### v0.10 (Jun 6, 2020)
 

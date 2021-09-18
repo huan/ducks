@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 /**
  *   Ducks - https://github.com/huan/ducks
@@ -18,7 +18,7 @@
  *   limitations under the License.
  *
  */
-import test  from 'tstest'
+import { test }  from 'tstest'
 
 import {
   createStore,
@@ -28,14 +28,14 @@ import {
 }                   from 'redux'
 
 import { createEpicMiddleware } from 'redux-observable'
-import createSagaMiddleware     from 'redux-saga'
+// import createSagaMiddleware     from 'redux-saga'
 
-import { Ducks } from './ducks'
+import { Ducks } from './ducks.js'
 
-import * as counterDuck  from '../../examples/counter/'
-import * as dingdongDuck from '../../examples/ding-dong/'
-import * as pingpongDuck from '../../examples/ping-pong/'
-import * as switcherDuck from '../../examples/switcher/'
+import * as counterDuck  from '../../examples/counter/mod.js'
+import * as dingdongDuck from '../../examples/ding-dong/mod.js'
+import * as pingpongDuck from '../../examples/ping-pong/mod.js'
+import * as switcherDuck from '../../examples/switcher/mod.js'
 
 test('construction()', async t => {
   t.throws(() => new Ducks({}), 'should not happy with empty duckery')
@@ -54,7 +54,7 @@ test('reducer()', async t => {
 
   const initialState = {}
   const store = createStore(
-    state => state,
+    (state?: object) => ({ ...state }),
     initialState,
     compose(
       ducks.enhancer(),
@@ -73,7 +73,11 @@ test('reducer()', async t => {
 
 test('constructor() with option.middleware', async t => {
   const epicMiddleware = createEpicMiddleware()
-  const sagaMiddleware = createSagaMiddleware()
+
+  /**
+   * Huan(202109): https://github.com/huan/ducks/issues/4
+   */
+  // const sagaMiddleware = createSagaMiddleware()
 
   const ducks = new Ducks({
     dong    : dingdongDuck,
@@ -87,7 +91,7 @@ test('constructor() with option.middleware', async t => {
         ducks.enhancer(),
         applyMiddleware(
           epicMiddleware,
-          sagaMiddleware,
+          // sagaMiddleware,
         ),
       ),
     ),
@@ -95,40 +99,60 @@ test('constructor() with option.middleware', async t => {
   )
 })
 
-test('Epics & Sagas middlewares', async t => {
+/**
+ * Huan(202109): disable saga
+ *  See: https://github.com/huan/ducks/issues/4
+ */
+// test('Sagas middlewares', async t => {
+//   const sagaMiddleware = createSagaMiddleware()
+
+//   const ducks = new Ducks({
+//     pong    : pingpongDuck,
+//   })
+
+//   const {
+//     pong,
+//   }         = ducks.ducksify()
+
+//   const store = createStore(
+//     state => state,
+//     compose(
+//       ducks.enhancer(),
+//       applyMiddleware(
+//         sagaMiddleware,
+//       ),
+//     ),
+//   )
+
+//   void store
+
+//   t.equal(pong.selectors.getPong(), 0, 'should get pong 0 on initialization')
+
+//   pong.operations.ping()
+
+//   t.equal(pong.selectors.getPong(), 1, 'should get pong 1 after operations.ping()')
+// })
+
+test('Epics middlewares', async t => {
+  const ducks = new Ducks({ dong: dingdongDuck })
+  const dong  = ducks.ducksify('dong')
+
   const epicMiddleware = createEpicMiddleware()
-  const sagaMiddleware = createSagaMiddleware()
 
-  const ducks = new Ducks({
-    dong    : dingdongDuck,
-    pong    : pingpongDuck,
-  })
-
-  const {
-    dong,
-    pong,
-  } = ducks.ducksify()
-
-  const store = createStore(
+  /* const store = */ createStore(
     state => state,
     compose(
       ducks.enhancer(),
       applyMiddleware(
         epicMiddleware,
-        sagaMiddleware,
       ),
     ),
   )
 
-  void store
-
-  t.equal(pong.selectors.getPong(), 0, 'should get pong 0 on initialization')
   t.equal(dong.selectors.getDong(), 0, 'should get dong 0 on initialization')
 
-  pong.operations.ping()
   dong.operations.ding()
 
-  t.equal(pong.selectors.getPong(), 1, 'should get pong 1 after operations.ping()')
   t.equal(dong.selectors.getDong(), 1, 'should get dong 1 after operations.ding()')
 })
 

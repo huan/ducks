@@ -1,5 +1,3 @@
-#!/usr/bin/env ts-node
-
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -18,10 +16,18 @@
  *   limitations under the License.
  *
  */
-import test  from 'tstest'
+import * as actions     from './actions.js'
+import * as operations  from './operations.js'
+import * as selectors   from './selectors.js'
+import * as types       from './types.js'
 
-import { VERSION } from './version'
+import reducer from './reducers.js'
 
-test('Make sure the VERSION is fresh in source code', async t => {
-  t.equal(VERSION, '0.0.0', 'version should be 0.0.0 in source code, only updated before publish to NPM')
-})
+export {
+  actions,
+  operations,
+  selectors,
+  types,
+}
+
+export default reducer

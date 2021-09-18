@@ -1,5 +1,3 @@
-#!/usr/bin/env ts-node
-
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -18,14 +16,29 @@
  *   limitations under the License.
  *
  */
-import test  from 'tstest'
-
+import {
+  VERSION,
+}               from './config.js'
 import {
   Ducks,
   noopReducer,
-}                 from './'
+}               from './ducks/mod.js'
 
-test('Check the exports for the directory', async t => {
-  t.ok(Ducks, 'should export `Ducks`')
-  t.ok(noopReducer, 'should export `noopReducer`')
-})
+import type { Duck } from './duck.js'
+
+import { validateDuck } from './validate-duck.js'
+import * as Api from './api/mod.js'
+
+import { Bundle }             from './bundle.js'
+
+export type {
+  Duck,
+}
+export {
+  Api,
+  Bundle,
+  Ducks,
+  noopReducer,
+  validateDuck,
+  VERSION,
+}

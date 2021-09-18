@@ -1,3 +1,5 @@
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
+
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -16,18 +18,14 @@
  *   limitations under the License.
  *
  */
-import * as actions     from './actions'
-import * as operations  from './operations'
-import * as selectors   from './selectors'
-import * as types       from './types'
+import { test }  from 'tstest'
 
-import reducer from './reducers'
+import {
+  Ducks,
+  noopReducer,
+}                 from './mod.js'
 
-export {
-  actions,
-  operations,
-  selectors,
-  types,
-}
-
-export default reducer
+test('Check the exports for the directory', async t => {
+  t.ok(Ducks, 'should export `Ducks`')
+  t.ok(noopReducer, 'should export `noopReducer`')
+})

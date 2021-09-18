@@ -16,7 +16,9 @@
  *   limitations under the License.
  *
  */
-import { VERSION } from './version'
+import { packageJson } from './package-json.js'
+
+const VERSION = packageJson.version || '0.0.0'
 
 const DUCKS_NAMESPACE = 'ducks'
 

@@ -20,9 +20,9 @@ import {
   createReducer,
   ActionType,
 }                       from 'typesafe-actions'
-import { DeepReadonly } from 'utility-types'
+import type { DeepReadonly } from 'utility-types'
 
-import * as actions from './actions'
+import * as actions from './actions.js'
 
 const initialState: DeepReadonly<{}> = {}
 

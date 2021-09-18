@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 /**
  *   Ducks - https://github.com/huan/ducks
@@ -24,7 +24,7 @@ import {
 
 import {
   Ducks,
-}                               from '../src/'
+}                               from '../src/mod.js'
 
 test('integration testing', async (t) => {
   t.ok(Ducks.VERSION, 'to be writen')

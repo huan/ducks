@@ -16,7 +16,7 @@
  *   limitations under the License.
  *
  */
-import reducer from './reducers'
+import type reducer from './reducers.js'
 
 const getDong = (state: ReturnType<typeof reducer>) => () => state.reducer.dong
 

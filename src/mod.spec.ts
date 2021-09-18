@@ -1,3 +1,5 @@
+#!/usr/bin/env -S node --no-warnings --loader ts-node/esm
+
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -16,24 +18,14 @@
  *   limitations under the License.
  *
  */
-import * as actions     from './actions'
-import * as operations  from './operations'
-import * as selectors   from './selectors'
-import * as types       from './types'
-/**
- * Huan(202109): disable saga
- *  See: https://github.com/huan/ducks/issues/4
- */
-// import * as sagas       from './sagas'
+import { test }  from 'tstest'
 
-import reducer from './reducers'
+import * as ducks from './mod.js'
 
-export {
-  actions,
-  operations,
-  // sagas,
-  selectors,
-  types,
-}
-
-export default reducer
+test('ducks exports', async t => {
+  t.ok(ducks.Api, 'export Api')
+  t.ok(ducks.Ducks, 'export Ducks')
+  t.ok(ducks.VERSION, 'export VERSION')
+  t.ok(ducks.noopReducer, 'export noopReducer')
+  t.ok(ducks.validateDuck, 'export validateDuck')
+})

@@ -1,24 +1,31 @@
 {
   "name": "ducks",
-  "version": "0.11.1",
+  "version": "0.11.5",
   "description": "🦆🦆🦆 Ducks is a Reducer Bundles Manager that Implementing the Redux Ducks Modular Proposal with Great Convenience.",
-  "main": "dist/src/index.js",
-  "typings": "dist/src/index.d.ts",
-  "directories": {
-    "doc": "docs"
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/src/mod.js",
+      "require": "./dist/cjs/src/mod.js"
+    }
+  },
+  "typings": "./dist/esm/src/mod.d.ts",
+  "engines": {
+    "node": ">=14"
   },
   "scripts": {
+    "build": "tsc && tsc -p tsconfig.cjs.json",
     "clean": "shx rm -fr dist/*",
-    "dist": "npm run clean && tsc",
-    "pack": "npm pack",
+    "dist": "npm-run-all clean build dist:commonjs",
+    "dist:commonjs": "jq -n \"{ type: \\\"commonjs\\\" }\" > dist/cjs/package.json",
     "lint": "npm run lint:es && npm run lint:ts && npm run lint:md",
     "lint:md": "markdownlint README.md",
-    "lint:ts": "tsc --noEmit",
+    "lint:ts": "tsc --isolatedModules --noEmit",
     "start": "npm run quack",
-    "quack": "ts-node examples/quack.ts",
+    "quack": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" node examples/quack.ts",
     "test": "npm run lint && npm run test:unit",
     "test:pack": "bash -x scripts/npm-pack-testing.sh",
-    "test:unit": "blue-tape -r ts-node/register \"src/**/*.spec.ts\" \"src/*.spec.ts\" \"examples/**/*.spec.ts\" \"tests/*.spec.ts\" \"tests/**/*.spec.ts\"",
+    "test:unit": "tap --node-arg=--loader=ts-node/esm --node-arg=--no-warnings \"src/**/*.spec.ts\" \"src/*.spec.ts\" \"examples/**/*.spec.ts\" \"tests/*.spec.ts\" \"tests/**/*.spec.ts\"",
     "lint:es": "eslint --ignore-pattern tests/fixtures/ '{bin,examples,scripts,src,tests}/**/*.ts'"
   },
   "repository": {
@@ -35,27 +42,40 @@
     "url": "https://github.com/huan/ducks/issues"
   },
   "homepage": "https://github.com/huan/ducks#readme",
-  "dependencies": {},
   "devDependencies": {
-    "@chatie/eslint-config": "^0.8.1",
+    "@chatie/eslint-config": "^0.14.1",
     "@chatie/git-scripts": "^0.6.1",
     "@chatie/semver": "^0.4.7",
-    "@chatie/tsconfig": "^0.10.1",
+    "@chatie/tsconfig": "^0.20.2",
     "@types/glob": "^7.1.1",
     "@types/redux-mock-store": "^1.0.2",
+    "@types/redux-saga": "^0.10.5",
+    "cross-env": "^7.0.3",
     "glob": "^7.1.6",
+    "npm-run-all": "^4.1.5",
     "pkg-jq": "^0.2.4",
     "reduce-reducers": "^1.0.4",
     "redux": "^4.0.5",
     "redux-mock-store": "^1.5.4",
-    "redux-observable": "^1.2.0",
-    "shx": "^0.3.2",
-    "tstest": "^0.4.10",
+    "rxjs": "^7.3.0",
+    "shx": "^0.3.3",
+    "tstest": "^0.5.16",
     "typesafe-actions": "^5.1.0",
     "utility-types": "^3.10.0"
   },
+  "dependencies": {
+    "redux-observable": "^2.0.0-rc2"
+  },
   "peerDependencies": {
     "redux": "^4.0.5"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "src/"
+  ],
+  "tap": {
+    "check-coverage": false
   },
   "git": {
     "scripts": {

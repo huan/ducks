@@ -25,8 +25,8 @@ import {
   mapTo,
 }             from 'rxjs/operators'
 
-import * as actions from './actions'
-import * as types   from './types'
+import * as actions from './actions.js'
+import * as types   from './types.js'
 
 const dingEpic: Epic = action$ => action$.pipe(
   ofType(types.DING),

@@ -1,5 +1,3 @@
-#!/usr/bin/env ts-node
-
 /**
  *   Ducks - https://github.com/huan/ducks
  *
@@ -18,14 +16,20 @@
  *   limitations under the License.
  *
  */
-import test  from 'tstest'
+import * as actions     from './actions.js'
+import * as epics       from './epics.js'
+import * as operations  from './operations.js'
+import * as selectors   from './selectors.js'
+import * as types       from './types.js'
 
-import * as ducks from './'
+import reducer from './reducers.js'
 
-test('ducks exports', async t => {
-  t.ok(ducks.Api, 'export Api')
-  t.ok(ducks.Ducks, 'export Ducks')
-  t.ok(ducks.VERSION, 'export VERSION')
-  t.ok(ducks.noopReducer, 'export noopReducer')
-  t.ok(ducks.validateDuck, 'export validateDuck')
-})
+export {
+  actions,
+  epics,
+  operations,
+  selectors,
+  types,
+}
+
+export default reducer
