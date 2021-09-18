@@ -1,6 +1,6 @@
 {
   "name": "ducks",
-  "version": "0.11.4",
+  "version": "0.11.5",
   "description": "🦆🦆🦆 Ducks is a Reducer Bundles Manager that Implementing the Redux Ducks Modular Proposal with Great Convenience.",
   "type": "module",
   "exports": {
