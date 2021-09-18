@@ -60,11 +60,13 @@
     "reduce-reducers": "^1.0.4",
     "redux": "^4.0.5",
     "redux-mock-store": "^1.5.4",
-    "redux-observable": "^1.2.0",
     "shx": "^0.3.3",
     "tstest": "^0.5.16",
     "typesafe-actions": "^5.1.0",
     "utility-types": "^3.10.0"
+  },
+  "dependencies": {
+    "redux-observable": "^1.2.0"
   },
   "peerDependencies": {
     "redux": "^4.0.5"
