@@ -23,15 +23,15 @@ import {
   VERSION,
 }                     from 'ducks'
 
-import * as counterDuck from 'ducks/dist/examples/counter/'
+import * as counterDuck from 'ducks/dist/examples/counter/mod.js'
 
 async function main () {
+  const ducks = new Ducks({ counter: counterDuck })
+  ducks.configureStore()
+
   if (VERSION === '0.0.0') {
     throw new Error('version should be set before publishing')
   }
-
-  const ducks = new Ducks({ counter: counterDuck })
-  ducks.configureStore()
 
   return 0
 }
