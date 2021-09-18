@@ -145,7 +145,7 @@ In order to build a fully modularized Ducks, we define the **Ducksify** extensio
 
 ## Requirements
 
-Node.js v14+, or Browser with ES2020 Support
+Node.js v16+, or Browser with ES2020 Support
 
 ## Install
 
