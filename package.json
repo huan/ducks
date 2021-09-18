@@ -63,10 +63,8 @@
     "typesafe-actions": "^5.1.0",
     "utility-types": "^3.10.0"
   },
-  "dependencies": {
-    "redux-observable": "^2.0.0"
-  },
   "peerDependencies": {
+    "redux-observable": "^2.0.0",
     "redux": "^4.0.5"
   },
   "files": [
