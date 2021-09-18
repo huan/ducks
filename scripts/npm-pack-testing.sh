@@ -16,6 +16,7 @@ TMPDIR="/tmp/npm-pack-testing.$$"
 mkdir "$TMPDIR"
 mv ./*-*.*.*.tgz "$TMPDIR"
 cp tests/fixtures/smoke-testing.ts "$TMPDIR"
+cp -R ./examples/counter "$TMPDIR"
 
 cd $TMPDIR
 
@@ -25,6 +26,7 @@ npm install --production ./*-*.*.*.tgz \
   @chatie/tsconfig@$NPM_TAG \
   pkg-jq \
   redux \
+  utility-types \
   typesafe-actions \
 
 #

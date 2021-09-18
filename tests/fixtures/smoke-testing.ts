@@ -23,7 +23,7 @@ import {
   VERSION,
 }                     from 'ducks'
 
-import * as counterDuck from 'ducks/dist/examples/counter/mod.js'
+import * as counterDuck from './counter/mod.js'
 
 async function main () {
   const ducks = new Ducks({ counter: counterDuck })
