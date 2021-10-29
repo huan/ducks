@@ -1,5 +1,6 @@
 # ducks
 
+[![NPM](https://github.com/huan/ducks/actions/workflows/npm.yml/badge.svg)](https://github.com/huan/ducks/actions/workflows/npm.yml)
 [![NPM Version](https://img.shields.io/npm/v/ducks?color=yellow)](https://www.npmjs.com/package/ducks)
 [![NPM](https://github.com/huan/ducks/workflows/NPM/badge.svg)](https://github.com/huan/ducks/actions?query=workflow%3ANPM)
 
