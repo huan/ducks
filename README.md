@@ -561,7 +561,11 @@ Don't store system state, store events that brought system to this state.
 
 ## History
 
-### master v0.11 (Sep 2021)
+### master v1.0 (Oct 29, 2021)
+
+Release v1.0 of Redux Ducks
+
+v0.11 (Sep 2021)
 
 1. Disable `saga` support temporary due to ([#4](https://github.com/huan/ducks/issues/4))
 1. ES Modules support
