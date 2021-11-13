@@ -53,7 +53,7 @@ test('ding -> dong', async t => {
   const store = mockStore()
 
   epicMiddleware.run(combineEpics(
-    ...Object.values(duck.epics)
+    ...Object.values(duck.epics),
   ))
 
   store.dispatch(duck.actions.ding())

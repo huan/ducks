@@ -22,8 +22,7 @@ import type {
 
 import {
   VERSION,
-}                   from './config.js'
-
+}                         from './config.js'
 import type {
   Duck,
   OperationsMapObject,
@@ -49,15 +48,18 @@ class Bundle <D extends Duck = any> {
 
   static VERSION = VERSION
 
-  get store () {
+  protected _store?: Store
+  get store (): Store {
     if (!this._store) {
       throw new Error('Bundle store has not been set yet: Bundle can only be used after its store has been initialized.')
     }
     return this._store!
   }
 
-  private _store?: Store
-
+  /**
+   * The property list of the store state:
+   *  i.e. [DUCK_NAMESPACE, DUCK_NS] -> state[DUCKS_NAMESPACE][DUCK_NS]
+   */
   namespaces: string[]
 
   get reducer (): D['default']    { return this.duck.default }
@@ -90,7 +92,11 @@ class Bundle <D extends Duck = any> {
       if (namespace in duckState) {
         return duckState[namespace]
       }
-      throw new Error('duckStateReducer() can not get state from namespace: ' + this.namespaces[idx] + ' with index: ' + idx)
+      throw new Error([
+        'duckStateReducer() can not get state under namespace:',
+        'state.' + this.namespaces.join('.'),
+        'for namespace: ' + this.namespaces[idx] + ' with index: ' + idx,
+      ].join('\n'))
     }
 
     const duckState = this.namespaces.reduce(
@@ -123,6 +129,10 @@ class Bundle <D extends Duck = any> {
     this._store = store
   }
 
+  /**
+   * @param [DUCKS_NAMESPACE, DUCK_NS]
+   *  i.e. ['ducks', 'counter']
+   */
   public setNamespaces (...namespaces: string[]): void {
     if (this.namespaces.length > 0) {
       throw new Error('Namespaces has already been set, and it can not be set twice.')
@@ -130,64 +140,45 @@ class Bundle <D extends Duck = any> {
     this.namespaces = namespaces
   }
 
+  /**
+   * Curry `operations` functions with `store.dispatch`
+   *  @see https://medium.com/javascript-scene/curry-and-function-composition-2c208d774983
+   */
   protected ducksifyOperations (
     duck: D,
   ): DucksifyOperations<D> {
-    let ducksifiedOperations: BundleOperations<any> = {}
-
-    const operations = duck.operations
-    if (!operations) {
-      return ducksifiedOperations
-    }
-
+    /**
+     * We want to keep the curied functions has the same function name as the original
+     *  so we will use `function (...args: any[]) { return curryFunction(...)(...args) }` below
+     */
     const that = this
 
-    Object.keys(operations).forEach(operation => {
-      /**
-       * Inferred function names
-       *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
-       */
-      ducksifiedOperations = {
-        ...ducksifiedOperations,
-        [operation]: function (...args: any[]) {
-          return operations[operation]!(
-          /**
-           * We have to make sure `store` has been initialized before the following code has been ran
-           */
-            that.store.dispatch
-          )(...args)
-        },
-      }
-    })
-    return ducksifiedOperations
+    // We have to make sure `store` has been initialized before the following code has been ran
+    return Object.entries(duck.operations || {})
+      .reduce((o, [operation, curryFunc]) => ({
+        ...o,
+        [operation]: function (...args: any[]) { return curryFunc(that.store.dispatch)(...args) },
+      }), {} as BundleOperations<any>)
   }
 
+  /**
+   * Curry `selectors` functions with `store.state[ns]`
+   *  @see https://medium.com/javascript-scene/curry-and-function-composition-2c208d774983
+   */
   protected ducksifySelectors (
     duck: D,
   ): DucksifySelectors<D> {
-    let ducksifiedSelectors: BundleSelectors<any> = {}
-    const selectors = duck.selectors
-
-    if (!selectors) {
-      return ducksifiedSelectors
-    }
-
+    /**
+     * We want to keep the curied functions has the same function name as the original
+     *  so we will use `function (...args: any[]) { return curryFunction(...)(...args) }` below
+     */
     const that = this
-    Object.keys(selectors).forEach(selector => {
-      /**
-       * Inferred function names
-       *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
-       */
-      ducksifiedSelectors = {
-        ...ducksifiedSelectors,
-        [selector]: function (...args: any[]) {
-          return selectors[selector]!(
-            that.state,
-          )(...args)
-        },
-      }
-    })
-    return ducksifiedSelectors
+
+    return Object.entries(duck.selectors || {})
+      .reduce((s, [selector, curryFunc]) => ({
+        ...s,
+        [selector]: function (...args: any[]) { return curryFunc(that.state)(...args) },
+      }), {} as BundleSelectors<any>)
   }
 
 }

@@ -23,15 +23,15 @@ import { test } from 'tstest'
 import {
   combineReducers,
   createStore,
-}                       from 'redux'
-import reduxMockStorePkg  from 'redux-mock-store'
+}                         from 'redux'
+import * as MOCK_STORE    from 'redux-mock-store'
 
 import * as counterDuck from '../examples/counter/mod.js'
 
 import { Bundle } from './bundle.js'
 
 // https://github.com/huan/ducks/issues/3
-const createMockStore = (reduxMockStorePkg as any).default
+const createMockStore = (MOCK_STORE.default as any).default as typeof MOCK_STORE.default
 
 test('VERSION', async t => {
   t.ok(Bundle.VERSION, 'has VERSION')
@@ -59,7 +59,7 @@ test("ducksify functions' names", async t => {
     const bundleSelectorsFunc = duck.selectors[selector as keyof typeof duck.selectors]
     const duckSelectorsFunc  = counterDuck.selectors[selector as keyof typeof duck.selectors]
 
-    t.equals(
+    t.equal(
       bundleSelectorsFunc.name,
       duckSelectorsFunc.name,
       'selectors function name should keep the same after ducksify',

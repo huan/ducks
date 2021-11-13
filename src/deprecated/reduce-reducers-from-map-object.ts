@@ -50,7 +50,7 @@ function reduceReducersFromMapObject <T extends ReducersMapObject> (
   ActionFromReducersMapObject<T>
 > {
   return reduceReducersFromArray(
-    ...Object.values(reducers)
+    ...Object.values(reducers),
   )
 }
 

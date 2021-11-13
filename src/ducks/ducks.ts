@@ -24,7 +24,7 @@ import {
   applyMiddleware,
   Reducer,
   createStore,
-}                               from 'redux'
+}                         from 'redux'
 
 import type {
   Epic,
@@ -37,25 +37,25 @@ import {
 import type {
   Saga,
   SagaMiddleware,
-}                   from 'redux-saga'
+}                         from 'redux-saga'
 
 import {
   DUCKS_NAMESPACE,
   VERSION,
-}                      from '../config.js'
+}                     from '../config.js'
 
 import {
   Bundle,
-}                         from '../bundle.js'
+}                     from '../bundle.js'
 
 import type {
   Duck,
   DucksMapObject,
-}                 from '../duck.js'
+}                     from '../duck.js'
 
-import { combineDuckery } from './combine-duckery.js'
-import { insertReducers } from './insert-reducers.js'
-import { noopReducer }     from './noop-reducer.js'
+import { combineDuckery }   from './combine-duckery.js'
+import { insertReducers }   from './insert-reducers.js'
+import { noopReducer }      from './noop-reducer.js'
 
 export type BundlesMapObject <A extends DucksMapObject> = {
   [key in keyof A]: Bundle<A[key]>
@@ -65,13 +65,20 @@ class Ducks <A extends DucksMapObject> {
 
   static VERSION = VERSION
 
-  get store () {
-    return this._store
+  protected _store?: Store
+  get store (): Store {
+    if (this._store) {
+      return this._store
+    }
+
+    throw new Error([
+      'NO STORE',
+      'Ducks need to either call configureStore()',
+      ' or enhancer() to initialize the Redux store.',
+    ].join('\n'))
   }
 
-  protected _store?: Store
-
-  protected ducksNest: BundlesMapObject<A>
+  protected bundles: BundlesMapObject<A>
 
   protected asyncMiddlewares: {
     epicMiddleware?: EpicMiddleware<any>,
@@ -107,19 +114,18 @@ class Ducks <A extends DucksMapObject> {
     }
     this.asyncMiddlewares = {}
 
-    const ducksNest = {} as any
-    for (const [ns, duck] of Object.entries(duckery)) {
-      ducksNest[ns as string] = new Bundle(duck)
+    /**
+     * Huan(202006): Binding the Duck in Ducks to Ducks,
+     *  so that the Duck can use other Duck modules (if needed)
+     */
+    Object.values(duckery).forEach(
+      duck => duck.setDucks && duck.setDucks(this),
+    )
 
-      /**
-       * Huan(202006): Binding the Ducks to Duck,
-       *  so that the Duck can use other Duck modules (if needed)
-       */
-      if (duck.setDucks) {
-        duck.setDucks(this)
-      }
-    }
-    this.ducksNest = ducksNest
+    this.bundles = Object.entries(duckery).reduce((b, [ns, duck]) => ({
+      ...b,
+      [ns]: new Bundle(duck),
+    }), {} as BundlesMapObject<A>)
   }
 
   /**
@@ -138,41 +144,45 @@ class Ducks <A extends DucksMapObject> {
   ducksify <NS extends keyof A> (duck: A[NS]): Bundle<A[NS]>
 
   ducksify (nsOrDuck?: string | Duck): BundlesMapObject<A> | Bundle {
-    if (!nsOrDuck) {
-      return this.ducksNest
+    if (typeof nsOrDuck === 'undefined') {
+      return this.bundles
     }
 
     if (typeof nsOrDuck === 'string') {
       if (nsOrDuck in this.duckery) {
-        return this.ducksNest[nsOrDuck]!
+        return this.bundles[nsOrDuck as keyof A]
       }
-      throw new Error('Ducks can not found the Duck for the namespace: ' + nsOrDuck)
+      throw new Error('Ducks can not found the bundle for the namespace: ' + nsOrDuck)
     }
 
     if (typeof nsOrDuck === 'object') {
       const namespaceList = Object.keys(this.duckery)
         .filter(ns => this.duckery[ns] === nsOrDuck)
-      if (namespaceList.length <= 0) {
-        throw new Error('Duck not found: ' + nsOrDuck)
+
+      if (namespaceList[0]) {
+        return this.ducksify(namespaceList[0])
       }
-      const namespace = namespaceList[0]!
-      return this.ducksify(namespace)
+      throw new Error('Duck not found: ' + JSON.stringify(nsOrDuck))
     }
 
     throw new Error('unknown param: ' + nsOrDuck)
   }
 
   enhancer (): ReturnType<Ducks<A>['duckeryEnhancer']> {
-    if (!this.asyncMiddlewares.epicMiddleware && this.getRootEpic()) {
-      this.asyncMiddlewares.epicMiddleware = createEpicMiddleware()
+    if (!this.asyncMiddlewares.epicMiddleware) {
+      if (this.getRootEpic()) {
+        this.asyncMiddlewares.epicMiddleware = createEpicMiddleware()
+      }
     }
-    if (!this.asyncMiddlewares.sagaMiddleware && this.getRootSaga()) {
-      /**
-       * Huan(202109): disable saga
-       *  See: https://github.com/huan/ducks/issues/4
-       */
-      // this.asyncMiddlewares.sagaMiddleware = require('redux-saga').default()
-      throw new Error('saga is disabled. See: https://github.com/huan/ducks/issues/4')
+    if (!this.asyncMiddlewares.sagaMiddleware) {
+      if (this.getRootSaga()) {
+        /**
+         * Huan(202109): disable saga
+         *  See: https://github.com/huan/ducks/issues/4
+         */
+        // this.asyncMiddlewares.sagaMiddleware = require('redux-saga').default()
+        throw new Error('saga is disabled. See: https://github.com/huan/ducks/issues/4')
+      }
     }
 
     const asyncMiddlewareList = Object.values(this.asyncMiddlewares).filter(Boolean) as Middleware[]
@@ -180,14 +190,14 @@ class Ducks <A extends DucksMapObject> {
     return compose(
       /**
        * Huan(202005):
-       *  the `this.storeEnhancer()` should be put before applyMiddleware
+       *  the `this.duckeryEnhancer()` should be put before applyMiddleware
        *  (to initiate asyncMiddlewares before storeEnhancer)
        */
       this.duckeryEnhancer(),
 
       applyMiddleware(
         ...asyncMiddlewareList,
-        ...this.middlewares
+        ...this.middlewares,
       ),
     )
   }
@@ -197,6 +207,7 @@ class Ducks <A extends DucksMapObject> {
    * 2. Bind Store to Ducks
    */
   protected duckeryEnhancer () {
+
     const enhancer: StoreEnhancer<
       {},
       ReturnType<
@@ -221,7 +232,9 @@ class Ducks <A extends DucksMapObject> {
 
       return store
     }
+
     return enhancer
+
   }
 
   /**
@@ -243,6 +256,9 @@ class Ducks <A extends DucksMapObject> {
       throw new Error('Ducks can be only configureStore() for once! If you need another store, you can create another Ducks to fullfil your needs.')
     }
 
+    /**
+     * this._store will be set inside the `enhancer()` function
+     */
     const store = createStore(
       noopReducer,
       preloadedState,
@@ -269,6 +285,7 @@ class Ducks <A extends DucksMapObject> {
      * Load Epics Combinator
      *
      *  We are using `require` at here because we will only load `redux-observable` module when we need it
+     *  TODO: does it possible to use a `await import(redux-observable)` here?
      */
     return combineEpics(...epics) as Epic
   }
@@ -316,11 +333,15 @@ class Ducks <A extends DucksMapObject> {
     /**
      * Configure Duck
      */
-    Object.keys(this.duckery).forEach(namespace => {
+    Object.keys(this.duckery).forEach((namespace: keyof A) => {
       // console.info('initializeDucks() namespace', namespace)
       // console.info('initializeDucks() state', this.store.getState())
-      this.ducksNest[namespace]!.setStore(store)
-      this.ducksNest[namespace]!.setNamespaces(DUCKS_NAMESPACE, namespace)
+      this.bundles[namespace].setStore(store)
+
+      if (typeof namespace === 'number' || typeof namespace === 'symbol') {
+        throw new Error('namespace must be string: found type ' + typeof namespace + ': ' + String(namespace))
+      }
+      this.bundles[namespace].setNamespaces(DUCKS_NAMESPACE, namespace)
     })
 
     /**

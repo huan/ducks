@@ -27,7 +27,7 @@ import {
 import type { Duck } from './duck.js'
 
 import { validateDuck } from './validate-duck.js'
-import * as Api from './api/mod.js'
+import * as Api         from './api/mod.js'
 
 import { Bundle }             from './bundle.js'
 
