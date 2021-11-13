@@ -16,9 +16,14 @@
  *   limitations under the License.
  *
  */
-import { Action, combineReducers } from 'redux'
+import type {
+  Action,
+}                   from 'redux'
+import {
+  combineReducers,
+}                   from 'redux'
 
-import * as types from './types.js'
+import * as types   from './types.js'
 
 const initialState = {
   dong: 0,
@@ -37,5 +42,5 @@ const reducer = (state = initialState, action: Action) => {
 }
 
 export default combineReducers({
-  reducer,
+  subNamespace: reducer,
 })

@@ -18,7 +18,7 @@
  */
 import type reducer from './reducers.js'
 
-const getDong = (state: ReturnType<typeof reducer>) => () => state.reducer.dong
+const getDong = (state: ReturnType<typeof reducer>) => () => state.subNamespace.dong
 
 export {
   getDong,

@@ -39,7 +39,7 @@ const {
   dingDong,
   // pingPong,
   switcher,
-} = ducks.ducksify()
+}               = ducks.ducksify()
 
 /**
  * Create the store.
@@ -54,7 +54,7 @@ const store = createStore(
 
 // Show the initial store state structure data
 const state = store.getState()
-console.info('# Initial Store State:', state)
+console.info('# Initial Store State:', JSON.stringify(state, null, 2))
 
 // Show the initialized store state structure
 // store.subscribe(() => console.info(store.getState()))
@@ -92,7 +92,7 @@ assert.strictEqual(dingDong.selectors.getDong(), 1)
 // assert.strictEqual(pingPong.selectors.getPong(), 1)
 
 // Show the new store state structure data
-console.info('# Final Store State:', store.getState())
+console.info('# Final Store State:', JSON.stringify(store.getState(), null, 2))
 
 /**
  * We can export the Ducks to provide the Ducks Bundles!
@@ -100,5 +100,6 @@ console.info('# Final Store State:', store.getState())
 export {
   counter,
   dingDong,
+  switcher,
   // pingPong,
 }
