@@ -21,7 +21,7 @@ import {
 }               from './config.js'
 import {
   Ducks,
-  noopReducer,
+  nopReducer,
 }               from './ducks/mod.js'
 
 import type { Duck } from './duck.js'
@@ -38,7 +38,7 @@ export {
   Api,
   Bundle,
   Ducks,
-  noopReducer,
+  nopReducer,
   validateDuck,
   VERSION,
 }

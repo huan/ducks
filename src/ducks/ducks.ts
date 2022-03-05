@@ -55,7 +55,7 @@ import type {
 
 import { combineDuckery }   from './combine-duckery.js'
 import { insertReducers }   from './insert-reducers.js'
-import { noopReducer }      from './noop-reducer.js'
+import { nopReducer }      from './nop-reducer.js'
 
 export type BundlesMapObject <A extends DucksMapObject> = {
   [key in keyof A]: Bundle<A[key]>
@@ -213,7 +213,7 @@ class Ducks <A extends DucksMapObject> {
       ReturnType<
         Ducks<A>['reducer']
       >
-    > = next => (reducer: Reducer<any, any>, preloadedState: any) => {
+    > = storeCreator => (reducer: Reducer<any, any>, preloadedState: any) => {
 
       const newReducer = insertReducers(
         reducer,
@@ -223,7 +223,7 @@ class Ducks <A extends DucksMapObject> {
       )
 
       // FIXME: any
-      const store = next<any, any>(
+      const store = storeCreator<any, any>(
         newReducer,
         preloadedState,
       )
@@ -260,7 +260,7 @@ class Ducks <A extends DucksMapObject> {
      * this._store will be set inside the `enhancer()` function
      */
     const store = createStore(
-      noopReducer,
+      nopReducer,
       preloadedState,
       this.enhancer(),
     )

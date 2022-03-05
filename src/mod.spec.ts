@@ -26,6 +26,6 @@ test('ducks exports', async t => {
   t.ok(ducks.Api, 'export Api')
   t.ok(ducks.Ducks, 'export Ducks')
   t.ok(ducks.VERSION, 'export VERSION')
-  t.ok(ducks.noopReducer, 'export noopReducer')
+  t.ok(ducks.nopReducer, 'export nopReducer')
   t.ok(ducks.validateDuck, 'export validateDuck')
 })

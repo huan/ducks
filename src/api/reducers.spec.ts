@@ -28,6 +28,6 @@ test('ducks reducer initial state', async t => {
   let state = reducer(undefined, {} as any)
   t.same(state, {}, 'should return the initial state')
 
-  state = reducer(state, actions.noop())
-  t.same(state, {}, 'should return the noop state')
+  state = reducer(state, actions.nop())
+  t.same(state, {}, 'should return the nop state')
 })

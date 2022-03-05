@@ -44,7 +44,7 @@ test('insertReducers(counter, switcher)', async t => {
   )
 
   // reduce with a unknown type action should get the default state
-  const state0 = newReducer(undefined, { type: 'NOOP' } as any)
+  const state0 = newReducer(undefined, { type: 'NOP' } as any)
 
   t.equal(state0.counter.total, 0, 'should get state.count.total = 0 on initialization')
   t.equal(state0.switcher.status, false, 'should get state.switcher.status = false on initialization')
@@ -62,7 +62,7 @@ test('insertReducers(counter, switcher)', async t => {
   t.equal(state2.counter.total, 1, 'should get state.count.total = 1 after tap()')
   t.equal(state2.switcher.status, true, 'should get state.switcher.status = true after toggle()')
 
-  const state3 = newReducer(state2, { type: 'NOOP' } as any)
+  const state3 = newReducer(state2, { type: 'NOP' } as any)
   t.equal(state3, state2, 'state should not change if reducer got unknown action type')
 })
 
@@ -84,7 +84,7 @@ test('insertReducers(switcher, counter)', async t => {
   )
 
   // reduce with a unknown type action should get the default state
-  const state0 = newReducer(undefined, { type: 'NOOP' } as any)
+  const state0 = newReducer(undefined, { type: 'NOP' } as any)
 
   t.equal(state0.counter.total, 0, 'should get state.count.total = 0 on initialization')
   t.equal(state0.switcher.status, false, 'should get state.switcher.status = false on initialization')
@@ -98,6 +98,6 @@ test('insertReducers(switcher, counter)', async t => {
   t.equal(state2.counter.total, 1, 'should get state.count.total = 1 after tap()')
   t.equal(state2.switcher.status, true, 'should get state.switcher.status = true after toggle()')
 
-  const state3 = newReducer(state2, { type: 'NOOP' } as any)
+  const state3 = newReducer(state2, { type: 'NOP' } as any)
   t.equal(state3, state2, 'state should not change if reducer got unknown action type')
 })

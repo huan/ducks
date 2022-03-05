@@ -31,23 +31,23 @@ import * as duck from './mod.js'
 
 validateDuck(duck)
 
-test('noop', async t => {
+test('nop', async t => {
   const store = createStore(duck.default)
 
-  let noop = duck.selectors.getNoop(store.getState())()
-  t.notOk(noop, 'should be undefined')
+  let nop = duck.selectors.getNop(store.getState())()
+  t.notOk(nop, 'should be undefined')
 
-  store.dispatch(duck.actions.noop())
+  store.dispatch(duck.actions.nop())
 
-  noop = duck.selectors.getNoop(store.getState())()
-  t.notOk(noop, 'should be undefined after noop')
+  nop = duck.selectors.getNop(store.getState())()
+  t.notOk(nop, 'should be undefined after nop')
 })
 
 test('operations', async t => {
   const store = createStore(duck.default)
 
-  duck.operations.noop(store.dispatch)()
+  duck.operations.nop(store.dispatch)()
 
-  const noop = duck.selectors.getNoop(store.getState())()
-  t.notOk(noop, 'should be undefined after operations.noop(store)()')
+  const nop = duck.selectors.getNop(store.getState())()
+  t.notOk(nop, 'should be undefined after operations.nop(store)()')
 })

@@ -18,8 +18,8 @@
  */
 import type { State } from './reducers.js'
 
-const getNoop = (_state: State) => () => undefined
+const getNop = (_state: State) => () => undefined
 
 export {
-  getNoop,
+  getNop,
 }

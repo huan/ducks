@@ -27,7 +27,7 @@ import * as actions from './actions.js'
 const initialState: DeepReadonly<{}> = {}
 
 const reducer = createReducer<typeof initialState, ActionType<typeof actions>>(initialState)
-  .handleAction(actions.noop, state => state)
+  .handleAction(actions.nop, state => state)
 
 export default reducer
 export type State = ReturnType<typeof reducer>

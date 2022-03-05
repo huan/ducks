@@ -21,8 +21,8 @@ import type {
   AnyAction,
 }             from 'redux'
 
-const noopReducer: Reducer<{}, AnyAction> = state => state || {}
+const nopReducer: Reducer<{}, AnyAction> = state => state || {}
 
 export {
-  noopReducer,
+  nopReducer,
 }

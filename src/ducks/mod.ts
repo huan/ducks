@@ -16,5 +16,5 @@
  *   limitations under the License.
  *
  */
-export { Ducks }       from './ducks.js'
-export { noopReducer } from './noop-reducer.js'
+export { Ducks }      from './ducks.js'
+export { nopReducer } from './nop-reducer.js'

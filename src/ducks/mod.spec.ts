@@ -22,10 +22,10 @@ import { test }  from 'tstest'
 
 import {
   Ducks,
-  noopReducer,
+  nopReducer,
 }                 from './mod.js'
 
 test('Check the exports for the directory', async t => {
   t.ok(Ducks, 'should export `Ducks`')
-  t.ok(noopReducer, 'should export `noopReducer`')
+  t.ok(nopReducer, 'should export `nopReducer`')
 })

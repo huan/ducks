@@ -16,8 +16,8 @@
  *   limitations under the License.
  *
  */
-const NOOP   = 'ducks/NOOP'
+const NOP   = 'ducks/NOP'
 
 export {
-  NOOP,
+  NOP,
 }

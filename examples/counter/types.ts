@@ -17,9 +17,9 @@
  *
  */
 const TAP   = 'ducks/examples/counter/TAP'
-const NOOP   = 'ducks/examples/counter/NOOP'
+const NOP   = 'ducks/examples/counter/NOP'
 
 export {
-  NOOP,
+  NOP,
   TAP,
 }
