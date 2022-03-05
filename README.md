@@ -19,6 +19,8 @@ Ducks offers a method of handling redux module packaging, installing, and runnin
 > Java has jars and beans. Ruby has gems. I suggest we call these reducer bundles "ducks", as in the last syllable of "redux".  
 > &mdash; Erik Rasmussen, 2015 ([link](https://github.com/erikras/ducks-modular-redux#name))
 
+- [Product Hunt - Ducks](https://www.producthunt.com/posts/ducks)
+
 ## Goal
 
 The goal of Ducks is to:
